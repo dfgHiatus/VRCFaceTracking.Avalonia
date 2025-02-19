@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using Avalonia.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using VRCFaceTracking.Avalonia.Models;
 using VRCFaceTracking.Avalonia.Views;
 using VRCFaceTracking.Core.Contracts.Services;
 using VRCFaceTracking.Core.Models;
@@ -20,6 +16,8 @@ public partial class ModuleRegistryViewModel : ViewModelBase
     [ObservableProperty] private InstallableTrackingModule _module;
 
     [ObservableProperty] private string _searchText;
+
+    [ObservableProperty] private bool _dragItemDetected;
 
     [ObservableProperty] private bool _noRemoteModulesDetected;
 
@@ -41,6 +39,7 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         ModuleRegistryView.ModuleSelected += ModuleSelected;
         ModuleRegistryView.LocalModuleInstalled += LocalModuleInstalled;
         ModuleRegistryView.RemoteModuleInstalled += RemoteModuleInstalled;
+        ModuleRegistryView.DragDetected += ShowDragDropOverlay;
 
         _moduleInfos = _moduleRegistryView.GetModules(out var moduleCounts);
         _noRemoteModulesDetected = moduleCounts.remoteCount == 0;
@@ -52,6 +51,11 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         {
             FilteredModuleInfos.Add(module);
         }
+    }
+
+    private void ShowDragDropOverlay(bool state)
+    {
+        DragItemDetected = state;
     }
 
     partial void OnSearchTextChanged(string value)

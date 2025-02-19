@@ -13,150 +13,193 @@
     xmlns:models="clr-namespace:VRCFaceTracking.Core.Models;assembly=VRCFaceTracking.Core"
     xmlns:vm="clr-namespace:VRCFaceTracking.Avalonia.ViewModels.SplitViewPane"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ScrollViewer>
-        <StackPanel Classes="Page">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Classes="Header" Text="{l:Localize Shell_ModuleRegistry.Content}" />
-                <StackPanel
-                    IsVisible="{Binding NoRemoteModulesDetected}"
-                    Margin="20,0,0,0"
-                    Orientation="Horizontal"
-                    VerticalAlignment="Center">
-                    <PathIcon
-                        Data="{StaticResource WarningRegular}"
-                        Foreground="#FF8C00"
-                        Height="16"
-                        Margin="0,0,8,0"
-                        Width="16" />
-                    <TextBlock
-                        FontSize="14"
-                        FontWeight="Normal"
-                        Foreground="#FF8C00"
-                        Text="No internet connection"
-                        VerticalAlignment="Center" />
-                    <StackPanel />
+    <Grid>
+        <ScrollViewer DragDrop.AllowDrop="True">
+            <StackPanel Classes="Page">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Classes="Header" Text="{l:Localize Shell_ModuleRegistry.Content}" />
+                    <StackPanel
+                        IsVisible="{Binding NoRemoteModulesDetected}"
+                        Margin="20,0,0,0"
+                        Orientation="Horizontal"
+                        VerticalAlignment="Center">
+                        <PathIcon
+                            Data="{StaticResource WarningRegular}"
+                            Foreground="#FF8C00"
+                            Height="16"
+                            Margin="0,0,8,0"
+                            Width="16" />
+                        <TextBlock
+                            FontSize="14"
+                            FontWeight="Normal"
+                            Foreground="#FF8C00"
+                            Text="No internet connection"
+                            VerticalAlignment="Center" />
+                        <StackPanel />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Spacing="12">
+                    <controls:ContentExample>
+                        <StackPanel Orientation="Horizontal" Spacing="12">
+                            <Button x:Name="BrowseLocal">
+                                <Button.Content>
+                                    <StackPanel Orientation="Vertical">
+                                        <PathIcon Data="{StaticResource AddRegular}" Height="24" />
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
+                            <TextBlock
+                                Text="{l:Localize OpenLocalStorageCard.Header}"
+                                VerticalAlignment="Center"
+                                x:Name="BrowseLocalText" />
+                        </StackPanel>
+                    </controls:ContentExample>
+
+                    <controls:ContentExample>
+                        <StackPanel
+                            Height="475"
+                            Orientation="Horizontal"
+                            Spacing="20">
+                            <ScrollViewer
+                                HorizontalScrollBarVisibility="Auto"
+                                VerticalScrollBarVisibility="Auto"
+                                Width="250">
+                                <StackPanel IsVisible="{Binding ModulesDetected}">
+                                    <TextBox
+                                        Margin="0,0,18,8"
+                                        Text="{Binding SearchText}"
+                                        Watermark="Search modules..."
+                                        x:Name="SearchBox" />
+                                    <ListBox
+                                        ItemsSource="{Binding FilteredModuleInfos}"
+                                        SelectionChanged="OnModuleSelected"
+                                        x:Name="ModuleList">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate x:DataType="models:InstallableTrackingModule">
+                                                <TextBlock>
+                                                    <Run FontWeight="Bold" Text="{Binding ModuleName}" />
+                                                    <LineBreak />
+                                                    <Run Text="{Binding AuthorName}" />
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </StackPanel>
+                            </ScrollViewer>
+
+                            <StackPanel
+                                IsVisible="{Binding ModulesDetected}"
+                                Spacing="12"
+                                Width="700">
+                                <TextBlock
+                                    FontSize="20"
+                                    FontWeight="Bold"
+                                    Text="{Binding Module.ModuleName}">
+                                    Module Name
+                                </TextBlock>
+
+                                <Button Click="InstallButton_Click" x:Name="InstallButton">
+                                    Install
+                                </Button>
+
+                                <TextBlock>
+                                    <Run FontWeight="Bold" Text="{l:Localize Author.Text}" />
+                                    <LineBreak />
+                                    <Run Text="{Binding Module.AuthorName}" />
+                                </TextBlock>
+
+                                <TextBlock>
+                                    <Run FontWeight="Bold" Text="{l:Localize Version.Text}" />
+                                    <LineBreak />
+                                    <Run Text="{Binding Module.Version}" />
+                                </TextBlock>
+
+                                <TextBlock>
+                                    <Run FontWeight="Bold" Text="{l:Localize Downloads.Text}" />
+                                    <LineBreak />
+                                    <Run Text="{Binding Module.Downloads}" />
+                                </TextBlock>
+
+                                <TextBlock>
+                                    <Run FontWeight="Bold" Text="{l:Localize Rating.Text}" />
+                                    <LineBreak />
+                                    <Run Text="{Binding Module.Rating, StringFormat='{}{0:F2}/5'}" />
+                                </TextBlock>
+
+                                <TextBlock>
+                                    <Run FontWeight="Bold" Text="{l:Localize ModulePage.Text}" />
+                                    <LineBreak />
+                                    <htControls:Hyperlink
+                                        Alias="{Binding Module.ModulePageUrl}"
+                                        Command="{Binding OpenModuleUrl}"
+                                        Url="{Binding Module.ModulePageUrl}" />
+                                </TextBlock>
+
+                                <TextBlock>
+                                    <Run FontWeight="Bold" Text="{l:Localize LastUpdated.Text}" />
+                                    <LineBreak />
+                                    <Run Text="{Binding Module.LastUpdated}" />
+                                </TextBlock>
+
+                                <TextBlock TextWrapping="WrapWithOverflow">
+                                    <Run FontWeight="Bold" Text="{l:Localize Description.Text}" />
+                                    <LineBreak />
+                                    <Run Text="{Binding Module.ModuleDescription}" />
+                                </TextBlock>
+
+                                <TextBlock TextWrapping="WrapWithOverflow">
+                                    <Run FontWeight="Bold" Text="{l:Localize UsageInstructions.Text}" />
+                                    <LineBreak />
+                                    <Run Text="{Binding Module.UsageInstructions}" />
+                                </TextBlock>
+                            </StackPanel>
+                        </StackPanel>
+                    </controls:ContentExample>
                 </StackPanel>
             </StackPanel>
+        </ScrollViewer>
 
-            <StackPanel Spacing="12">
-                <controls:ContentExample>
-                    <StackPanel Orientation="Horizontal" Spacing="12">
-                        <Button x:Name="BrowseLocal">
-                            <Button.Content>
-                                <StackPanel Orientation="Vertical">
-                                    <PathIcon Data="{StaticResource AddRegular}" Height="24" />
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <TextBlock
-                            Text="{l:Localize OpenLocalStorageCard.Header}"
-                            VerticalAlignment="Center"
-                            x:Name="BrowseLocalText" />
-                    </StackPanel>
-                </controls:ContentExample>
+        <Grid
+            Background="#80000000"
+            IsHitTestVisible="False"
+            IsVisible="{Binding DragItemDetected}"
+            Name="OverlayGrid"
+            ZIndex="1000">
 
-                <controls:ContentExample>
-                    <StackPanel
-                        Height="475"
-                        Orientation="Horizontal"
-                        Spacing="20">
-                        <ScrollViewer
-                            HorizontalScrollBarVisibility="Auto"
-                            VerticalScrollBarVisibility="Auto"
-                            Width="250">
-                            <StackPanel IsVisible="{Binding ModulesDetected}">
-                                <TextBox
-                                    Margin="0,0,18,8"
-                                    Text="{Binding SearchText}"
-                                    Watermark="Search modules..."
-                                    x:Name="SearchBox" />
-                                <ListBox
-                                    ItemsSource="{Binding FilteredModuleInfos}"
-                                    SelectionChanged="OnModuleSelected"
-                                    x:Name="ModuleList">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate x:DataType="models:InstallableTrackingModule">
-                                            <TextBlock>
-                                                <Run FontWeight="Bold" Text="{Binding ModuleName}" />
-                                                <LineBreak />
-                                                <Run Text="{Binding AuthorName}" />
-                                            </TextBlock>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </StackPanel>
-                        </ScrollViewer>
+            <Border
+                Background="{DynamicResource SystemChromeMediumLowColor}"
+                BorderBrush="{DynamicResource SystemBaseMediumLowColor}"
+                BorderThickness="2"
+                CornerRadius="8"
+                Height="200"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="400">
 
-                        <StackPanel
-                            IsVisible="{Binding ModulesDetected}"
-                            Spacing="12"
-                            Width="700">
-                            <TextBlock
-                                FontSize="20"
-                                FontWeight="Bold"
-                                Text="{Binding Module.ModuleName}">
-                                Module Name
-                            </TextBlock>
+                <StackPanel
+                    HorizontalAlignment="Center"
+                    Spacing="20"
+                    VerticalAlignment="Center">
 
-                            <Button Click="InstallButton_Click" x:Name="InstallButton">
-                                Install
-                            </Button>
+                    <PathIcon
+                        Data="{StaticResource ArrowDownloadRegular}"
+                        Height="48"
+                        Width="48" />
 
-                            <TextBlock>
-                                <Run FontWeight="Bold" Text="{l:Localize Author.Text}" />
-                                <LineBreak />
-                                <Run Text="{Binding Module.AuthorName}" />
-                            </TextBlock>
+                    <TextBlock
+                        FontSize="24"
+                        FontWeight="SemiBold"
+                        HorizontalAlignment="Center"
+                        Text="Drop Files Here to Install" />
 
-                            <TextBlock>
-                                <Run FontWeight="Bold" Text="{l:Localize Version.Text}" />
-                                <LineBreak />
-                                <Run Text="{Binding Module.Version}" />
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Run FontWeight="Bold" Text="{l:Localize Downloads.Text}" />
-                                <LineBreak />
-                                <Run Text="{Binding Module.Downloads}" />
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Run FontWeight="Bold" Text="{l:Localize Rating.Text}" />
-                                <LineBreak />
-                                <Run Text="{Binding Module.Rating, StringFormat='{}{0:F2}/5'}" />
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Run FontWeight="Bold" Text="{l:Localize ModulePage.Text}" />
-                                <LineBreak />
-                                <htControls:Hyperlink
-                                    Alias="{Binding Module.ModulePageUrl}"
-                                    Command="{Binding OpenModuleUrl}"
-                                    Url="{Binding Module.ModulePageUrl}" />
-                            </TextBlock>
-
-                            <TextBlock>
-                                <Run FontWeight="Bold" Text="{l:Localize LastUpdated.Text}" />
-                                <LineBreak />
-                                <Run Text="{Binding Module.LastUpdated}" />
-                            </TextBlock>
-
-                            <TextBlock TextWrapping="WrapWithOverflow">
-                                <Run FontWeight="Bold" Text="{l:Localize Description.Text}" />
-                                <LineBreak />
-                                <Run Text="{Binding Module.ModuleDescription}" />
-                            </TextBlock>
-
-                            <TextBlock TextWrapping="WrapWithOverflow">
-                                <Run FontWeight="Bold" Text="{l:Localize UsageInstructions.Text}" />
-                                <LineBreak />
-                                <Run Text="{Binding Module.UsageInstructions}" />
-                            </TextBlock>
-                        </StackPanel>
-                    </StackPanel>
-                </controls:ContentExample>
-            </StackPanel>
-        </StackPanel>
-    </ScrollViewer>
+                    <TextBlock
+                        FontSize="14"
+                        HorizontalAlignment="Center"
+                        Text="Release to add modules to VRCFaceTracking" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
 </UserControl>
 

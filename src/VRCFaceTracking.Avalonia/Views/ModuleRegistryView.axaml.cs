@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
-using Avalonia.Threading;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using VRCFaceTracking.Core.Contracts.Services;
-using VRCFaceTracking.Core.Library;
 using VRCFaceTracking.Core.Models;
 using VRCFaceTracking.Core.Services;
 
@@ -20,6 +19,8 @@ public partial class ModuleRegistryView : UserControl
     public static event Action<InstallableTrackingModule>? ModuleSelected;
     public static event Action? LocalModuleInstalled;
     public static event Action<InstallableTrackingModule>? RemoteModuleInstalled;
+    public static event Action<bool> DragDetected;
+
     private ModuleInstaller ModuleInstaller { get; }
     private IModuleDataService ModuleDataService { get; }
     private ILibManager LibManager { get; set; }
@@ -47,31 +48,19 @@ public partial class ModuleRegistryView : UserControl
             var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
                 Title = "Select a .zip.",
-                AllowMultiple = false,
+                AllowMultiple = true,
                 FileTypeFilter = [ZIP]
             });
 
-            if (files.Count == 0) return;
-
-            string? path = null;
-            try
+            foreach (var file in files)
             {
-                path = await ModuleInstaller.InstallLocalModule(files.First().Path.AbsolutePath);
-            }
-            finally
-            {
-                if (path != null)
-                {
-                    BrowseLocalText.Text = "Successfully installed module.";
-                    LocalModuleInstalled?.Invoke();
-                    LibManager.Initialize();
-                }
-                else
-                {
-                    BrowseLocalText.Text = "Failed to install module. Check logs for more information.";
-                }
+                await InstallModule(file);
             }
         };
+
+        AddHandler(DragDrop.DragEnterEvent, OnDragEnter);
+        AddHandler(DragDrop.DragLeaveEvent, OnDragLeave);
+        AddHandler(DragDrop.DropEvent, OnDrop);
     }
 
     private void InstallButton_Click(object? sender, RoutedEventArgs e)
@@ -185,6 +174,54 @@ public partial class ModuleRegistryView : UserControl
         moduleCounts.localCount = installedModules.Count();
         moduleCounts.remoteCount = remoteCount;
         return modules;
+    }
+
+    private void OnDragEnter(object? sender, DragEventArgs e)
+    {
+        DragDetected?.Invoke(true);
+    }
+
+    private void OnDragLeave(object? sender, DragEventArgs e)
+    {
+        DragDetected?.Invoke(false);
+    }
+
+    private async void OnDrop(object? sender, DragEventArgs e )
+    {
+        var items = e.Data.GetFiles();
+        if (items == null) return;
+
+        foreach (var file in items)
+        {
+            if (!file.Name.EndsWith(".zip"))
+                continue;
+
+            await InstallModule(file);
+        }
+
+        DragDetected?.Invoke(false);
+    }
+
+    private async Task InstallModule(IStorageItem file)
+    {
+        string path = string.Empty;
+        try
+        {
+            path = await ModuleInstaller.InstallLocalModule(file.Path.AbsolutePath);
+        }
+        finally
+        {
+            if (!string.IsNullOrEmpty(path))
+            {
+                BrowseLocalText.Text = "Successfully installed module(s).";
+                LocalModuleInstalled?.Invoke();
+                LibManager.Initialize();
+            }
+            else
+            {
+                BrowseLocalText.Text = "Failed to install module(s). Check logs for more information.";
+            }
+        }
     }
 }
 
