@@ -45,7 +45,7 @@ public class Program
             if (string.IsNullOrEmpty(steamPath))
                 throw new InvalidProgramException("Steam was not detected!");
 
-            // 2) Inside the steam install directory, find the file steamPath/steamapps/libraryfolders.vdf
+            // 3) Inside the steam install directory, find the file steamPath/steamapps/libraryfolders.vdf
             // This is a special file that tells us where on a users computer their steam libraries are
             var steamLibrariesPaths = Path.Combine(steamPath!, "steamapps", "libraryfolders.vdf");
             dynamic volvo = VdfConvert.Deserialize(File.ReadAllText(steamLibrariesPaths));
@@ -70,7 +70,7 @@ public class Program
             if (string.IsNullOrEmpty(vrchatPath))
                 throw new InvalidProgramException("Steam was detected, but VRChat was not detected on this system! Is it installed?");
 
-            // 3) Finally, construct the path to the user's VRChat install
+            // 4) Finally, construct the path to the user's VRChat install
             return Path.Combine(vrchatPath, "steamapps", "compatdata", "438100", "pfx", "drive_c",
                 "users", "steamuser", "AppData", "LocalLow", "VRChat", "VRChat", "OSC");
         }
