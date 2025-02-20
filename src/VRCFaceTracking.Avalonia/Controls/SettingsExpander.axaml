@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:controls="clr-namespace:VRCFaceTracking.Avalonia.Controls"
+             xmlns:converters="clr-namespace:VRCFaceTracking.Avalonia.Converters"
              x:Class="VRCFaceTracking.Avalonia.Controls.SettingsExpander">
   
   <Expander IsExpanded="False"
@@ -11,16 +12,24 @@
             HorizontalContentAlignment="Stretch"
             HorizontalAlignment="Stretch">
     <Expander.Header>
-      <StackPanel HorizontalAlignment="Stretch" Margin="0,10,0,10">
-        <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=controls:SettingsExpander}, FallbackValue='Setting'}"
-               FontSize="16"
-               FontWeight="SemiBold"
-               Margin="5"/>
-        <TextBlock Text="{Binding Description, RelativeSource={RelativeSource AncestorType=controls:SettingsExpander}, FallbackValue='Setting Description'}"
-                   FontSize="14"
-                   Foreground="{DynamicResource SystemChromeGrayColor}"
-                   Margin="5"/>
-      </StackPanel>
+      <Grid ColumnDefinitions="Auto,Auto,*">
+        <PathIcon Data="{Binding IconPath, RelativeSource={RelativeSource AncestorType=controls:SettingsExpander}, Converter={x:Static converters:TypeConverters.IconConverter}}"
+                  Grid.Column="0"
+                  Background="#00000000"
+                  VerticalAlignment="Center"
+                  Width="32"
+                  Margin="10,10,20,10"/>
+        <StackPanel HorizontalAlignment="Stretch" Margin="0,10,0,10" Grid.Column="1">
+          <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=controls:SettingsExpander}, FallbackValue='Setting'}"
+                 FontSize="16"
+                 FontWeight="SemiBold"
+                 Margin="5"/>
+          <TextBlock Text="{Binding Description, RelativeSource={RelativeSource AncestorType=controls:SettingsExpander}, FallbackValue='Setting Description'}"
+                     FontSize="14"
+                     Foreground="{DynamicResource SystemChromeGrayColor}"
+                     Margin="5"/>
+        </StackPanel>
+      </Grid>
     </Expander.Header>
     <ContentPresenter Content="{Binding ExpanderContent, RelativeSource={RelativeSource AncestorType=controls:SettingsExpander}}"/>
   </Expander>

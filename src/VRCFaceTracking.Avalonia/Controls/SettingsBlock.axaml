@@ -4,13 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              xmlns:controls="clr-namespace:VRCFaceTracking.Avalonia.Controls"
+             xmlns:converters="clr-namespace:VRCFaceTracking.Avalonia.Converters"
              x:Class="VRCFaceTracking.Avalonia.Controls.SettingsBlock">
   <Border Background="{DynamicResource SystemChromeMediumLowColor}"
           CornerRadius="6"
           Padding="15,5,15,5">
-    <Grid ColumnDefinitions="Auto,*,Auto"
+    <Grid ColumnDefinitions="Auto,Auto,*,Auto"
           VerticalAlignment="Center">
-      <StackPanel Grid.Column="0" HorizontalAlignment="Stretch" Margin="0,10,0,10">
+      <PathIcon Data="{Binding IconPath, RelativeSource={RelativeSource AncestorType=controls:SettingsBlock}, Converter={x:Static converters:TypeConverters.IconConverter}}"
+                Grid.Column="0"
+                Background="#00000000"
+                VerticalAlignment="Center"
+                Width="32"
+                Margin="10,10,20,10"/>
+      <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" Margin="0,10,0,10">
         <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=controls:SettingsBlock}, FallbackValue='Setting'}"
                FontSize="16"
                FontWeight="SemiBold"
@@ -21,7 +28,7 @@
                    Margin="5"/>
       </StackPanel>
       <ContentPresenter Content="{Binding SettingsContent, RelativeSource={RelativeSource AncestorType=controls:SettingsBlock}}"
-                        Grid.Column="2"/>
+                        Grid.Column="3"/>
     </Grid>
   </Border>  
 </UserControl>

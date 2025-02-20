@@ -15,13 +15,17 @@
         <StackPanel Classes="Page">
             <TextBlock Classes="Header" Text="Settings" />
 
-            <controls:SettingsBlock Description="{l:Localize ThemeSettings.Description}" Title="{l:Localize ThemeSettings.Header}">
+            <controls:SettingsBlock Description="{l:Localize ThemeSettings.Description}"
+                                    Title="{l:Localize ThemeSettings.Header}"
+                                    IconPath="DarkLightTheme">
                 <controls:SettingsBlock.SettingsContent>
                     <ComboBox VerticalAlignment="Center" x:Name="ThemeCombo" />
                 </controls:SettingsBlock.SettingsContent>
             </controls:SettingsBlock>
 
-            <controls:SettingsBlock Description="Set the app's language." Title="Language">
+            <controls:SettingsBlock Description="Set the app's language."
+                                    Title="Language"
+                                    IconPath="LanguageRegular">
                 <controls:SettingsBlock.SettingsContent>
                     <ComboBox VerticalAlignment="Center" x:Name="LangCombo">
                         <ComboBoxItem Content="Default" x:Name="DefaultLanguage" />
@@ -34,7 +38,9 @@
                 </controls:SettingsBlock.SettingsContent>
             </controls:SettingsBlock>
 
-            <controls:SettingsBlock Description="{l:Localize OscSettings.Description}" Title="{l:Localize OscSettings.Header}">
+            <controls:SettingsBlock Description="{l:Localize OscSettings.Description}"
+                                    Title="{l:Localize OscSettings.Header}"
+                                    IconPath="WirelessRegular">
                 <controls:SettingsBlock.SettingsContent>
                     <StackPanel
                         Orientation="Horizontal"
@@ -74,12 +80,14 @@
             <controls:SettingsToggle
                 Description="{l:Localize AutoStartSettings.Description}"
                 SettingToggled="{Binding IsAutoStartEnabled, Mode=TwoWay}"
-                Title="{l:Localize AutoStartSettings.Header}" />
+                Title="{l:Localize AutoStartSettings.Header}"
+                IconPath="PowerRegular"/>
 
             <controls:SettingsExpanderToggle
                 Description="{l:Localize RiskySettings.Description}"
                 ExpanderContentToggle="{Binding IsRiskySettingsEnabled, Mode=TwoWay}"
-                Title="{l:Localize RiskySettings.Header}">
+                Title="{l:Localize RiskySettings.Header}"
+                IconPath="WarningRegular">
                 <controls:SettingsExpanderToggle.ExpanderContent>
                     <StackPanel>
                         <Grid
@@ -135,7 +143,9 @@
                 </controls:SettingsExpanderToggle.ExpanderContent>
             </controls:SettingsExpanderToggle>
 
-            <controls:SettingsExpander Description="{l:Localize HardwareDebug.Description}" Title="{l:Localize HardwareDebug.Header}">
+            <controls:SettingsExpander Description="{l:Localize HardwareDebug.Description}"
+                                       Title="{l:Localize HardwareDebug.Header}"
+                                       IconPath="HeartPulseRegular">
                 <controls:SettingsExpander.ExpanderContent>
                     <StackPanel>
                         <StackPanel Orientation="Horizontal" Spacing="12">

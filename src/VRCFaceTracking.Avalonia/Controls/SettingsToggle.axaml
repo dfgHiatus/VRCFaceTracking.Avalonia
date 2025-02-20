@@ -5,6 +5,7 @@
     x:Class="VRCFaceTracking.Avalonia.Controls.SettingsToggle"
     xmlns="https://github.com/avaloniaui"
     xmlns:controls="clr-namespace:VRCFaceTracking.Avalonia.Controls"
+    xmlns:converters="clr-namespace:VRCFaceTracking.Avalonia.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
@@ -12,9 +13,15 @@
         Background="{DynamicResource SystemChromeMediumLowColor}"
         CornerRadius="6"
         Padding="15,5,15,5">
-        <Grid ColumnDefinitions="Auto,*,Auto" VerticalAlignment="Center">
+        <Grid ColumnDefinitions="Auto, Auto,*,Auto" VerticalAlignment="Center">
+          <PathIcon Data="{Binding IconPath, RelativeSource={RelativeSource AncestorType=controls:SettingsToggle}, Converter={x:Static converters:TypeConverters.IconConverter}}"
+                    Grid.Column="0"
+                    Background="#00000000"
+                    VerticalAlignment="Center"
+                    Width="32"
+                    Margin="10,10,20,10"/>
             <StackPanel
-                Grid.Column="0"
+                Grid.Column="1"
                 HorizontalAlignment="Stretch"
                 Margin="0,10,0,10">
                 <TextBlock
@@ -29,7 +36,7 @@
                     Text="{Binding Description, RelativeSource={RelativeSource AncestorType=controls:SettingsToggle}, FallbackValue='Setting Description'}" />
             </StackPanel>
             <ToggleSwitch
-                Grid.Column="2"
+                Grid.Column="3"
                 IsChecked="{Binding SettingToggled, RelativeSource={RelativeSource AncestorType=controls:SettingsToggle}}"
                 OffContent="{Binding OffContent}"
                 OnContent="{Binding OnContent}"

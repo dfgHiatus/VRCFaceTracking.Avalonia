@@ -7,6 +7,15 @@ namespace VRCFaceTracking.Avalonia.Controls;
 
 public partial class SettingsBlock : UserControl
 {
+    public static readonly StyledProperty<string> IconPathProperty =
+        AvaloniaProperty.Register<SettingsExpander, string>(nameof(IconPath));
+
+    public string IconPath
+    {
+        get => GetValue(IconPathProperty);
+        set => SetValue(IconPathProperty, value);
+    }
+
     public static readonly StyledProperty<string> TitleProperty =
         AvaloniaProperty.Register<SettingsExpander, string>(nameof(Title));
 
