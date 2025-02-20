@@ -38,27 +38,27 @@
     <ResourceDictionary.ThemeDictionaries>
         <ResourceDictionary x:Key="Default">
             <!--  Selected Brushes  -->
-            <SolidColorBrush Color="Gold" x:Key="RatingControlSelectedBrush" />
-            <SolidColorBrush Color="Goldenrod" x:Key="RatingControlSelectedStrokenBrush" />
+            <SolidColorBrush Color="#404040" x:Key="RatingControlSelectedBrush" />
+            <SolidColorBrush Color="#202020" x:Key="RatingControlSelectedStrokenBrush" />
             <!--  Unselected Brushes  -->
-            <SolidColorBrush Color="White" x:Key="RatingControlUnselectedBrush" />
-            <SolidColorBrush Color="Gray" x:Key="RatingControlUnselectedStrokenBrush" />
+            <SolidColorBrush Color="#FFFFFF" x:Key="RatingControlUnselectedBrush" />
+            <SolidColorBrush Color="#808080" x:Key="RatingControlUnselectedStrokenBrush" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Light">
             <!--  Selected Brushes  -->
-            <SolidColorBrush Color="Gold" x:Key="RatingControlSelectedBrush" />
-            <SolidColorBrush Color="Gray" x:Key="RatingControlSelectedStrokenBrush" />
+            <SolidColorBrush Color="#333333" x:Key="RatingControlSelectedBrush" />
+            <SolidColorBrush Color="#666666" x:Key="RatingControlSelectedStrokenBrush" />
             <!--  Unselected Brushes  -->
-            <SolidColorBrush Color="White" x:Key="RatingControlUnselectedBrush" />
-            <SolidColorBrush Color="Gray" x:Key="RatingControlUnselectedStrokenBrush" />
+            <SolidColorBrush Color="#FFFFFF" x:Key="RatingControlUnselectedBrush" />
+            <SolidColorBrush Color="#999999" x:Key="RatingControlUnselectedStrokenBrush" />
         </ResourceDictionary>
         <ResourceDictionary x:Key="Dark">
             <!--  Selected Brushes  -->
-            <SolidColorBrush Color="Red" x:Key="RatingControlSelectedBrush" />
-            <SolidColorBrush Color="White" x:Key="RatingControlSelectedStrokenBrush" />
+            <SolidColorBrush Color="#FFFFFF" x:Key="RatingControlSelectedBrush" />
+            <SolidColorBrush Color="#CCCCCC" x:Key="RatingControlSelectedStrokenBrush" />
             <!--  Unselected Brushes  -->
             <SolidColorBrush Color="Transparent" x:Key="RatingControlUnselectedBrush" />
-            <SolidColorBrush Color="White" x:Key="RatingControlUnselectedStrokenBrush" />
+            <SolidColorBrush Color="#808080" x:Key="RatingControlUnselectedStrokenBrush" />
         </ResourceDictionary>
     </ResourceDictionary.ThemeDictionaries>
 
@@ -94,7 +94,6 @@
                         </Style>
 
                         <Style Selector="Path.star:pointerover">
-                            <Setter Property="RenderTransform" Value="scale(1.3)" />
                             <Setter Property="Fill" Value="{DynamicResource RatingControlSelectedStrokenBrush}" />
                         </Style>
                     </DataValidationErrors.Styles>
