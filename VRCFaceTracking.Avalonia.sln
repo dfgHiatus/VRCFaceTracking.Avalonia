@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRCFaceTracking.SDK", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HyperText.Avalonia", "src\HyperText.Avalonia\HyperText.Avalonia\HyperText.Avalonia.csproj", "{013DDFD9-6C1A-4BF1-AF01-7A00805556BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRCFaceTracking.Avalonia.Tests", "VRCFaceTracking.Avalonia.Tests\VRCFaceTracking.Avalonia.Tests.csproj", "{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		MacOS Debug|Any CPU = MacOS Debug|Any CPU
@@ -172,6 +174,18 @@ Global
 		{013DDFD9-6C1A-4BF1-AF01-7A00805556BA}.MacOS Release|Any CPU.Build.0 = MacOS Release|Any CPU
 		{013DDFD9-6C1A-4BF1-AF01-7A00805556BA}.Linux Release|Any CPU.ActiveCfg = Linux Release|Any CPU
 		{013DDFD9-6C1A-4BF1-AF01-7A00805556BA}.Linux Release|Any CPU.Build.0 = Linux Release|Any CPU
+		{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}.MacOS Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}.MacOS Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}.Windows Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}.Windows Release|Any CPU.Build.0 = Debug|Any CPU
+		{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}.Linux Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}.Linux Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}.Windows Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}.Windows Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}.MacOS Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}.MacOS Release|Any CPU.Build.0 = Debug|Any CPU
+		{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}.Linux Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{46F0E5B7-9E52-4B84-9B2B-402F80ECCA1D}.Linux Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
