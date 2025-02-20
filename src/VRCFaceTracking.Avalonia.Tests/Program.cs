@@ -28,9 +28,22 @@ public class Program
             * /home/USER_NAME/.steam/steam/steamapps/compatdata/438100/pfx/drive_c/users/steamuser/AppData/LocalLow/VRChat/VRChat/OSC/
             * Where 438100 is VRChat's Steam GameID, and the path after "steam" is pretty much fixed */
 
-            // 1) Get where steam is installed. Yes, this doesn't account for flatpaks, but I'm not going to bother with that
-            // If it becomes an issue, you can link the steam install directory to the directory below
-            var steamPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".steam", "steam");
+            // 1) First, get the user profile folder
+            // (/home/USER_NAME/)
+            string home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+            // 2) Then, search for common Steam install paths
+            // (/home/USER_NAME/.steam/steam/)
+            string[] possiblePaths =
+            {
+                Path.Combine(home, ".steam", "steam"),
+                Path.Combine(home, ".local", "share", "Steam"),
+                Path.Combine(home, ".var", "app", "com.valvesoftware.Steam", ".local", "share", "Steam")
+            };
+            string? steamPath = Array.Find(possiblePaths, Directory.Exists);
+
+            if (string.IsNullOrEmpty(steamPath))
+                throw new InvalidProgramException("Steam was not detected!");
 
             // 2) Inside the steam install directory, find the file steamPath/steamapps/libraryfolders.vdf
             // This is a special file that tells us where on a users computer their steam libraries are
