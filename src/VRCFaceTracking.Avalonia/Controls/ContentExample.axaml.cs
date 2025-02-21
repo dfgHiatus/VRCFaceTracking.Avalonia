@@ -20,4 +20,13 @@ public class ContentExample : TemplatedControl
             if (value is ILogical newLogical) LogicalChildren.Add(newLogical);
         }
     }
+
+    public static readonly StyledProperty<Thickness> PaddingProperty =
+            AvaloniaProperty.Register<ContentExample, Thickness>(nameof(Padding));
+
+    public Thickness Padding
+    {
+        get => GetValue(PaddingProperty);
+        set => SetValue(PaddingProperty, value);
+    }
 }

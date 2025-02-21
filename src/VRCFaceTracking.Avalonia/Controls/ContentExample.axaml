@@ -3,11 +3,12 @@
         xmlns:controls="clr-namespace:VRCFaceTracking.Avalonia.Controls">
 
   <Style Selector="controls|ContentExample">
+    <Setter Property="Padding" Value="15" />
     <Setter Property="Template">
       <ControlTemplate>
         <Border Background="{DynamicResource SystemChromeMediumLowColor}"
                 CornerRadius="3"
-                Padding="15">
+                Padding="{TemplateBinding Padding}">
           <ContentPresenter Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding Template}" />
         </Border>
       </ControlTemplate>

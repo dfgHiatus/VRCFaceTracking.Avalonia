@@ -21,23 +21,26 @@
             Data="{StaticResource InfoRegular}"
             Grid.Column="0"
             Height="30"
-            Margin="0,4,16,0"
+            Margin="30,30,30,30"
             VerticalAlignment="Center"
             Width="30" />
 
         <StackPanel
             Grid.Column="1"
             Orientation="Vertical"
-            Spacing="6">
+            Spacing="6"
+            VerticalAlignment="Center">
             <TextBlock
-                FontSize="18"
-                FontWeight="Bold"
+                FontSize="16"
+                FontWeight="SemiBold"
                 Text="{Binding $parent[templates:WarningBlock].Header}" />
-            <TextBlock FontSize="15" Text="{Binding $parent[templates:WarningBlock].Subheader}" />
+            <TextBlock FontSize="14"
+                       Foreground="{DynamicResource SystemChromeGrayColor}"
+                       Text="{Binding $parent[templates:WarningBlock].Subheader}" />
             <controls:Hyperlink
                 Alias="{Binding $parent[templates:WarningBlock].Caption}"
                 Command="{Binding $parent[templates:WarningBlock].NavigateCommand}"
-                FontSize="15"
+                FontSize="14"
                 Url="{Binding $parent[templates:WarningBlock].Caption}" />
         </StackPanel>
 
