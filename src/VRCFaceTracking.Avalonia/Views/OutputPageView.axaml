@@ -42,7 +42,7 @@
             <controls:ContentExample>
                 <StackPanel>
                     <ScrollViewer
-                        Height="475"
+                        Height="425"
                         HorizontalScrollBarVisibility="Auto"
                         IsTabStop="False"
                         VerticalScrollBarVisibility="Auto"

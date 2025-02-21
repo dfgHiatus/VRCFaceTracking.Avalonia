@@ -58,7 +58,7 @@
 
                     <controls:ContentExample>
                         <StackPanel
-                            Height="475"
+                            Height="430"
                             Orientation="Horizontal"
                             Spacing="20">
                             <ScrollViewer
@@ -88,72 +88,74 @@
                                 </StackPanel>
                             </ScrollViewer>
 
-                            <StackPanel
-                                IsVisible="{Binding ModulesDetected}"
-                                Spacing="12"
-                                Width="700">
-                                <TextBlock
-                                    FontSize="20"
-                                    FontWeight="Bold"
-                                    Text="{Binding Module.ModuleName}">
-                                    Module Name
-                                </TextBlock>
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                                <StackPanel
+                                    IsVisible="{Binding ModulesDetected}"
+                                    Spacing="12"
+                                    Width="700">
+                                    <TextBlock
+                                        FontSize="20"
+                                        FontWeight="Bold"
+                                        Text="{Binding Module.ModuleName}">
+                                        Module Name
+                                    </TextBlock>
 
-                                <Button Click="InstallButton_Click" x:Name="InstallButton">
-                                    Install
-                                </Button>
+                                    <Button Click="InstallButton_Click" x:Name="InstallButton">
+                                        Install
+                                    </Button>
 
-                                <TextBlock>
-                                    <Run FontWeight="Bold" Text="{l:Localize Author.Text}" />
-                                    <LineBreak />
-                                    <Run Text="{Binding Module.AuthorName}" />
-                                </TextBlock>
+                                    <TextBlock>
+                                        <Run FontWeight="Bold" Text="{l:Localize Author.Text}" />
+                                        <LineBreak />
+                                        <Run Text="{Binding Module.AuthorName}" />
+                                    </TextBlock>
 
-                                <TextBlock>
-                                    <Run FontWeight="Bold" Text="{l:Localize Version.Text}" />
-                                    <LineBreak />
-                                    <Run Text="{Binding Module.Version}" />
-                                </TextBlock>
+                                    <TextBlock>
+                                        <Run FontWeight="Bold" Text="{l:Localize Version.Text}" />
+                                        <LineBreak />
+                                        <Run Text="{Binding Module.Version}" />
+                                    </TextBlock>
 
-                                <TextBlock>
-                                    <Run FontWeight="Bold" Text="{l:Localize Downloads.Text}" />
-                                    <LineBreak />
-                                    <Run Text="{Binding Module.Downloads}" />
-                                </TextBlock>
+                                    <TextBlock>
+                                        <Run FontWeight="Bold" Text="{l:Localize Downloads.Text}" />
+                                        <LineBreak />
+                                        <Run Text="{Binding Module.Downloads}" />
+                                    </TextBlock>
 
-                                <TextBlock>
-                                    <Run FontWeight="Bold" Text="{l:Localize Rating.Text}" />
-                                    <LineBreak />
-                                    <Run Text="{Binding Module.Rating, StringFormat='{}{0:F2}/5'}" />
-                                </TextBlock>
+                                    <TextBlock>
+                                        <Run FontWeight="Bold" Text="{l:Localize Rating.Text}" />
+                                        <LineBreak />
+                                        <Run Text="{Binding Module.Rating, StringFormat='{}{0:F2}/5'}" />
+                                    </TextBlock>
 
-                                <TextBlock>
-                                    <Run FontWeight="Bold" Text="{l:Localize ModulePage.Text}" />
-                                    <LineBreak />
-                                    <htControls:Hyperlink
-                                        Alias="{Binding Module.ModulePageUrl}"
-                                        Command="{Binding OpenModuleUrl}"
-                                        Url="{Binding Module.ModulePageUrl}" />
-                                </TextBlock>
+                                    <TextBlock>
+                                        <Run FontWeight="Bold" Text="{l:Localize ModulePage.Text}" />
+                                        <LineBreak />
+                                        <htControls:Hyperlink
+                                            Alias="{Binding Module.ModulePageUrl}"
+                                            Command="{Binding OpenModuleUrl}"
+                                            Url="{Binding Module.ModulePageUrl}" />
+                                    </TextBlock>
 
-                                <TextBlock>
-                                    <Run FontWeight="Bold" Text="{l:Localize LastUpdated.Text}" />
-                                    <LineBreak />
-                                    <Run Text="{Binding Module.LastUpdated}" />
-                                </TextBlock>
+                                    <TextBlock>
+                                        <Run FontWeight="Bold" Text="{l:Localize LastUpdated.Text}" />
+                                        <LineBreak />
+                                        <Run Text="{Binding Module.LastUpdated}" />
+                                    </TextBlock>
 
-                                <TextBlock TextWrapping="WrapWithOverflow">
-                                    <Run FontWeight="Bold" Text="{l:Localize Description.Text}" />
-                                    <LineBreak />
-                                    <Run Text="{Binding Module.ModuleDescription}" />
-                                </TextBlock>
+                                    <TextBlock TextWrapping="WrapWithOverflow">
+                                        <Run FontWeight="Bold" Text="{l:Localize Description.Text}" />
+                                        <LineBreak />
+                                        <Run Text="{Binding Module.ModuleDescription}" />
+                                    </TextBlock>
 
-                                <TextBlock TextWrapping="WrapWithOverflow">
-                                    <Run FontWeight="Bold" Text="{l:Localize UsageInstructions.Text}" />
-                                    <LineBreak />
-                                    <Run Text="{Binding Module.UsageInstructions}" />
-                                </TextBlock>
-                            </StackPanel>
+                                    <TextBlock TextWrapping="WrapWithOverflow">
+                                        <Run FontWeight="Bold" Text="{l:Localize UsageInstructions.Text}" />
+                                        <LineBreak />
+                                        <Run Text="{Binding Module.UsageInstructions}" />
+                                    </TextBlock>
+                                </StackPanel>
+                            </ScrollViewer>
                         </StackPanel>
                     </controls:ContentExample>
                 </StackPanel>
