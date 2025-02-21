@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyperText.Avalonia", "src\H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VRCFaceTracking.Avalonia.Tests", "src\VRCFaceTracking.Avalonia.Tests\VRCFaceTracking.Avalonia.Tests.csproj", "{12AF29DB-DFE8-4336-A52A-3941E97F6287}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRCFaceTracking.Avalonia.iOS", "src\VRCFaceTracking.Avalonia.iOS\VRCFaceTracking.Avalonia.iOS.csproj", "{919A2700-496C-4F8E-8843-2CD26BF28749}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -219,6 +221,22 @@ Global
 		{12AF29DB-DFE8-4336-A52A-3941E97F6287}.Windows Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12AF29DB-DFE8-4336-A52A-3941E97F6287}.Windows Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12AF29DB-DFE8-4336-A52A-3941E97F6287}.Windows Release|Any CPU.Build.0 = Release|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.Linux Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.Linux Debug|Any CPU.Build.0 = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.Linux Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.Linux Release|Any CPU.Build.0 = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.MacOS Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.MacOS Debug|Any CPU.Build.0 = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.MacOS Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.MacOS Release|Any CPU.Build.0 = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.Release|Any CPU.Build.0 = Release|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.Windows Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.Windows Debug|Any CPU.Build.0 = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.Windows Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{919A2700-496C-4F8E-8843-2CD26BF28749}.Windows Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
