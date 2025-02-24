@@ -1,28 +1,39 @@
 #!/bin/bash
 
-# Required .NET version
-required_version="8.0.404"
-
 # Check OS compatibility
 if [[ "$OSTYPE" != "linux-gnu"* ]] && [[ "$OSTYPE" != "darwin"* ]]; then
     echo "Error: This script is only compatible with Linux and macOS."
     exit 1
 fi
 
+# Minimum required .NET 8 version
+min_version="8.0.404"
+
 # Check for .NET SDK
 if ! command -v dotnet &> /dev/null; then
-    echo "Error: .NET is not installed. Please install .NET $required_version."
+    echo "Error: .NET is not installed. Please install .NET 8.0.404 or higher."
     exit 1
 fi
 
-# Check installed .NET SDKs
-installed_versions=$(dotnet --list-sdks | awk '{print $1}')
-if ! echo "$installed_versions" | grep -q "$required_version"; then
-    echo "Error: Required .NET version ($required_version) is not installed."
-    echo "Installed versions:"
-    echo "$installed_versions"
+# Get installed .NET versions and filter for .NET 8 only
+installed_versions=$(dotnet --list-sdks | awk '{print $1}' | grep -E '^8\.')
+
+# Check if any .NET 8 version is installed
+if [[ -z "$installed_versions" ]]; then
+    echo "Error: No .NET 8 version installed. Please install .NET 8.0.404 or higher."
     exit 1
 fi
+
+# Get the highest available .NET 8 version
+latest_version=$(echo "$installed_versions" | sort -V | tail -n 1)
+
+# Check if the latest installed version is at least the minimum required version
+if [[ "$(printf '%s\n%s' "$min_version" "$latest_version" | sort -V | head -n 1)" != "$min_version" ]]; then
+    echo "Error: Installed .NET version ($latest_version) is lower than the required ($min_version)."
+    exit 1
+fi
+
+echo "Using .NET version: $latest_version"
 
 install_dir="$HOME/.local/share/VRCFaceTracking"
 bin_dir="$HOME/.local/bin"
