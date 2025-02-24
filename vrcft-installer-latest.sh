@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# Check if running on a supported operating system
+# Required .NET version
+required_version="8.0.404"
+
+# Check OS compatibility
 if [[ "$OSTYPE" != "linux-gnu"* ]] && [[ "$OSTYPE" != "darwin"* ]]; then
     echo "Error: This script is only compatible with Linux and macOS."
     exit 1
@@ -8,14 +11,12 @@ fi
 
 # Check for .NET SDK
 if ! command -v dotnet &> /dev/null; then
-    echo "Error: .NET is not installed. Please install .NET 8.0."
+    echo "Error: .NET is not installed. Please install .NET $required_version."
     exit 1
 fi
 
-# Ensure required .NET version is available
-required_version="8.0"
+# Check installed .NET SDKs
 installed_versions=$(dotnet --list-sdks | awk '{print $1}')
-
 if ! echo "$installed_versions" | grep -q "$required_version"; then
     echo "Error: Required .NET version ($required_version) is not installed."
     echo "Installed versions:"
@@ -23,12 +24,10 @@ if ! echo "$installed_versions" | grep -q "$required_version"; then
     exit 1
 fi
 
-# Define installation directories
-install_dir="$HOME/.local/share/vrcft"
+install_dir="$HOME/.local/share/VRCFaceTracking"
 bin_dir="$HOME/.local/bin"
+build_project="src/VRCFaceTracking.Avalonia.Desktop/VRCFaceTracking.Avalonia.Desktop.csproj"
 
-# Create installation directory if it doesn't exist
-mkdir -p "$install_dir" "$bin_dir"
 
 # Function to get the latest commit hash
 get_latest_commit() {
@@ -41,8 +40,8 @@ get_current_commit() {
     git rev-parse HEAD
 }
 
-# Function to update the repository
-update_repo() {
+# Function to check for updates
+check_for_updates() {
     echo "Checking for updates..."
     git fetch origin main
     local_commit=$(get_current_commit)
@@ -56,31 +55,81 @@ update_repo() {
         git checkout main
         git pull origin main
         git submodule update --init --recursive
-        echo "VRCFT has been updated successfully to commit ${remote_commit:0:8}!"
+        return 0  # Update available
     else
-        echo "VRCFT is already up to date: ${local_commit:0:8}"
+        echo "VRCFT is already at the latest commit: ${local_commit:0:8}"
+        return 1  # No updates
     fi
+}
+
+# Detect OS and architecture for build
+detect_platform() {
+    case "$(uname -s)" in
+        Darwin)
+            if [[ "$(uname -m)" == "arm64" ]]; then
+                echo "osx-arm64"
+            else
+                echo "osx-64"
+            fi
+            ;;
+        Linux)
+            if [[ "$(uname -m)" == "aarch64" ]]; then
+                echo "linux-arm64"
+            else
+                echo "linux-x64"
+            fi
+            ;;
+        *)
+            echo "unsupported"
+            ;;
+    esac
+}
+
+# Function to build the project
+build_project() {
+    platform=$(detect_platform)
+    if [[ "$platform" == "unsupported" ]]; then
+        echo "Error: Unsupported platform."
+        exit 1
+    fi
+
+    echo "Building VRCFT for $platform..."
+    
+    case "$platform" in
+        osx-64)
+            dotnet publish "$build_project" -r osx-64 -c "MacOS Release" --self-contained -f net8.0
+            ;;
+        osx-arm64)
+            dotnet publish "$build_project" -r osx-arm64 -c "MacOS Release" --self-contained -f net8.0
+            ;;
+        linux-x64)
+            dotnet publish "$build_project" -r linux-x64 -c "Linux Release" --self-contained -f net8.0
+            ;;
+        linux-arm64)
+            dotnet publish "$build_project" -r linux-arm64 -c "Linux Release" --self-contained -f net8.0
+            ;;
+    esac
+
+    echo "Build complete!"
 }
 
 # Ensure we're in the correct directory
 cd "$install_dir"
 
-# Clone repository if not installed
-if ! [ -d ".git" ]; then
-    echo "Installing VRCFT..."
-    git clone --recurse-submodules https://github.com/dfgHiatus/VRCFaceTracking.Avalonia "$install_dir"
-    cd "$install_dir" || exit
+# Check for updates and rebuild if necessary
+if check_for_updates; then
+    echo "Repository updated. Building new release..."
+    build_project
 else
-    cd "$install_dir" || exit
-    update_repo
+    echo "No updates found. Using existing build."
 fi
 
-# Build and run the app if there were updates
-if [ "$local_commit" != "$remote_commit" ]; then
-    echo "Building VRCFT..."
-    dotnet publish src/VRCFaceTracking.Avalonia.Desktop/VRCFaceTracking.Avalonia.Desktop.csproj -c Release -r "$(uname -m)-$(uname | tr '[:upper:]' '[:lower:]')" --self-contained false -f net8.0
+# Locate and run the built VRCFT app
+vrcft_bin=$(find "$install_dir/src/VRCFaceTracking.Avalonia.Desktop/bin" -type f -name "VRCFaceTracking.Avalonia.Desktop" | head -n 1)
+if [[ -x "$vrcft_bin" ]]; then
+    echo "Starting VRCFT..."
+    "$vrcft_bin"
+else
+    echo "Error: VRCFT binary not found. Please run the installer again."
+    exit 1
 fi
-
-# Run the latest build
-echo "Starting VRCFT..."
-"$install_dir/src/VRCFaceTracking.Avalonia.Desktop/bin/Release/net8.0/$(uname -m)-$(uname | tr '[:upper:]' '[:lower:]')/publish/VRCFaceTracking.Avalonia.Desktop"
