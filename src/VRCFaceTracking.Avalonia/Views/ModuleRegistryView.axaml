@@ -129,7 +129,7 @@
                                         FontWeight="SemiBold"
                                         Header="Installed"
                                         x:Name="Installed">
-                                        <StackPanel IsVisible="{Binding ModulesDetected}" Margin="6,8,0,0">
+                                        <StackPanel IsVisible="{Binding ModulesDetected}" Margin="0,8,0,0">
                                             <ListBox
                                                 Classes="draggable"
                                                 ItemsSource="{Binding InstalledModules}"
