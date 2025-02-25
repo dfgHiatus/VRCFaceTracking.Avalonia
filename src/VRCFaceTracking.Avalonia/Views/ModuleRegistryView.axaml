@@ -129,7 +129,7 @@
                                         FontWeight="SemiBold"
                                         Header="Installed"
                                         x:Name="Installed">
-                                        <StackPanel IsVisible="{Binding ModulesDetected}" Margin="0,8,0,0">
+                                        <StackPanel IsVisible="{Binding ModulesDetected}" Margin="6,8,0,0">
                                             <ListBox
                                                 Classes="draggable"
                                                 ItemsSource="{Binding InstalledModules}"
@@ -278,10 +278,15 @@
                                                         Text="Module Load Order"
                                                         VerticalAlignment="Center" />
                                                     <NumericUpDown
+                                                        FormatString="N0"
                                                         Grid.Column="2"
                                                         HorizontalAlignment="Right"
                                                         Margin="0,0,8,0"
-                                                        Value="{Binding Module.Order, Mode=TwoWay}" />
+                                                        Maximum="{Binding CorrectedModuleCount}"
+                                                        Minimum="0"
+                                                        ParsingNumberStyle="Integer"
+                                                        Value="{Binding Module.Order, Mode=TwoWay}"
+                                                        Watermark="0" />
                                                 </Grid>
                                             </StackPanel>
                                         </StackPanel>

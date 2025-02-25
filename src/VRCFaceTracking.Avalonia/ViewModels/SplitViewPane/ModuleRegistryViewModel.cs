@@ -56,6 +56,8 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         }
     }
 
+    public int CorrectedModuleCount => Math.Clamp(InstalledModules.Count - 1, 0, InstalledModules.Count - 1);
+
     private void RequestReinitialize()
     {
         RequestReinit = true;
