@@ -6,6 +6,12 @@ if [[ "$OSTYPE" != "linux-gnu"* ]] && [[ "$OSTYPE" != "darwin"* ]]; then
     exit 1
 fi
 
+# Check if Git is installed
+if ! command -v git &> /dev/null; then
+    echo "Error: Git is not installed. Please install Git and try again."
+    exit 1
+fi
+
 # Minimum required .NET 8 version
 min_version="8.0.404"
 
