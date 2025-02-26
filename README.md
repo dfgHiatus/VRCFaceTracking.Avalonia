@@ -3,7 +3,7 @@
 
 # VRCFaceTracking.Avalonia
 
-VRCFaceTracking.Avalonia is a cross-platform version of VRCFaceTracking that can be run on Windows, macOS and Linux. It strives to be as feature complete and similar to the original app as possible.
+VRCFaceTracking.Avalonia is a cross-platform version of [VRCFaceTracking](https://github.com/benaclejames/VRCFaceTracking) that can be run on Windows, macOS and Linux. It strives to be as feature complete and similar to the original app as possible.
 
 ## Installation
 ### Windows
