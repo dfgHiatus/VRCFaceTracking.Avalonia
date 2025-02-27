@@ -163,36 +163,34 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         }
     }
 
-    private async void RemoteModuleInstalled(InstallableTrackingModule module)
+    public async void RemoteModuleInstalled(InstallableTrackingModule module)
     {
         switch (module.InstallationState)
         {
             case InstallState.NotInstalled or InstallState.Outdated:
             {
                 var path = await _moduleInstaller.InstallRemoteModule(module);
-                if (string.IsNullOrEmpty(path))
+                if (!string.IsNullOrEmpty(path))
                 {
                     module!.InstallationState = InstallState.Installed;
                     await _moduleDataService.IncrementDownloadsAsync(module);
                     module!.Downloads++;
-                    RequestReinitialize();
                 }
                 break;
             }
             case InstallState.Installed:
             {
                 _moduleInstaller.MarkModuleForDeletion(module);
-                RequestReinitialize();
                 break;
             }
         }
-
         ResetInstalledModulesList();
     }
 
     private void ResetInstalledModulesList(bool suppressReinit = false)
     {
-        var installedModules = _moduleDataService.GetInstalledModules();
+        var installedModules = _moduleDataService.GetInstalledModules()
+                                                 .Where(m => m.InstallationState != InstallState.AwaitingRestart);
 
         InstalledModules.Clear();
         int i = 0;

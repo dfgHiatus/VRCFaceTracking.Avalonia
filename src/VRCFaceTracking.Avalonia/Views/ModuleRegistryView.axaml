@@ -134,7 +134,7 @@
                                                 Classes="draggable"
                                                 ItemsSource="{Binding InstalledModules}"
                                                 MaxHeight="400"
-                                                SelectionChanged="OnLocalModuleSelected"
+                                                SelectionChanged="OnModuleSelected"
                                                 Width="350"
                                                 x:Name="LocalModuleList">
                                                 <ListBox.ItemTemplate>

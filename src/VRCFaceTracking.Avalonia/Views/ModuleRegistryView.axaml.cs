@@ -123,43 +123,16 @@ public partial class ModuleRegistryView : UserControl
         InstallButton.Content = "Please Restart VRCFT";
         InstallButton.IsEnabled = false;
         RemoteModuleInstalled?.Invoke(module);
-    }
-
-    private void OnLocalModuleSelected(object? sender, SelectionChangedEventArgs e)
-    {
-        if (LocalModuleList.ItemCount == 0) return;
-        var index = LocalModuleList.SelectedIndex;
-        if (index == -1) index = 0;
-        if (LocalModuleList.Items[index] is not InstallableTrackingModule module) return;
-
-        switch (module.InstallationState)
-        {
-            case InstallState.NotInstalled or InstallState.Outdated:
-                {
-                    InstallButton.Content = "Install";
-                    InstallButton.IsEnabled = true;
-                    break;
-                }
-            case InstallState.Installed:
-                {
-                    InstallButton.Content = "Uninstall";
-                    InstallButton.IsEnabled = true;
-                    break;
-                }
-        }
-
-        if (sender is ListBox listBox && listBox.SelectedItem is InstallableTrackingModule selectedModule)
-        {
-            ModuleSelected?.Invoke(selectedModule);
-        }
+        OnModuleSelected(ModuleList, null);
     }
 
     private void OnModuleSelected(object? sender, SelectionChangedEventArgs e)
     {
-        if (ModuleList.ItemCount == 0) return;
-        var index = ModuleList.SelectedIndex;
+        var moduleListBox = sender as ListBox;
+        if (moduleListBox == null || ModuleList.ItemCount == 0) return;
+        var index = moduleListBox.SelectedIndex;
         if (index == -1) index = 0;
-        if (ModuleList.Items[index] is not InstallableTrackingModule module) return;
+        if (moduleListBox.Items[index] is not InstallableTrackingModule module) return;
 
         switch (module.InstallationState)
         {
