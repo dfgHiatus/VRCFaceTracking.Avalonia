@@ -86,7 +86,9 @@
                             VerticalAlignment="Stretch">
                             <!--  Left-hand content  -->
                             <Grid Grid.Column="0" HorizontalAlignment="Left">
-                                <TabControl HorizontalAlignment="Center" x:Name="TabControl">
+                                <TabControl HorizontalAlignment="Center"
+                                            x:Name="TabControl"
+                                            SelectionChanged="ModuleSelectionTabChanged">
                                     <TabItem
                                         FontWeight="SemiBold"
                                         Header="Registry"
@@ -102,6 +104,7 @@
                                             <ListBox
                                                 ItemsSource="{Binding FilteredModuleInfos}"
                                                 MaxHeight="305"
+                                                SelectionMode="AlwaysSelected"
                                                 SelectionChanged="OnModuleSelected"
                                                 Width="350"
                                                 x:Name="ModuleList">
@@ -134,6 +137,7 @@
                                                 Classes="draggable"
                                                 ItemsSource="{Binding InstalledModules}"
                                                 MaxHeight="400"
+                                                SelectionMode="AlwaysSelected"
                                                 SelectionChanged="OnModuleSelected"
                                                 Width="350"
                                                 x:Name="LocalModuleList">
@@ -282,8 +286,10 @@
                                                         Grid.Column="2"
                                                         HorizontalAlignment="Right"
                                                         Margin="0,0,8,0"
+                                                        Increment="1"
                                                         Maximum="{Binding CorrectedModuleCount}"
                                                         Minimum="0"
+                                                        Background="{DynamicResource SystemBaseLowColor}"
                                                         ParsingNumberStyle="Integer"
                                                         Value="{Binding Module.Order, Mode=TwoWay}"
                                                         Watermark="0" />

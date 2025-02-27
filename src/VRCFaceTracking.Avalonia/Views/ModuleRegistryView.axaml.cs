@@ -12,6 +12,7 @@ using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using Avalonia.VisualTree;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using VRCFaceTracking.Avalonia.ViewModels.SplitViewPane;
 using VRCFaceTracking.Core.Contracts.Services;
@@ -124,6 +125,45 @@ public partial class ModuleRegistryView : UserControl
         InstallButton.IsEnabled = false;
         RemoteModuleInstalled?.Invoke(module);
         OnModuleSelected(ModuleList, null);
+    }
+
+    private void ModuleSelectionTabChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is not TabControl tabControl) return;
+
+        var currentlySelectedItem = tabControl.SelectedContent;
+
+        if (currentlySelectedItem is not Visual visual) return;
+
+        var listBox = FindChild<ListBox>(visual);
+
+        if (listBox == null) return;
+
+        if (listBox.SelectedIndex == -1)
+            listBox.SelectedIndex = 0;
+
+        OnModuleSelected(listBox, null);
+    }
+
+    // Helper method to find a child control of a specific type
+    private T FindChild<T>(Visual parent) where T : Visual
+    {
+        foreach (var child in parent.GetVisualChildren())
+        {
+            if (child is T result)
+            {
+                return result;
+            }
+
+            // Recursively search in child elements
+            var foundChild = FindChild<T>(child);
+            if (foundChild != null)
+            {
+                return foundChild;
+            }
+        }
+
+        return null;
     }
 
     private void OnModuleSelected(object? sender, SelectionChangedEventArgs e)
