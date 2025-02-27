@@ -191,7 +191,8 @@ public class ModuleDataService : IModuleDataService
                 var module = JsonConvert.DeserializeObject<InstallableTrackingModule>(moduleJson);
                 var guidFolderFound = Directory.GetDirectories(Utils.CustomLibsDirectory, module.ModuleId.ToString(), SearchOption.TopDirectoryOnly).Length > 0;
                 module.AssemblyLoadPath = guidFolderFound ? Path.Combine(moduleFolder, module.DllFileName) : Path.Combine(Utils.CustomLibsDirectory, module.DllFileName);
-                module.InstallationState = InstallState.Installed;
+                if (module.InstallationState == InstallState.NotInstalled)
+                    module.InstallationState = InstallState.Installed;
                 installedModules.Add(module);
             }
             catch (Exception e)
@@ -207,16 +208,24 @@ public class ModuleDataService : IModuleDataService
     {
         foreach (var module in modulesToSave)
         {
-            var root = Utils.CustomLibsDirectory;
-            var guidFolderFound = Directory.GetDirectories(root, module.ModuleId.ToString(), SearchOption.TopDirectoryOnly);
-            var assemblyFolderFound = Directory.GetDirectories(root, Path.GetFileNameWithoutExtension(module.DllFileName), SearchOption.TopDirectoryOnly);
-            string moduleJsonPath = "";
-            if (guidFolderFound.Length > 0)
-                moduleJsonPath = Path.Combine(guidFolderFound[0], "module.json");
-            else
-                moduleJsonPath = Path.Combine(assemblyFolderFound[0], "module.json");
-            var moduleJson = JsonConvert.SerializeObject(module);
-            File.WriteAllText(moduleJsonPath, moduleJson);
+            SaveInstalledModuleData(module);
+        }
+    }
+
+    private void SaveInstalledModuleData(InstallableTrackingModule moduleToSave)
+    {
+        try
+        {
+            string path = moduleToSave.Local
+                          ? Path.Combine(Utils.CustomLibsDirectory, Path.GetFileNameWithoutExtension(moduleToSave.DllFileName), "module.json")
+                          : Path.Combine(Utils.CustomLibsDirectory, moduleToSave.ModuleId.ToString(), "module.json");
+
+            var moduleJson = JsonConvert.SerializeObject(moduleToSave, Formatting.Indented);
+            File.WriteAllText(path, moduleJson);
+        }
+        catch (Exception e)
+        {
+            _logger.LogWarning("Could not save {module} metadata", moduleToSave.ModuleName);
         }
     }
 }
