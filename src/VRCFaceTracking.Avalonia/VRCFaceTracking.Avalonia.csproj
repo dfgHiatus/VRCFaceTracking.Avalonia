@@ -3,7 +3,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-        <ApplicationIcon>./Assets/logo_big_no_bg.ico</ApplicationIcon>
+        <ApplicationIcon>Assets\WindowIcon.ico</ApplicationIcon>
         <Configurations>Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release</Configurations>
         <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
@@ -57,6 +57,11 @@
 
 
     <ItemGroup>
+      <Content Include="Assets\WindowIcon.ico" />
+    </ItemGroup>
+
+
+    <ItemGroup>
       <EmbeddedResource Update="Strings\en\Resources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
       </EmbeddedResource>
@@ -100,5 +105,12 @@
       <None Update="LocalSettings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <AvaloniaResource Update="logo_256.ico">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </AvaloniaResource>
     </ItemGroup>
 </Project>
