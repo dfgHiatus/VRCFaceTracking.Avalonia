@@ -61,6 +61,11 @@ public class ModuleDataService : IModuleDataService
         return _remoteModules;
     }
 
+    public Task SaveInstalledModulesDataAsync(IEnumerable<InstallableTrackingModule> modulesToSave)
+    {
+        return Task.CompletedTask;
+    }
+
     public async Task IncrementDownloadsAsync(TrackingModuleMetadata moduleMetadata)
     {
         // Send a PATCH request to the downloads endpoint with the module ID in the body

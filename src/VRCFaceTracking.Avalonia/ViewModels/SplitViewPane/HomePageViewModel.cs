@@ -65,8 +65,7 @@ public partial class HomePageViewModel : ViewModelBase
 
         // Modules
         var installedNewModules = ModuleDataService.GetInstalledModules();
-        var installedLegacyModules = ModuleDataService.GetLegacyModules().Count();
-        NoModulesInstalled = !installedNewModules.Any() && installedLegacyModules == 0;
+        NoModulesInstalled = !installedNewModules.Any();
 
         // Message Timer
         MessagesInPerSecCount = "0";
