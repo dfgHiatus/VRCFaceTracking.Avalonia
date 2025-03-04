@@ -138,17 +138,19 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         }
         catch
         {
-
-#if WINDOWS_DEBUG || WINDOWS_RELEASE
-            var url = URL.Replace("&", "^&");
-            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
-#elif MACOS_DEBUG || MACOS_RELEASE
-            Process.Start("open", URL);
-#elif LINUX_DEBUG || LINUX_RELEASE
-            Process.Start("xdg-open", URL);
-#else
-            #error
-#endif
+            if (OperatingSystem.IsWindows())
+            {
+                var url = URL.Replace("&", "^&");
+                Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+            }
+            else if (OperatingSystem.IsMacOS())
+            {
+                Process.Start("open", URL);
+            }
+            else if (OperatingSystem.IsLinux())
+            {
+                Process.Start("xdg-open", URL);
+            }
         }
     }
 
