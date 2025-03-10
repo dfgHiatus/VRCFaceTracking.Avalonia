@@ -11,7 +11,12 @@ Head to the releases section and [download the latest installer](https://github.
 
 You may be prompted to download the .NET runtime for desktop apps, install it if needs be.
 
-### macOS and Linux
+### Linux
+Head to the releases section and [download the latest appimage](https://github.com/dfgHiatus/VRCFaceTracking.Avalonia/releases/latest). 
+
+You may also be prompted to download the .NET runtime for desktop apps here too.
+
+### macOS (and alt. Linux method)
 Install `git` and a version of the `dotnet-sdk` (.NET 8, 8.0.404 or higher).
 
 Then copy, paste, and run the following script in a terminal of your choice:
@@ -20,7 +25,7 @@ Then copy, paste, and run the following script in a terminal of your choice:
 bash -c "$(curl -fsSL https://gist.githubusercontent.com/dfgHiatus/7b3d87100536db3a74914517d770cc7b/raw/db69ad092e43023b24fd88482e350313adc7c33b/vrcft-installer-latest.sh)"
 ```
 
-Once it's finished installing, you can update and run the VRCFaceTracking.Avalonia app by typing `vrcft` into your terminal.
+Once it finishes installing, you can update and run the VRCFaceTracking.Avalonia app by typing `vrcft` into your terminal.
 
 ## Module Compatibility
 
