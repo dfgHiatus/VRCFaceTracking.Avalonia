@@ -1,0 +1,57 @@
+{
+	"app-id": "dfgHiatus.github.VRCFaceTracking.Avalonia",
+	"runtime": "org.freedesktop.Platform",
+	"runtime-version": "23.08",
+	"sdk": "org.freedesktop.Sdk",
+	"sdk-extensions": [
+		"org.freedesktop.Sdk.Extension.dotnet8"
+	],
+	"build-options": {
+		"prepend-path": "/usr/lib/sdk/dotnet8/bin",
+		"append-ld-library-path": "/usr/lib/sdk/dotnet8/lib",
+		"prepend-pkg-config-path": "/usr/lib/sdk/dotnet8/lib/pkgconfig",
+		"append-path": "/usr/lib/sdk/dotnet8/bin",
+		"env": {
+			"PKG_CONFIG_PATH": "/app/lib/pkgconfig:/app/share/pkgconfig:/usr/lib/pkgconfig:/usr/share/pkgconfig:/usr/lib/sdk/dotnet8/lib/pkgconfig"
+		}
+	},
+	"command": "VRCFaceTracking.Avalonia.Desktop",
+	"finish-args": [
+		"--share=network",
+		"--socket=wayland",
+		"--socket=x11",
+		"--device=all",
+		"--filesystem=host"
+	],
+	"modules": [
+		{
+			"name": "dotnet",
+			"buildsystem": "simple",
+			"build-commands": [
+				"/usr/lib/sdk/dotnet8/bin/install.sh"
+			]
+		},
+		{
+			"name": "VRCFaceTracking.Avalonia",
+			"buildsystem": "simple",
+			"sources": [
+				{
+					"type": "git",
+					"url": "https://github.com/dfgHiatus/VRCFaceTracking.Avalonia.git",
+					"branch": "main"
+				},
+				"./nuget-sources.json"
+			],
+			"build-options": {
+				"build-args": [
+					"--share=network"
+				]
+			},
+			"build-commands": [
+				"sh -c 'dotnet publish \"$(find . -name VRCFaceTracking.Avalonia.Desktop.csproj)\" -c \"Linux Release\" -f net8.0 --self-contained -r linux-x64 --source https://api.nuget.org/v3/index.json -o publish'",
+				"mkdir -p ${FLATPAK_DEST}/bin",
+				"cp -r publish/* ${FLATPAK_DEST}/bin"
+			]
+		}
+	]
+}
