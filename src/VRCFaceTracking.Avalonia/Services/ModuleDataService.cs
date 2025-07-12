@@ -61,11 +61,6 @@ public class ModuleDataService : IModuleDataService
         return _remoteModules;
     }
 
-    public Task SaveInstalledModulesDataAsync(IEnumerable<InstallableTrackingModule> modulesToSave)
-    {
-        return Task.CompletedTask;
-    }
-
     public async Task IncrementDownloadsAsync(TrackingModuleMetadata moduleMetadata)
     {
         // Send a PATCH request to the downloads endpoint with the module ID in the body
@@ -82,7 +77,7 @@ public class ModuleDataService : IModuleDataService
         _logger.LogError("Failed to increment downloads for {ModuleId}. Status code: {StatusCode}", moduleMetadata.ModuleId, response.StatusCode);
     }
 
-    public IEnumerable<InstallableTrackingModule> GetLegacyModules()
+    private void CheckForLegacyModules()
     {
         if (!Directory.Exists(Utils.CustomLibsDirectory))
         {
@@ -91,17 +86,33 @@ public class ModuleDataService : IModuleDataService
 
         var moduleDlls = Directory.GetFiles(Utils.CustomLibsDirectory, "*.dll");
 
-        return moduleDlls.Select(moduleDll => new InstallableTrackingModule
+        foreach (var moduleDll in moduleDlls)
         {
-            AssemblyLoadPath = moduleDll,
-            DllFileName = Path.GetFileName(moduleDll),
-            InstallationState = InstallState.Installed,
-            ModuleId = Guid.Empty,
-            ModuleName = Path.GetFileNameWithoutExtension(moduleDll),
-            ModuleDescription = "Legacy module",
-            AuthorName = "Local",
-            ModulePageUrl = "file:///" + Path.GetDirectoryName(moduleDll)
-        });
+            var moduleFolder = Path.Combine(Utils.CustomLibsDirectory, Path.GetFileNameWithoutExtension(moduleDll));
+            if (!Directory.Exists(moduleFolder))
+            {
+                Directory.CreateDirectory(moduleFolder);
+            }
+
+            var moduleJsonPath = Path.Combine(moduleFolder, "module.json");
+            if (!File.Exists(moduleJsonPath))
+            {
+                var newMeta = new InstallableTrackingModule
+                {
+                    DllFileName = Path.GetFileName(moduleDll),
+                    InstallationState = InstallState.Installed,
+                    ModuleId = Guid.Empty,
+                    ModuleName = Path.GetFileNameWithoutExtension(moduleDll),
+                    ModuleDescription = "Legacy module",
+                    AuthorName = "Local",
+                    ModulePageUrl = "file:///" + Path.GetDirectoryName(moduleDll),
+                    Local = true,
+                };
+                var moduleJson = JsonConvert.SerializeObject(newMeta);
+                File.WriteAllText(moduleJsonPath, moduleJson);
+                continue;
+            }
+        }
     }
 
     public async Task<int?> GetMyRatingAsync(TrackingModuleMetadata moduleMetadata)
@@ -160,6 +171,8 @@ public class ModuleDataService : IModuleDataService
             Directory.CreateDirectory(Utils.CustomLibsDirectory);
         }
 
+        CheckForLegacyModules();
+
         // Check each folder in our CustomModulesDir folder and see if it has a module.json file.
         // If it does, deserialize it and add it to the list of installed modules.
         var installedModules = new List<InstallableTrackingModule>();
@@ -176,7 +189,10 @@ public class ModuleDataService : IModuleDataService
             try
             {
                 var module = JsonConvert.DeserializeObject<InstallableTrackingModule>(moduleJson);
-                module.AssemblyLoadPath = Path.Combine(moduleFolder, module.DllFileName);
+                var guidFolderFound = Directory.GetDirectories(Utils.CustomLibsDirectory, module.ModuleId.ToString(), SearchOption.TopDirectoryOnly).Length > 0;
+                module.AssemblyLoadPath = guidFolderFound ? Path.Combine(moduleFolder, module.DllFileName) : Path.Combine(Utils.CustomLibsDirectory, module.DllFileName);
+                if (module.InstallationState == InstallState.NotInstalled)
+                    module.InstallationState = InstallState.Installed;
                 installedModules.Add(module);
             }
             catch (Exception e)
@@ -185,6 +201,31 @@ public class ModuleDataService : IModuleDataService
             }
         }
 
-        return installedModules;
+        return installedModules.OrderBy(m => m.Order);
+    }
+
+    public async Task SaveInstalledModulesDataAsync(IEnumerable<InstallableTrackingModule> modulesToSave)
+    {
+        foreach (var module in modulesToSave)
+        {
+            SaveInstalledModuleData(module);
+        }
+    }
+
+    private void SaveInstalledModuleData(InstallableTrackingModule moduleToSave)
+    {
+        try
+        {
+            string path = moduleToSave.Local
+                          ? Path.Combine(Utils.CustomLibsDirectory, Path.GetFileNameWithoutExtension(moduleToSave.DllFileName), "module.json")
+                          : Path.Combine(Utils.CustomLibsDirectory, moduleToSave.ModuleId.ToString(), "module.json");
+
+            var moduleJson = JsonConvert.SerializeObject(moduleToSave, Formatting.Indented);
+            File.WriteAllText(path, moduleJson);
+        }
+        catch (Exception e)
+        {
+            _logger.LogWarning("Could not save {module} metadata", moduleToSave.ModuleName);
+        }
     }
 }

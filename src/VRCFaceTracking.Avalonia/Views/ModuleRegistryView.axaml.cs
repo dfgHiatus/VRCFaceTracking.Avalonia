@@ -1,14 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using VRCFaceTracking.Avalonia.ViewModels.SplitViewPane;
 using VRCFaceTracking.Core.Contracts.Services;
+using VRCFaceTracking.Core.Library;
 using VRCFaceTracking.Core.Models;
 using VRCFaceTracking.Core.Services;
 
@@ -19,13 +27,9 @@ public partial class ModuleRegistryView : UserControl
     public static event Action<InstallableTrackingModule>? ModuleSelected;
     public static event Action? LocalModuleInstalled;
     public static event Action<InstallableTrackingModule>? RemoteModuleInstalled;
-    public static event Action<bool> DragDetected;
-
     private ModuleInstaller ModuleInstaller { get; }
     private IModuleDataService ModuleDataService { get; }
     private ILibManager LibManager { get; set; }
-
-    public ListBox _moduleList;
 
     private static FilePickerFileType ZIP { get; } = new("Zip Files")
     {
@@ -39,8 +43,8 @@ public partial class ModuleRegistryView : UserControl
         ModuleDataService = Ioc.Default.GetService<IModuleDataService>()!;
         ModuleInstaller = Ioc.Default.GetService<ModuleInstaller>()!;
         LibManager = Ioc.Default.GetService<ILibManager>()!;
+        this.DetachedFromVisualTree += OnDetachedFromVisualTree;
 
-        _moduleList = this.Get<ListBox>("ModuleList")!;
         this.Get<Button>("BrowseLocal")!.Click += async delegate
         {
             var topLevel = TopLevel.GetTopLevel(this)!;
@@ -48,39 +52,127 @@ public partial class ModuleRegistryView : UserControl
             var files = await topLevel.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
             {
                 Title = "Select a .zip.",
-                AllowMultiple = true,
+                AllowMultiple = false,
                 FileTypeFilter = [ZIP]
             });
 
-            foreach (var file in files)
+            if (files.Count == 0) return;
+
+            string? path = null;
+            try
             {
-                await InstallModule(file);
+                path = await ModuleInstaller.InstallLocalModule(files.First().Path.AbsolutePath);
+            }
+            finally
+            {
+                if (path != null)
+                {
+                    BrowseLocalText.Text = "Successfully installed module.";
+                    LocalModuleInstalled?.Invoke();
+                    LibManager.Initialize();
+                }
+                else
+                {
+                    BrowseLocalText.Text = "Failed to install module. Check logs for more information.";
+                }
             }
         };
+    }
 
-        AddHandler(DragDrop.DragEnterEvent, OnDragEnter);
-        AddHandler(DragDrop.DragLeaveEvent, OnDragLeave);
-        AddHandler(DragDrop.DropEvent, OnDrop);
+    private void ReinitButton_Click(object? sender, RoutedEventArgs e)
+    {
+        var viewModel = DataContext as ModuleRegistryViewModel;
+        bool init = viewModel.RequestReinit;
+        viewModel.ModuleTryReinitialize();
+    }
+
+    private void DecrementOrder(object sender, RoutedEventArgs e)
+    {
+        var button = sender as Button;
+        var module = button.DataContext as InstallableTrackingModule;
+
+        if (module != null)
+        {
+            module.Order--;
+        }
+    }
+
+    private void IncrementOrder(object sender, RoutedEventArgs e)
+    {
+        var button = sender as Button;
+        var module = button.DataContext as InstallableTrackingModule;
+
+        if (module != null)
+        {
+            module.Order++;
+        }
+    }
+
+    private void OnDetachedFromVisualTree(object sender, VisualTreeAttachmentEventArgs e)
+    {
+        var viewModel = DataContext as ModuleRegistryViewModel;
+        viewModel.DetachedFromVisualTree();
     }
 
     private void InstallButton_Click(object? sender, RoutedEventArgs e)
     {
-        if (_moduleList.ItemCount == 0) return;
-        var index = _moduleList.SelectedIndex;
+        if (ModuleList.ItemCount == 0) return;
+        var index = ModuleList.SelectedIndex;
         if (index == -1) index = 0;
-        if (_moduleList.Items[index] is not InstallableTrackingModule module) return;
+        if (ModuleList.Items[index] is not InstallableTrackingModule module) return;
 
         InstallButton.Content = "Please Restart VRCFT";
         InstallButton.IsEnabled = false;
         RemoteModuleInstalled?.Invoke(module);
+        OnModuleSelected(ModuleList, null);
+    }
+
+    private void ModuleSelectionTabChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (sender is not TabControl tabControl) return;
+
+        var currentlySelectedItem = tabControl.SelectedContent;
+
+        if (currentlySelectedItem is not Visual visual) return;
+
+        var listBox = FindChild<ListBox>(visual);
+
+        if (listBox == null) return;
+
+        if (listBox.SelectedIndex == -1)
+            listBox.SelectedIndex = 0;
+
+        OnModuleSelected(listBox, null);
+    }
+
+    // Helper method to find a child control of a specific type
+    private T FindChild<T>(Visual parent) where T : Visual
+    {
+        foreach (var child in parent.GetVisualChildren())
+        {
+            if (child is T result)
+            {
+                return result;
+            }
+
+            // Recursively search in child elements
+            var foundChild = FindChild<T>(child);
+            if (foundChild != null)
+            {
+                return foundChild;
+            }
+        }
+
+        return null;
     }
 
     private void OnModuleSelected(object? sender, SelectionChangedEventArgs e)
     {
-        if (_moduleList.ItemCount == 0) return;
-        var index = _moduleList.SelectedIndex;
+        var moduleListBox = sender as ListBox;
+        if (moduleListBox == null || ModuleList.ItemCount == 0) return;
+        var index = moduleListBox.SelectedIndex;
         if (index == -1) index = 0;
-        if (_moduleList.Items[index] is not InstallableTrackingModule module) return;
+        if (moduleListBox.Items[index] is not InstallableTrackingModule module) return;
 
         switch (module.InstallationState)
         {
@@ -104,9 +196,8 @@ public partial class ModuleRegistryView : UserControl
         }
     }
 
-    public InstallableTrackingModule[] GetModules(out (int localCount, int remoteCount) moduleCounts)
+    public InstallableTrackingModule[] GetRemoteModules()
     {
-        IEnumerable<InstallableTrackingModule> installedModules = ModuleDataService.GetInstalledModules();
         IEnumerable<InstallableTrackingModule> remoteModules = [];
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(2));
         try
@@ -119,20 +210,13 @@ public partial class ModuleRegistryView : UserControl
         }
         catch (AggregateException ex) when (ex.InnerException is TaskCanceledException)
         {
-            // Timeout occurred, just return installed modules (if any)
-            var arr = installedModules.ToArray();
-            moduleCounts.remoteCount = 0;
-            moduleCounts.localCount = arr.Length;
-            return arr;
+            return null;
         }
 
-        // If we didn't timeout, but we didn't get anything from the module manifest, AND we don't have any installed modules, return nothing
-        if (remoteModules.Count() == 0 && installedModules.Count() == 0)
-        {
-            moduleCounts.remoteCount = 0;
-            moduleCounts.localCount = 0;
-            return [];
-        }
+        // Now comes the tricky bit, we get all locally installed modules and add them to the list.
+        // If any of the IDs match a remote module and the other data contained within does not match,
+        // then we need to set the local module install state to outdated. If everything matches then we need to set the install state to installed.
+        var installedModules = ModuleDataService.GetInstalledModules();
 
         var localModules = new List<InstallableTrackingModule>();    // dw about it
         foreach (var installedModule in installedModules)
@@ -154,69 +238,15 @@ public partial class ModuleRegistryView : UserControl
         var remoteCount = remoteModules.Count();
 
         // Sort our data by name, then place dfg at the top of the list :3
-        remoteModules = remoteModules.OrderByDescending(x => x.InstallationState == InstallState.Installed)
-            .ThenByDescending(x => x.AuthorName == "dfgHiatus")
-            .ThenBy(x => x.ModuleName);
-
-        // Then prepend the local modules to the list.
-        remoteModules = localModules.Concat(remoteModules);
+        remoteModules = remoteModules.OrderByDescending(x => x.AuthorName == "dfgHiatus")
+                                     .ThenBy(x => x.ModuleName);
 
         var modules = remoteModules.ToArray();
         var first = modules.First();
-        _moduleList.SelectedIndex = 0;
+        ModuleList.SelectedIndex = 0;
         ModuleSelected?.Invoke(first);
 
-        moduleCounts.localCount = installedModules.Count();
-        moduleCounts.remoteCount = remoteCount;
         return modules;
-    }
-
-    private void OnDragEnter(object? sender, DragEventArgs e)
-    {
-        DragDetected?.Invoke(true);
-    }
-
-    private void OnDragLeave(object? sender, DragEventArgs e)
-    {
-        DragDetected?.Invoke(false);
-    }
-
-    private async void OnDrop(object? sender, DragEventArgs e )
-    {
-        var items = e.Data.GetFiles();
-        if (items == null) return;
-
-        foreach (var file in items)
-        {
-            if (!file.Name.EndsWith(".zip"))
-                continue;
-
-            await InstallModule(file);
-        }
-
-        DragDetected?.Invoke(false);
-    }
-
-    private async Task InstallModule(IStorageItem file)
-    {
-        string path = string.Empty;
-        try
-        {
-            path = await ModuleInstaller.InstallLocalModule(file.Path.AbsolutePath);
-        }
-        finally
-        {
-            if (!string.IsNullOrEmpty(path))
-            {
-                BrowseLocalText.Text = "Successfully installed module(s).";
-                LocalModuleInstalled?.Invoke();
-                LibManager.Initialize();
-            }
-            else
-            {
-                BrowseLocalText.Text = "Failed to install module(s). Check logs for more information.";
-            }
-        }
     }
 }
 

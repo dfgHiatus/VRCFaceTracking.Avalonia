@@ -89,6 +89,14 @@
             <Setter Property="VerticalContentAlignment" Value="Center" />
         </Style>
 
+        <Style Selector="NumericUpDown">
+          <Setter Property="Background" Value="{DynamicResource SystemChromeMediumColor}" />
+          <Setter Property="FontSize" Value="14" />
+          <Setter Property="BorderThickness" Value="0" />
+          <Setter Property="CornerRadius" Value="4" />
+        </Style>
+
+
         <Style Selector="ComboBox">
             <Setter Property="Background" Value="{DynamicResource SystemChromeMediumColor}" />
             <Setter Property="BorderThickness" Value="0" />
