@@ -5,7 +5,6 @@ using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
-using Jeek.Avalonia.Localization;
 using Microsoft.Extensions.DependencyInjection;
 using VRCFaceTracking.Avalonia.Views;
 using VRCFaceTracking.Core.Contracts;

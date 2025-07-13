@@ -2,7 +2,9 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
-        <TargetFrameworks>net8.0-windows10.0.17763.0;net8.0</TargetFrameworks>
+        <TargetFrameworks>net8.0</TargetFrameworks>
+		<TargetFrameworks Condition=" '$(Configuration)' == 'Windows Debug' ">net8.0-windows10.0.17763.0</TargetFrameworks>
+		<TargetFrameworks Condition=" '$(Configuration)' == 'Windows Release' ">net8.0-windows10.0.17763.0</TargetFrameworks>
         <Configurations>Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release</Configurations>
         <Platforms>AnyCPU</Platforms>
         <ApplicationIcon>WindowIcon.ico</ApplicationIcon>
@@ -55,6 +57,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.Avalonia\DesktopNotifications.Avalonia.csproj" />
+        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications\DesktopNotifications.csproj" />
         <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj" />
     </ItemGroup>
 

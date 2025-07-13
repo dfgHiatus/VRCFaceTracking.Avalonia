@@ -7,7 +7,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:controls="clr-namespace:VRCFaceTracking.Avalonia.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:l="using:Jeek.Avalonia.Localization"
+    xmlns:assets="clr-namespace:VRCFaceTracking.Avalonia.Assets"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:VRCFaceTracking.Avalonia.ViewModels.SplitViewPane"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
@@ -15,15 +15,15 @@
         <StackPanel Classes="Page">
             <TextBlock Classes="Header" Text="Settings" />
 
-            <controls:SettingsBlock Description="{l:Localize ThemeSettings.Description}"
-                                    Title="{l:Localize ThemeSettings.Header}"
+            <controls:SettingsBlock Description="{x:Static assets:Resources.ThemeSettings_Description}"
+                                    Title="{x:Static assets:Resources.ThemeSettings_Header}"
                                     IconPath="DarkLightTheme">
                 <controls:SettingsBlock.SettingsContent>
                     <ComboBox VerticalAlignment="Center" x:Name="ThemeCombo" />
                 </controls:SettingsBlock.SettingsContent>
             </controls:SettingsBlock>
 
-            <controls:SettingsBlock Description="Set the app's language."
+            <controls:SettingsBlock Description="Set the app's language. Requires a restart for some elements."
                                     Title="Language"
                                     IconPath="LanguageRegular">
                 <controls:SettingsBlock.SettingsContent>
@@ -38,8 +38,8 @@
                 </controls:SettingsBlock.SettingsContent>
             </controls:SettingsBlock>
 
-            <controls:SettingsBlock Description="{l:Localize OscSettings.Description}"
-                                    Title="{l:Localize OscSettings.Header}"
+            <controls:SettingsBlock Description="{x:Static assets:Resources.OscSettings_Description}"
+                                    Title="{x:Static assets:Resources.OscSettings_Header}"
                                     IconPath="WirelessRegular">
                 <controls:SettingsBlock.SettingsContent>
                     <StackPanel
@@ -78,15 +78,15 @@
             </controls:SettingsBlock>
 
             <controls:SettingsToggle
-                Description="{l:Localize AutoStartSettings.Description}"
+                Description="{x:Static assets:Resources.AutoStartSettings_Description}"
                 SettingToggled="{Binding IsAutoStartEnabled, Mode=TwoWay}"
-                Title="{l:Localize AutoStartSettings.Header}"
+                Title="{x:Static assets:Resources.AutoStartSettings_Header}"
                 IconPath="PowerRegular"/>
 
             <controls:SettingsExpanderToggle
-                Description="{l:Localize RiskySettings.Description}"
+                Description="{x:Static assets:Resources.RiskySettings_Description}"
                 ExpanderContentToggle="{Binding IsRiskySettingsEnabled, Mode=TwoWay}"
-                Title="{l:Localize RiskySettings.Header}"
+                Title="{x:Static assets:Resources.RiskySettings_Header}"
                 IconPath="WarningRegular">
                 <controls:SettingsExpanderToggle.ExpanderContent>
                     <StackPanel>
@@ -97,9 +97,9 @@
                             <StackPanel Grid.Column="0">
                                 <TextBlock
                                     FontWeight="Bold"
-                                    Text="{l:Localize ForceRelevancyToggle.Header}"
+                                    Text="{x:Static assets:Resources.ForceRelevancyToggle_Header}"
                                     VerticalAlignment="Center" />
-                                <TextBlock Text="{l:Localize ForceRelevancyToggle.Description}" VerticalAlignment="Center" />
+                                <TextBlock Text="{x:Static assets:Resources.ForceRelevancyToggle_Description}" VerticalAlignment="Center" />
                             </StackPanel>
                             <ToggleSwitch
                                 Grid.Column="1"
@@ -114,13 +114,13 @@
                             <StackPanel Grid.Column="0">
                                 <TextBlock
                                     FontWeight="Bold"
-                                    Text="{l:Localize ForceReInitButton.Header}"
+                                    Text="{x:Static assets:Resources.ForceReInitButton_Header}"
                                     VerticalAlignment="Center" />
-                                <TextBlock Text="{l:Localize ForceReInitButton.Description}" VerticalAlignment="Center" />
+                                <TextBlock Text="{x:Static assets:Resources.ForceReInitButton_Description}" VerticalAlignment="Center" />
                             </StackPanel>
                             <Button
                                 Click="ReInit_OnClick"
-                                Content="{l:Localize ReInitButton.Content}"
+                                Content="{x:Static assets:Resources.ReInitButton_Content}"
                                 Grid.Column="1"
                                 VerticalAlignment="Top" />
                         </Grid>
@@ -129,13 +129,13 @@
                             <StackPanel Grid.Column="0">
                                 <TextBlock
                                     FontWeight="Bold"
-                                    Text="{l:Localize ResetVRCFTButton.Header}"
+                                    Text="{x:Static assets:Resources.ResetVRCFTButton_Header}"
                                     VerticalAlignment="Center" />
-                                <TextBlock Text="{l:Localize ResetVRCFTButton.Description}" VerticalAlignment="Center" />
+                                <TextBlock Text="{x:Static assets:Resources.ResetVRCFTButton_Description}" VerticalAlignment="Center" />
                             </StackPanel>
                             <Button
                                 Click="Reset_OnClick"
-                                Content="{l:Localize ResetButton.Content}"
+                                Content="{x:Static assets:Resources.ResetButton_Content}"
                                 Grid.Column="1"
                                 VerticalAlignment="Top" />
                         </Grid>
@@ -143,8 +143,8 @@
                 </controls:SettingsExpanderToggle.ExpanderContent>
             </controls:SettingsExpanderToggle>
 
-            <controls:SettingsExpander Description="{l:Localize HardwareDebug.Description}"
-                                       Title="{l:Localize HardwareDebug.Header}"
+            <controls:SettingsExpander Description="{x:Static assets:Resources.HardwareDebug_Description}"
+                                       Title="{x:Static assets:Resources.HardwareDebug_Header}"
                                        IconPath="HeartPulseRegular">
                 <controls:SettingsExpander.ExpanderContent>
                     <StackPanel>
