@@ -7,8 +7,6 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,9 +39,6 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-        LiveCharts.Configure(config =>
-                config.AddDarkTheme()
-        );
 
         // https://github.com/benaclejames/VRCFaceTracking/blob/51405d57cbbd46c92ff176d5211d043ed875ad42/VRCFaceTracking/App.xaml.cs#L61C9-L71C10
         // Check for a "reset" file in the root of the app directory.

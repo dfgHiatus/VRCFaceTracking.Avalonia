@@ -23,7 +23,6 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3" />
         <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.2.0.9" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-        <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc2" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.1" />
         <PackageReference Include="RangeSlider.Avalonia" Version="2.1.0" />
