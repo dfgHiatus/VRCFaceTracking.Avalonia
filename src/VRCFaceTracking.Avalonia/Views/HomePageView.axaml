@@ -7,7 +7,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:helpers="clr-namespace:VRCFaceTracking.Helpers"
-    xmlns:l="using:Jeek.Avalonia.Localization"
+    xmlns:assets="clr-namespace:VRCFaceTracking.Avalonia.Assets"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:VRCFaceTracking;assembly=VRCFaceTracking.SDK"
     xmlns:controls="clr-namespace:VRCFaceTracking.Avalonia.Controls"
@@ -23,7 +23,7 @@
         <StackPanel Classes="Page">
             <TextBlock
                 Classes="Header"
-                Text="{l:Localize Shell_Main.Content}" />
+                Text="{x:Static assets:Resources.Shell_Main_Content}" />
 
             <ItemsControl ItemsSource="{Binding LibManager.LoadedModulesMetadata}">
                 <ItemsControl.ItemTemplate>
@@ -68,11 +68,11 @@
                                         Text="{Binding Name, Mode=OneWay}" />
                                   <TextBlock
                                       IsVisible="{Binding UsingEye, Mode=OneWay}"
-                                      Text="{l:Localize EyeTrackingActive.Text}"
+                                      Text="{x:Static assets:Resources.EyeTrackingActive_Text}"
                                       x:Name="EyeTrackingActive" />
                                   <TextBlock
                                       IsVisible="{Binding UsingExpression, Mode=OneWay}"
-                                      Text="{l:Localize FaceTrackingActive.Text}"
+                                      Text="{x:Static assets:Resources.FaceTrackingActive_Text}"
                                       x:Name="FaceTrackingActive" />
                                 </StackPanel>
                                 <StackPanel
@@ -94,11 +94,11 @@
             <controls:ContentExample IsVisible="{Binding NoModulesInstalled}"
                                      Padding="0,15,15,15">
                 <controls:WarningBlock
-                    Caption="{l:Localize no_modules_installed_warning.ButtonText}"
+                    Caption="{x:Static assets:Resources.no_modules_installed_warning_ButtonText}"
                     DismissCommand="{Binding DismissWarningCommand}"
-                    Header="{l:Localize no_modules_installed_warning.Title}"
+                    Header="{x:Static assets:Resources.no_modules_installed_warning_Title}"
                     NavigateCommand="{Binding NavigateToModulesCommand}"
-                    Subheader="{l:Localize no_modules_installed_warning.Description}" />
+                    Subheader="{x:Static assets:Resources.no_modules_installed_warning_Description}" />
             </controls:ContentExample>
 
             <controls:ContentExample Padding="0,15,15,15">
@@ -121,7 +121,7 @@
                             OSC Status
                         </TextBlock>
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <TextBlock Text="{l:Localize Listening_on_Port.Text}" x:Name="ListeningOnPort"
+                            <TextBlock Text="{x:Static assets:Resources.Listening_on_Port_Text}" x:Name="ListeningOnPort"
                                         FontSize="14"
                                         Foreground="{DynamicResource SystemChromeGrayColor}"/>
                             <TextBlock Text="{Binding OscTarget.InPort, Mode=OneWay}"
@@ -129,7 +129,7 @@
                                         Foreground="{DynamicResource SystemChromeGrayColor}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Spacing="5">
-                            <TextBlock Text="{l:Localize Sending_on_Port.Text}" x:Name="SendingOnPort"
+                            <TextBlock Text="{x:Static assets:Resources.Sending_on_Port_Text}" x:Name="SendingOnPort"
                                         FontSize="14"
                                         Foreground="{DynamicResource SystemChromeGrayColor}"/>
                             <TextBlock Text="{Binding OscTarget.OutPort, Mode=OneWay}"
@@ -149,7 +149,7 @@
                             Spacing="3">
                             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
                                 <Run Text="{Binding MessagesInPerSecCount, Mode=OneWay}" />
-                                <Run Text="{l:Localize msIncoming.Text}" />
+                                <Run Text="{x:Static assets:Resources.msIncoming_Text}" />
                             </TextBlock>
                             <TextBlock
                                 HorizontalAlignment="Right"
@@ -162,7 +162,7 @@
                             Spacing="3">
                             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
                                 <Run Text="{Binding MessagesOutPerSecCount, Mode=OneWay}" />
-                                <Run Text="{l:Localize msOutgoing.Text}" />
+                                <Run Text="{x:Static assets:Resources.msOutgoing_Text}" />
                             </TextBlock>
                             <TextBlock
                                 HorizontalAlignment="Right"
@@ -190,7 +190,7 @@
                             <TextBlock
                                 FontSize="16"
                                 FontWeight="SemiBold"
-                                Text="{l:Localize AvatarStatus.Text}"
+                                Text="{x:Static assets:Resources.AvatarStatus_Text}"
                                 x:Name="AvatarStatus" />
                             <TextBlock Text="{Binding ParameterOutputService.AvatarInfo.Name}" x:Name="AvatarName"
                                        FontSize="14"
@@ -204,7 +204,7 @@
                                 VerticalAlignment="Center"
                                 x:Name="LocalTestWarning">
                                 <TextBlock
-                                    Text="{l:Localize LocalTestAvatar.Text}"
+                                    Text="{x:Static assets:Resources.LocalTestAvatar_Text}"
                                     VerticalAlignment="Center"
                                     x:Name="LocalTestAvatar" />
                                 <Ellipse
@@ -255,7 +255,7 @@
                                     VerticalAlignment="Center"
                                     x:Name="LegacyParametersCount">
                                     <Run Text="{Binding LegacyParametersCount}" />
-                                    <Run Text="{l:Localize LegacyParameters.Text}" />
+                                    <Run Text="{x:Static assets:Resources.LegacyParameters_Text}" />
                                 </TextBlock>
                             </StackPanel>
                         </StackPanel>

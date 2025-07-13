@@ -10,6 +10,7 @@
 
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
+        <AvaloniaResource Remove="Assets\*.resx" />
     </ItemGroup>
 
 
@@ -22,7 +23,6 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3" />
         <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.2.0.9" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-        <PackageReference Include="Jeek.Avalonia.Localization" Version="1.3.1" />
         <PackageReference Include="LiveChartsCore.SkiaSharpView.Avalonia" Version="2.0.0-rc2" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.1" />
         <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.1" />
@@ -43,66 +43,64 @@
 
 
     <ItemGroup>
-      <UpToDateCheckInput Remove="Assets\Strings\convert_resw_to_resx.py" />
-      <UpToDateCheckInput Remove="Assets\Strings\en\Resources.resw" />
-      <UpToDateCheckInput Remove="Assets\Strings\en\Resources.resx" />
-      <UpToDateCheckInput Remove="Assets\Strings\es\Resources.resw" />
-      <UpToDateCheckInput Remove="Assets\Strings\es\Resources.resx" />
-      <UpToDateCheckInput Remove="Assets\Strings\ja\Resources.resw" />
-      <UpToDateCheckInput Remove="Assets\Strings\ja\Resources.resx" />
-      <UpToDateCheckInput Remove="Assets\Strings\pl\Resources.resw" />
-      <UpToDateCheckInput Remove="Assets\Strings\pl\Resources.resx" />
-      <UpToDateCheckInput Remove="Assets\Strings\zh-cn\Resources.resw" />
-      <UpToDateCheckInput Remove="Assets\Strings\zh-cn\Resources.resx" />
+        <!--HACK: the resource paths are broken for some reason, put them in the correct spot-->
+        <EmbeddedResource Update="Assets\Resources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+            <LogicalName>VRCFaceTracking.Avalonia.Assets.Resources.resources</LogicalName>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Assets\Resources.es.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.es.Designer.cs</LastGenOutput>
+            <LogicalName>VRCFaceTracking.Avalonia.Assets.Resources.es.resources</LogicalName>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Assets\Resources.ja.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.ja.Designer.cs</LastGenOutput>
+            <LogicalName>VRCFaceTracking.Avalonia.Assets.Resources.ja.resources</LogicalName>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Assets\Resources.pl.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.pl.Designer.cs</LastGenOutput>
+            <LogicalName>VRCFaceTracking.Avalonia.Assets.Resources.pl.resources</LogicalName>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Assets\Resources.zh-cn.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.zh.Designer.cs</LastGenOutput>
+            <LogicalName>VRCFaceTracking.Avalonia.Assets.Resources.zh-cn.resources</LogicalName>
+        </EmbeddedResource>
     </ItemGroup>
 
 
     <ItemGroup>
-      <Content Include="Assets\WindowIcon.ico" />
+        <Compile Update="Assets\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Assets\Resources.es.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.es.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Assets\Resources.ja.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.ja.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Assets\Resources.pl.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.pl.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Assets\Resources.zh-cn.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.zh-cn.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
-
     <ItemGroup>
-      <EmbeddedResource Update="Strings\en\Resources.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Strings\es\Resources.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-      </EmbeddedResource>
-    </ItemGroup>
-
-
-    <ItemGroup>
-      <None Update="Langauges\zh-cn\Resources.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Langauges\pl\Resources.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Langauges\ja\Resources.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Langauges\es\Resources.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Langauges\en\Resources.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Languages\en.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Languages\es.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Languages\ja.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Languages\pl.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Languages\zh.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
       <None Update="LocalSettings.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
@@ -114,4 +112,5 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </AvaloniaResource>
     </ItemGroup>
+
 </Project>

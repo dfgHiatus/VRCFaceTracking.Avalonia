@@ -6,7 +6,7 @@
     x:DataType="vm:MutatorPageViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:l="using:Jeek.Avalonia.Localization"
+    xmlns:assets="clr-namespace:VRCFaceTracking.Avalonia.Assets"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rs="using:RangeSlider.Avalonia.Controls"
     xmlns:vm="clr-namespace:VRCFaceTracking.Avalonia.ViewModels.SplitViewPane"
@@ -155,7 +155,7 @@
     <ScrollViewer>
       <StackPanel Classes="Page">
         <TextBlock Classes="Header"
-                   Text="{l:Localize Shell_TrackingSettings.Content}" />
+                   Text="{x:Static assets:Resources.Shell_TrackingSettings_Content}" />
 
         <ItemsRepeater x:Name="MutationsListView" ItemsSource="{Binding Mutations}" Margin="0">
           <ItemsRepeater.ItemTemplate>

@@ -8,7 +8,6 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Messaging;
-using Jeek.Avalonia.Localization;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using Microsoft.Extensions.Configuration;
@@ -63,7 +62,7 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        Localizer.SetLocalizer(new JsonLocalizer());
+        //Localizer.SetLocalizer(new JsonLocalizer());
 
         var locator = new ViewLocator();
         DataTemplates.Add(locator);

@@ -8,7 +8,7 @@
     xmlns:controls="clr-namespace:VRCFaceTracking.Avalonia.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:htControls="clr-namespace:HyperText.Avalonia.Controls;assembly=HyperText.Avalonia"
-    xmlns:l="using:Jeek.Avalonia.Localization"
+    xmlns:assets="clr-namespace:VRCFaceTracking.Avalonia.Assets"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:VRCFaceTracking.Core.Models;assembly=VRCFaceTracking.Core"
     xmlns:vm="clr-namespace:VRCFaceTracking.Avalonia.ViewModels.SplitViewPane"
@@ -21,7 +21,7 @@
     <ScrollViewer>
         <StackPanel Classes="Page">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Classes="Header" Text="{l:Localize Shell_ModuleRegistry.Content}" />
+                <TextBlock Classes="Header" Text="{x:Static assets:Resources.Shell_ModuleRegistry_Content}" />
                 <StackPanel
                     IsVisible="{Binding NoRemoteModulesDetected}"
                     Margin="8,0"
@@ -54,7 +54,7 @@
                             </Button.Content>
                         </Button>
                         <TextBlock
-                            Text="{l:Localize OpenLocalStorageCard.Header}"
+                            Text="{x:Static assets:Resources.OpenLocalStorageCard_Header}"
                             VerticalAlignment="Center"
                             x:Name="BrowseLocalText" />
                     </StackPanel>
@@ -313,32 +313,32 @@
 
                                             <StackPanel Orientation="Horizontal" Spacing="20">
                                                 <TextBlock>
-                                                    <Run FontWeight="Bold" Text="{l:Localize Author.Text}" />
+                                                    <Run FontWeight="Bold" Text="{x:Static assets:Resources.Author_Text}" />
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.AuthorName}" />
                                                 </TextBlock>
 
                                                 <TextBlock>
-                                                    <Run FontWeight="Bold" Text="{l:Localize Version.Text}" />
+                                                    <Run FontWeight="Bold" Text="{x:Static assets:Resources.Version_Text}" />
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.Version}" />
                                                 </TextBlock>
 
                                                 <TextBlock>
-                                                    <Run FontWeight="Bold" Text="{l:Localize Downloads.Text}" />
+                                                    <Run FontWeight="Bold" Text="{x:Static assets:Resources.Downloads_Text}" />
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.Downloads}" />
                                                 </TextBlock>
 
                                                 <TextBlock>
-                                                    <Run FontWeight="Bold" Text="{l:Localize Rating.Text}" />
+                                                    <Run FontWeight="Bold" Text="{x:Static assets:Resources.Rating_Text}" />
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.Rating, StringFormat='{}{0:F2}/5'}" />
                                                 </TextBlock>
                                             </StackPanel>
 
                                             <TextBlock>
-                                                <Run FontWeight="Bold" Text="{l:Localize ModulePage.Text}" />
+                                                <Run FontWeight="Bold" Text="{x:Static assets:Resources.ModulePage_Text}" />
                                                 <LineBreak />
                                                 <htControls:Hyperlink
                                                     Alias="{Binding Module.ModulePageUrl}"
@@ -347,19 +347,19 @@
                                             </TextBlock>
 
                                             <TextBlock>
-                                                <Run FontWeight="Bold" Text="{l:Localize LastUpdated.Text}" />
+                                                <Run FontWeight="Bold" Text="{x:Static assets:Resources.LastUpdated_Text}" />
                                                 <LineBreak />
                                                 <Run Text="{Binding Module.LastUpdated}" />
                                             </TextBlock>
 
                                             <TextBlock TextWrapping="WrapWithOverflow">
-                                                <Run FontWeight="Bold" Text="{l:Localize Description.Text}" />
+                                                <Run FontWeight="Bold" Text="{x:Static assets:Resources.Description_Text}" />
                                                 <LineBreak />
                                                 <Run Text="{Binding Module.ModuleDescription}" />
                                             </TextBlock>
 
                                             <TextBlock TextWrapping="WrapWithOverflow">
-                                                <Run FontWeight="Bold" Text="{l:Localize UsageInstructions.Text}" />
+                                                <Run FontWeight="Bold" Text="{x:Static assets:Resources.UsageInstructions_Text}" />
                                                 <LineBreak />
                                                 <Run Text="{Binding Module.UsageInstructions}" />
                                             </TextBlock>

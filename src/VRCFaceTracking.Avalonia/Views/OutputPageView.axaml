@@ -7,13 +7,13 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:controls="clr-namespace:VRCFaceTracking.Avalonia.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:l="using:Jeek.Avalonia.Localization"
+    xmlns:assets="clr-namespace:VRCFaceTracking.Avalonia.Assets"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:VRCFaceTracking.Avalonia.ViewModels.SplitViewPane"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <ScrollViewer>
         <StackPanel Classes="Page">
-            <TextBlock Classes="Header" Text="{l:Localize Shell_Output.Content}" />
+            <TextBlock Classes="Header" Text="{x:Static assets:Resources.Shell_Output_Content}" />
             <controls:ContentExample>
                 <StackPanel Orientation="Horizontal" Spacing="12">
                     <Button

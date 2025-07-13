@@ -1,6 +1,6 @@
 using System.Globalization;
 using System.Threading.Tasks;
-using Jeek.Avalonia.Localization;
+using VRCFaceTracking.Avalonia.Assets;
 using VRCFaceTracking.Contracts.Services;
 using VRCFaceTracking.Core.Contracts.Services;
 
@@ -30,9 +30,9 @@ public class LanguageSelectorService(ILocalSettingsService localSettingsService)
 
     public Task SetRequestedLanguageAsync()
     {
-        Localizer.Language = Language == DefaultLanguage ?
+        Resources.Culture = new CultureInfo(Language == DefaultLanguage ?
             CultureInfo.CurrentCulture.TwoLetterISOLanguageName :
-            Language;
+            Language);
         return Task.CompletedTask;
     }
 
