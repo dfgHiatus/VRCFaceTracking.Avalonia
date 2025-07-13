@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
@@ -62,8 +61,6 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        //Localizer.SetLocalizer(new JsonLocalizer());
-
         var locator = new ViewLocator();
         DataTemplates.Add(locator);
 

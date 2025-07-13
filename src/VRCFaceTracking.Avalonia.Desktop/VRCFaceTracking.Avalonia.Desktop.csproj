@@ -2,12 +2,12 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
-        <TargetFrameworks>net8.0</TargetFrameworks>
         <Configurations>Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release</Configurations>
         <Platforms>AnyCPU</Platforms>
         <ApplicationIcon>WindowIcon.ico</ApplicationIcon>
         <PackageIcon>logo_128.png</PackageIcon>
     </PropertyGroup>
+
 
     <!-- Windows-Specific Settings -->
     <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.17763.0'">
@@ -16,25 +16,29 @@
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Linux Debug' ">
       <DefineConstants>TRACE; LINUX; DEBUG;</DefineConstants>
+	  <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Linux Release' ">
       <DefineConstants>TRACE; LINUX;</DefineConstants>
       <Optimize>true</Optimize>
+	  <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'MacOS Debug' ">
       <DefineConstants>TRACE; MACOS; DEBUG;</DefineConstants>
+	  <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'MacOS Release' ">
       <DefineConstants>TRACE; MACOS;</DefineConstants>
       <Optimize>true</Optimize>
+	  <TargetFramework>net8.0</TargetFramework>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Windows Debug' ">
       <DefineConstants>TRACE; WINDOWS; DEBUG;</DefineConstants>
-      <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+      <TargetFrameworks>net8.0-windows10.0.17763.0;net8.0</TargetFrameworks>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Windows Release' ">
       <DefineConstants>TRACE; WINDOWS;</DefineConstants>
-      <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
+      <TargetFrameworks>net8.0-windows10.0.17763.0;net8.0</TargetFrameworks>
       <Optimize>true</Optimize>
     </PropertyGroup>
 

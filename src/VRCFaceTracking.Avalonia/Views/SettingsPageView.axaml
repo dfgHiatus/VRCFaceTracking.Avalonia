@@ -23,7 +23,7 @@
                 </controls:SettingsBlock.SettingsContent>
             </controls:SettingsBlock>
 
-            <controls:SettingsBlock Description="Set the app's language."
+            <controls:SettingsBlock Description="Set the app's language. Requires a restart for some elements."
                                     Title="Language"
                                     IconPath="LanguageRegular">
                 <controls:SettingsBlock.SettingsContent>
