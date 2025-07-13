@@ -11,60 +11,65 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:VRCFaceTracking.Avalonia.ViewModels.SplitViewPane"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ScrollViewer>
-        <StackPanel Classes="Page">
-            <TextBlock Classes="Header" Text="{x:Static assets:Resources.Shell_Output_Content}" />
-            <controls:ContentExample>
-                <StackPanel Orientation="Horizontal" Spacing="12">
-                    <Button
-                        Click="CopyRequested"
-                        ToolTip.Tip="Copy the log's output to your clipboard"
-                        x:Name="CopyButton">
-                        <Button.Content>
-                            <StackPanel Orientation="Vertical">
-                                <PathIcon Data="{StaticResource DocumentCopyRegular}" Height="24" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                    <Button
-                        Click="SaveRequested"
-                        ToolTip.Tip="Save the log's output"
-                        x:Name="SaveButton">
-                        <Button.Content>
-                            <StackPanel Orientation="Vertical">
-                                <PathIcon Data="{StaticResource SaveRegular}" Height="24" />
-                            </StackPanel>
-                        </Button.Content>
-                    </Button>
-                </StackPanel>
-            </controls:ContentExample>
 
-            <controls:ContentExample>
-                <StackPanel>
-                    <ScrollViewer
-                        Height="425"
-                        HorizontalScrollBarVisibility="Auto"
-                        IsTabStop="False"
-                        VerticalScrollBarVisibility="Auto"
-                        x:Name="LogScroller">
-                        <StackPanel
-                            HorizontalAlignment="Stretch"
-                            Orientation="Vertical"
-                            VerticalAlignment="Stretch">
-                            <ItemsControl
-                                HorizontalAlignment="Stretch"
-                                ItemsSource="{Binding View.FilteredLog}"
-                                VerticalAlignment="Stretch">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding}" />
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
-                    </ScrollViewer>
-                </StackPanel>
-            </controls:ContentExample>
+  <Grid Margin="24">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="12" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <StackPanel Grid.Row="0">
+      <TextBlock Classes="Header" Text="{x:Static assets:Resources.Shell_Output_Content}" />
+      <controls:ContentExample>
+        <StackPanel Orientation="Horizontal" Spacing="12">
+          <Button
+              Click="CopyRequested"
+              ToolTip.Tip="Copy the log's output to your clipboard"
+              x:Name="CopyButton">
+            <Button.Content>
+              <StackPanel Orientation="Vertical">
+                <PathIcon Data="{StaticResource DocumentCopyRegular}" Height="24" />
+              </StackPanel>
+            </Button.Content>
+          </Button>
+          <Button
+              Click="SaveRequested"
+              ToolTip.Tip="Save the log's output"
+              x:Name="SaveButton">
+            <Button.Content>
+              <StackPanel Orientation="Vertical">
+                <PathIcon Data="{StaticResource SaveRegular}" Height="24" />
+              </StackPanel>
+            </Button.Content>
+          </Button>
         </StackPanel>
-    </ScrollViewer>
+      </controls:ContentExample>
+    </StackPanel>
+
+    <controls:ContentExample Grid.Row="2">
+      <ScrollViewer
+          HorizontalScrollBarVisibility="Auto"
+          IsTabStop="False"
+          VerticalScrollBarVisibility="Auto"
+          x:Name="LogScroller">
+        <StackPanel
+            HorizontalAlignment="Stretch"
+            Orientation="Vertical"
+            VerticalAlignment="Stretch">
+          <ItemsControl
+              HorizontalAlignment="Stretch"
+              ItemsSource="{Binding View.FilteredLog}"
+              VerticalAlignment="Stretch">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </ScrollViewer>
+    </controls:ContentExample>
+  </Grid>
+  
 </UserControl>
