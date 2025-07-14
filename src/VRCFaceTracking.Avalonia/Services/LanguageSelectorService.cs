@@ -38,7 +38,7 @@ public class LanguageSelectorService(ILocalSettingsService localSettingsService)
 
     private async Task<string> LoadLanguageFromSettingsAsync()
     {
-        return await localSettingsService.ReadSettingAsync<string>(SettingsKey);;
+        return await localSettingsService.ReadSettingAsync(SettingsKey, DefaultLanguage);
     }
 
     private async Task SaveLanguageInSettingsAsync(string langauge)
