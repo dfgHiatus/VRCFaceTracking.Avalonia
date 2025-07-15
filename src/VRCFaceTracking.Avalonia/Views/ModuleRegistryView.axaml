@@ -6,6 +6,7 @@
     x:DataType="vm:ModuleRegistryViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:controls="clr-namespace:VRCFaceTracking.Avalonia.Controls"
+    xmlns:stars="using:RatingControlSample.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:htControls="clr-namespace:HyperText.Avalonia.Controls;assembly=HyperText.Avalonia"
     xmlns:assets="clr-namespace:VRCFaceTracking.Avalonia.Assets"
@@ -335,6 +336,11 @@
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.Rating, StringFormat='{}{0:F2}/5'}" />
                                                 </TextBlock>
+                                                <TextBlock>
+                                                    <Run FontWeight="Bold" Text="{x:Static assets:Resources.YourRating_Text}" />
+                                                    <LineBreak />
+                                                  <stars:RatingControl NumberOfStars="5" Value="{Binding ModuleRating}" />
+                                                </TextBlock>
                                             </StackPanel>
 
                                             <TextBlock>
@@ -358,7 +364,8 @@
                                                 <Run Text="{Binding Module.ModuleDescription}" />
                                             </TextBlock>
 
-                                            <TextBlock TextWrapping="WrapWithOverflow">
+
+                                          <TextBlock TextWrapping="WrapWithOverflow">
                                                 <Run FontWeight="Bold" Text="{x:Static assets:Resources.UsageInstructions_Text}" />
                                                 <LineBreak />
                                                 <Run Text="{Binding Module.UsageInstructions}" />

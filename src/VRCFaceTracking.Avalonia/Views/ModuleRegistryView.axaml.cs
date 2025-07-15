@@ -168,8 +168,10 @@ public partial class ModuleRegistryView : UserControl
 
     private void OnModuleSelected(object? sender, SelectionChangedEventArgs e)
     {
-        var moduleListBox = sender as ListBox;
-        if (moduleListBox == null || ModuleList.ItemCount == 0) return;
+
+        if(sender is not ListBox moduleListBox) return;
+        if (moduleListBox.ItemCount == 0) return;
+
         var index = moduleListBox.SelectedIndex;
         if (index == -1) index = 0;
         if (moduleListBox.Items[index] is not InstallableTrackingModule module) return;
