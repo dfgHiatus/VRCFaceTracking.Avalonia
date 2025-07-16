@@ -312,33 +312,35 @@
                                                 Text="Module Information" />
 
                                             <StackPanel Orientation="Horizontal" Spacing="20">
-                                                <TextBlock>
+                                                <TextBlock LineHeight="21" >
                                                     <Run FontWeight="Bold" Text="{x:Static assets:Resources.Author_Text}" />
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.AuthorName}" />
                                                 </TextBlock>
 
-                                                <TextBlock>
+                                                <TextBlock LineHeight="21">
                                                     <Run FontWeight="Bold" Text="{x:Static assets:Resources.Version_Text}" />
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.Version}" />
                                                 </TextBlock>
 
-                                                <TextBlock>
+                                                <TextBlock LineHeight="21">
                                                     <Run FontWeight="Bold" Text="{x:Static assets:Resources.Downloads_Text}" />
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.Downloads}" />
                                                 </TextBlock>
 
-                                                <TextBlock>
+                                                <TextBlock LineHeight="21">
                                                     <Run FontWeight="Bold" Text="{x:Static assets:Resources.Rating_Text}" />
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.Rating, StringFormat='{}{0:F2}/5'}" />
                                                 </TextBlock>
-                                                <TextBlock>
+                                                <TextBlock LineHeight="21">
                                                     <Run FontWeight="Bold" Text="{x:Static assets:Resources.YourRating_Text}" />
                                                     <LineBreak />
-                                                  <stars:RatingControl NumberOfStars="5" Value="{Binding ModuleRating}" />
+                                                    <InlineUIContainer>
+                                                      <stars:RatingControl Margin="0,-3,0,0" NumberOfStars="5" Value="{Binding ModuleRating}" />
+                                                    </InlineUIContainer>
                                                 </TextBlock>
                                             </StackPanel>
 
