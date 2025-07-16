@@ -7,7 +7,18 @@
     xmlns:vrcft="clr-namespace:VRCFaceTracking.Avalonia"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Application.DataTemplates>
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <!-- Don't miss this line -->
+        <ResourceInclude Source="/Controls/RatingStyles.axaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+
+
+  <Application.DataTemplates>
         <vrcft:ViewLocator />
     </Application.DataTemplates>
 

@@ -1,22 +1,13 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Input;
+using System.Threading;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using CommunityToolkit.Mvvm.Input;
-using VRCFaceTracking.Avalonia.Models;
 using VRCFaceTracking.Avalonia.Views;
 using VRCFaceTracking.Core.Contracts.Services;
 using VRCFaceTracking.Core.Models;
@@ -33,6 +24,7 @@ public partial class ModuleRegistryViewModel : ViewModelBase
     [ObservableProperty] private bool _noRemoteModulesDetected;
 
     [ObservableProperty] private bool _modulesDetected;
+    [ObservableProperty] private int _moduleRating;
     public ObservableCollection<InstallableTrackingModule> FilteredModuleInfos { get; } = [];
     public ObservableCollection<InstallableTrackingModule> InstalledModules { get; set; } = [];
 
@@ -41,6 +33,8 @@ public partial class ModuleRegistryViewModel : ViewModelBase
     private IModuleDataService _moduleDataService { get; }
     private ModuleInstaller _moduleInstaller { get; }
     private ILibManager _libManager { get; }
+
+    private SemaphoreSlim _moduleRatingLock = new(1);
 
     private bool _requestReinit;
     public bool RequestReinit
@@ -102,6 +96,19 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         }
     }
 
+    private void ModuleRatingChanged(object? sender, PropertyChangedEventArgs args)
+    {
+
+        if (args.PropertyName != "ModuleRating")
+            return;
+
+        // Can't rate local modules
+        if (Module.Local)
+            return;
+
+        _moduleDataService.SetMyRatingAsync(Module, ModuleRating);
+    }
+
     partial void OnSearchTextChanged(string value)
     {
         UpdateFilteredModules();
@@ -126,7 +133,47 @@ public partial class ModuleRegistryViewModel : ViewModelBase
 
     private void ModuleSelected(InstallableTrackingModule module)
     {
-        Module = module;
+
+        Dispatcher.UIThread.Post(async () =>
+        {
+            Module = module;
+
+            // Local modules don't have ratings 
+            if (Module.Local)
+            {
+                ModuleRating = 0;
+                return;
+            }
+
+            var myRating = await _moduleDataService.GetMyRatingAsync(module);
+
+            // We use a lock here because without it a race condition occurres
+            // when adding propertyChanged handlers.
+            // a handler might be added from another async call before this one
+            // finishes causing unwanted events firing.
+            await _moduleRatingLock.WaitAsync();
+            try
+            {
+                // Check if the selected module is still the same one that we called
+                // GetMyRatingAsync for.
+                if (Module.ModuleId != module.ModuleId)
+                    return;
+
+                // Prevent events from firing
+                PropertyChanged -= ModuleRatingChanged;
+                if (myRating != null)
+                    ModuleRating = (int)myRating;
+                else
+                    ModuleRating = 0;
+
+                // return the events back
+                PropertyChanged += ModuleRatingChanged;
+            }
+            finally
+            {
+                _moduleRatingLock.Release();
+            }
+        });
     }
 
     private void LocalModuleInstalled()

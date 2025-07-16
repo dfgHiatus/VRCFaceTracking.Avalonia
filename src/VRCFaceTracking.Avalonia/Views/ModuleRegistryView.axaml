@@ -6,6 +6,7 @@
     x:DataType="vm:ModuleRegistryViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:controls="clr-namespace:VRCFaceTracking.Avalonia.Controls"
+    xmlns:stars="using:RatingControlSample.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:htControls="clr-namespace:HyperText.Avalonia.Controls;assembly=HyperText.Avalonia"
     xmlns:assets="clr-namespace:VRCFaceTracking.Avalonia.Assets"
@@ -137,7 +138,6 @@
                                                 Classes="draggable"
                                                 ItemsSource="{Binding InstalledModules}"
                                                 MaxHeight="400"
-                                                SelectionMode="AlwaysSelected"
                                                 SelectionChanged="OnModuleSelected"
                                                 Width="350"
                                                 x:Name="LocalModuleList">
@@ -312,28 +312,35 @@
                                                 Text="Module Information" />
 
                                             <StackPanel Orientation="Horizontal" Spacing="20">
-                                                <TextBlock>
+                                                <TextBlock LineHeight="21" >
                                                     <Run FontWeight="Bold" Text="{x:Static assets:Resources.Author_Text}" />
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.AuthorName}" />
                                                 </TextBlock>
 
-                                                <TextBlock>
+                                                <TextBlock LineHeight="21">
                                                     <Run FontWeight="Bold" Text="{x:Static assets:Resources.Version_Text}" />
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.Version}" />
                                                 </TextBlock>
 
-                                                <TextBlock>
+                                                <TextBlock LineHeight="21">
                                                     <Run FontWeight="Bold" Text="{x:Static assets:Resources.Downloads_Text}" />
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.Downloads}" />
                                                 </TextBlock>
 
-                                                <TextBlock>
+                                                <TextBlock LineHeight="21">
                                                     <Run FontWeight="Bold" Text="{x:Static assets:Resources.Rating_Text}" />
                                                     <LineBreak />
                                                     <Run Text="{Binding Module.Rating, StringFormat='{}{0:F2}/5'}" />
+                                                </TextBlock>
+                                                <TextBlock LineHeight="21">
+                                                    <Run FontWeight="Bold" Text="{x:Static assets:Resources.YourRating_Text}" />
+                                                    <LineBreak />
+                                                    <InlineUIContainer>
+                                                      <stars:RatingControl Margin="0,-3,0,0" NumberOfStars="5" Value="{Binding ModuleRating}" />
+                                                    </InlineUIContainer>
                                                 </TextBlock>
                                             </StackPanel>
 
@@ -358,7 +365,8 @@
                                                 <Run Text="{Binding Module.ModuleDescription}" />
                                             </TextBlock>
 
-                                            <TextBlock TextWrapping="WrapWithOverflow">
+
+                                          <TextBlock TextWrapping="WrapWithOverflow">
                                                 <Run FontWeight="Bold" Text="{x:Static assets:Resources.UsageInstructions_Text}" />
                                                 <LineBreak />
                                                 <Run Text="{Binding Module.UsageInstructions}" />

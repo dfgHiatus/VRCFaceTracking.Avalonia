@@ -1,61 +1,166 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
-    <resheader name="resmimetype">
-        <value>text/microsoft-resx</value>
-    </resheader>
-    <resheader name="version">
-        <value>2.0</value>
-    </resheader>
-    <resheader name="reader">
-        <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
-    </resheader>
-    <resheader name="writer">
-        <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
-    </resheader>
-    <data name="AppDisplayName">
-        <value>VRCFaceTracking</value>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
     </data>
-    <data name="AppDescription">
-        <value>VRCFaceTracking</value>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
     </data>
-    <data name="Shell_Main.Content">
-        <value>主页</value>
-    </data>
-    <data name="ListDetails_NoSelection.Text">
-        <value>从列表中选择一个项目。</value>
-    </data>
-    <data name="Shell_ListDetails.Content">
-        <value>清单详情</value>
-    </data>
-    <data name="Settings_Personalization.Text">
-        <value>个性化</value>
-    </data>
-    <data name="Settings_Theme.Text">
-        <value>主题</value>
-    </data>
-    <data name="Settings_Theme_Light.Content">
-        <value>亮色</value>
-    </data>
-    <data name="Settings_Theme_Dark.Content">
-        <value>暗色</value>
-    </data>
-    <data name="Settings_Theme_Default.Content">
-        <value>跟随系统</value>
-    </data>
-    <data name="Settings_About.Text">
-        <value>允许 AV3 头像通过 VRChat OSC 应用程序与眼睛和嘴唇追踪运行时进行交互。</value>
-    </data>
-    <data name="Settings_AboutDescription.Text">
-        <value>允许 AV3 头像通过 VRChat OSC 应用程序与眼睛和嘴唇追踪运行时进行交互。</value>
-    </data>
-    <data name="SettingsPage_PrivacyTermsLink.Content">
-        <value>个性化隐私声明</value>
-    </data>
-    <data name="SettingsPage_PrivacyTermsLink.NavigateUri">
-        <value>https://github.com/benaclejames/VRCFaceTracking</value>
-    </data>
-    <data name="AppNotificationSamplePayload">
-        <value>&lt;toast launch="action=ToastClick"&gt;
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>VRCFaceTracking</value>
+  </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>VRCFaceTracking</value>
+  </data>
+  <data name="Shell_Main.Content" xml:space="preserve">
+    <value>主页</value>
+  </data>
+  <data name="ListDetails_NoSelection.Text" xml:space="preserve">
+    <value>从列表中选择一个项目。</value>
+  </data>
+  <data name="Shell_ListDetails.Content" xml:space="preserve">
+    <value>清单详情</value>
+  </data>
+  <data name="Settings_Personalization.Text" xml:space="preserve">
+    <value>个性化</value>
+  </data>
+  <data name="Settings_Theme.Text" xml:space="preserve">
+    <value>主题</value>
+  </data>
+  <data name="Settings_Theme_Light.Content" xml:space="preserve">
+    <value>亮色</value>
+  </data>
+  <data name="Settings_Theme_Dark.Content" xml:space="preserve">
+    <value>暗色</value>
+  </data>
+  <data name="Settings_Theme_Default.Content" xml:space="preserve">
+    <value>跟随系统</value>
+  </data>
+  <data name="Settings_About.Text" xml:space="preserve">
+    <value>允许 AV3 头像通过 VRChat OSC 应用程序与眼睛和嘴唇追踪运行时进行交互。</value>
+  </data>
+  <data name="Settings_AboutDescription.Text" xml:space="preserve">
+    <value>允许 AV3 头像通过 VRChat OSC 应用程序与眼睛和嘴唇追踪运行时进行交互。</value>
+  </data>
+  <data name="SettingsPage_PrivacyTermsLink.Content" xml:space="preserve">
+    <value>个性化隐私声明</value>
+  </data>
+  <data name="SettingsPage_PrivacyTermsLink.NavigateUri" xml:space="preserve">
+    <value>https://github.com/benaclejames/VRCFaceTracking</value>
+  </data>
+  <data name="AppNotificationSamplePayload" xml:space="preserve">
+    <value>&lt;toast launch="action=ToastClick"&gt;
             &lt;visual&gt;
             &lt;binding template="ToastGeneric"&gt;
             &lt;text&gt;App Notification&lt;/text&gt;
@@ -67,221 +172,224 @@
             &lt;action content="Settings" arguments="action=Settings"/&gt;
             &lt;/actions&gt;
             &lt;/toast&gt;</value>
-    </data>
-    <data name="Shell_Output.Content">
-        <value>输出</value>
-    </data>
-    <data name="Shell_Parameters.Content">
-        <value>参数</value>
-    </data>
-    <data name="ModuleRegistry_NoSelection.Text">
-        <value>从列表中选择一个项目。</value>
-    </data>
-    <data name="Shell_ModuleRegistry.Content">
-        <value>官方模块库</value>
-    </data>
-    <data name="About.Text">
-        <value>关于</value>
-    </data>
-    <data name="Appearance.Text">
-        <value>外观</value>
-    </data>
-    <data name="Author.Text">
-        <value>作者</value>
-    </data>
-    <data name="AvatarStatus.Text">
-        <value>模型状态</value>
-    </data>
-    <data name="LocalTestAvatar.Text">
-        <value>检测到本地测试角色</value>
-    </data>
-    <data name="LocalTestAvatarTooltip.Content">
-        <value>本地测试角色不受支持，而且可能产生部分问题</value>
-    </data>
-    <data name="Copyright.Description">
-        <value>© 2023 VRCFaceTracking。版权所有。</value>
-    </data>
-    <data name="Credits.Description">
-        <value>所有的贡献者们 &lt;3</value>
-    </data>
-    <data name="Dependencies.Header">
-        <value>依赖 &amp; 参考</value>
-    </data>
-    <data name="Description.Text">
-        <value>描述</value>
-    </data>
-    <data name="Disclaimer.Header">
-        <value>本代码和信息按“原样”提供，不提供任何明示或暗示的保证，包括但不限于对适销性和/或特定用途适用性的暗示保证。</value>
-    </data>
-    <data name="Downloads.Text">
-        <value>下载量</value>
-    </data>
-    <data name="EyeTrackingActive.Text">
-        <value>眼追已激活</value>
-    </data>
-    <data name="FaceTrackingActive.Text">
-        <value>面捕已激活</value>
-    </data>
-    <data name="BugRequestCard.Header">
-        <value>提交BUG或请求新功能</value>
-    </data>
-    <data name="PrivacyPolicyCard.Header">
-        <value>隐私政策</value>
-    </data>
-    <data name="LastUpdated.Text">
-        <value>最近更新时间</value>
-    </data>
-    <data name="LegacyParameters.Text">
-        <value>旧参数</value>
-    </data>
-    <data name="Listening_on_Port.Text">
-        <value>监听端口：</value>
-    </data>
-    <data name="ModulePage.Text">
-        <value>模块页</value>
-    </data>
-    <data name="msIncoming.Text">
-        <value>m/s 传入</value>
-    </data>
-    <data name="msOutgoing.Text">
-        <value>m/s 传出</value>
-    </data>
-    <data name="no_modules_installed_warning.Title">
-        <value>没有安装模块</value>
-    </data>
-    <data name="no_modules_installed_warning.ButtonText">
-        <value>从这下载一些模块！</value>
-    </data>
-    <data name="osc_was_disabled_warning.Title">
-        <value>OSC已自动开启</value>
-    </data>
-    <data name="osc_was_disabled_warning.Description">
-        <value>我们注意到您在 VRChat 中的 OSC 已关闭，我们刚刚为您启用了它。如果出现此条提示时游戏处于运行状态，您可能还需要在R键菜单中手动选择开启。</value>
-    </data>
-    <data name="OSCStatus.Text">
-        <value>OSC状态</value>
-    </data>
-    <data name="Parameters.Text">
-        <value>参数</value>
-    </data>
-    <data name="Rating.Text">
-        <value>评分</value>
-    </data>
-    <data name="ThemeSettings.Header">
-        <value>应用主题</value>
-    </data>
-    <data name="ThemeSettings.Description">
-        <value>选择要显示的应用主题</value>
-    </data>
-    <data name="Sending_on_Port.Text">
-        <value>发送端口：</value>
-    </data>
-    <data name="ToggleTracking.Content">
-        <value>追踪开关</value>
-    </data>
-    <data name="CloneRepoCard.Header">
-        <value>克隆此存储库</value>
-    </data>
-    <data name="OpenLocalStorageCard.Header">
-        <value>打开本地文件</value>
-    </data>
-    <data name="UsageInstructions.Text">
-        <value>使用说明</value>
-    </data>
-    <data name="Version.Text">
-        <value>版本号</value>
-    </data>
-    <data name="OscSettings.Header">
-        <value>OSC 设置</value>
-    </data>
-    <data name="OscSettings.Description">
-        <value>OSC 数据应该发送到哪里？</value>
-    </data>
-    <data name="no_modules_installed_warning.Description">
-        <value>您似乎没有安装任何模块。</value>
-    </data>
-    <data name="CalibrationSettings.Header">
-        <value>校准选项</value>
-    </data>
-    <data name="CalibrationSettings.Description">
-        <value>根据您的喜好调整追踪数据</value>
-    </data>
-    <data name="RiskySettings.Header">
-        <value>危险设置</value>
-    </data>
-    <data name="RiskySettings.Description">
-        <value>除非您知道您在做什么，否则请不要更改这些设置</value>
-    </data>
-    <data name="AutoStartSettings.Header">
-        <value>自动启动</value>
-    </data>
-    <data name="AutoStartSettings.Description">
-        <value>跟随 steamVR 启动</value>
-    </data>
-    <data name="CalibrationEnabledToggle.Header">
-        <value>启用校准</value>
-    </data>
-    <data name="CalibrationEnabledToggle.Description">
-        <value>切换是否启用校准</value>
-    </data>
-    <data name="ContCalibrationToggle.Header">
-        <value>持续校准</value>
-    </data>
-    <data name="ContCalibrationToggle.Description">
-        <value>持续不断地慢慢校准您的面部表情</value>
-    </data>
-    <data name="TrackingCalibrateButton.Header">
-        <value>校准</value>
-    </data>
-    <data name="TrackingCalibrateButton.Description">
-        <value>暂时提高您的动作对校准的影响</value>
-    </data>
-    <data name="CalibrationInfluenceSlider.Header">
-        <value>校准影响</value>
-    </data>
-    <data name="CalibrationInfluenceSlider.Description">
-        <value>调整您的面部表情短时内对整体校准的影响度</value>
-    </data>
-    <data name="CalibrateButton.Content">
-        <value>校准</value>
-    </data>
-    <data name="ForceReInitButton.Description">
-        <value>强制重新初始化所有模块</value>
-    </data>
-    <data name="ForceReInitButton.Header">
-        <value>强制重置</value>
-    </data>
-    <data name="ForceRelevancyToggle.Description">
-        <value>通过强制相关性，强制发送所有参数</value>
-    </data>
-    <data name="ForceRelevancyToggle.Header">
-        <value>强制相关性</value>
-    </data>
-    <data name="ReInitButton.Content">
-        <value>重新初始化</value>
-    </data>
-    <data name="ResetAvatarConfButton.Description">
-        <value>重置所有 VRChat OSC 配置数据（数据将在重新加载 avatar 时重新生成）</value>
-    </data>
-    <data name="ResetAvatarConfButton.Header">
-        <value>重置 VRChat 配置</value>
-    </data>
-    <data name="ResetButton.Content">
-        <value>重置</value>
-    </data>
-    <data name="ResetVRCFTButton.Description">
-        <value>重置 VRCFT 存储在 AppData 文件夹中的所有数据</value>
-    </data>
-    <data name="ResetVRCFTButton.Header">
-        <value>重置 VRCFT</value>
-    </data>
-    <data name="HardwareDebug.Header">
-        <value>硬件调试</value>
-    </data>
-    <data name="HardwareDebug.Description">
-        <value>你能看见自己的舌头吗？</value>
-    </data>
-    <data name="Shell_TrackingSettings.Content">
-        <value>Tracking Settings</value>
-    </data>
+  </data>
+  <data name="Shell_Output.Content" xml:space="preserve">
+    <value>输出</value>
+  </data>
+  <data name="Shell_Parameters.Content" xml:space="preserve">
+    <value>参数</value>
+  </data>
+  <data name="ModuleRegistry_NoSelection.Text" xml:space="preserve">
+    <value>从列表中选择一个项目。</value>
+  </data>
+  <data name="Shell_ModuleRegistry.Content" xml:space="preserve">
+    <value>官方模块库</value>
+  </data>
+  <data name="About.Text" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="Appearance.Text" xml:space="preserve">
+    <value>外观</value>
+  </data>
+  <data name="Author.Text" xml:space="preserve">
+    <value>作者</value>
+  </data>
+  <data name="AvatarStatus.Text" xml:space="preserve">
+    <value>模型状态</value>
+  </data>
+  <data name="LocalTestAvatar.Text" xml:space="preserve">
+    <value>检测到本地测试角色</value>
+  </data>
+  <data name="LocalTestAvatarTooltip.Content" xml:space="preserve">
+    <value>本地测试角色不受支持，而且可能产生部分问题</value>
+  </data>
+  <data name="Copyright.Description" xml:space="preserve">
+    <value>© 2023 VRCFaceTracking。版权所有。</value>
+  </data>
+  <data name="Credits.Description" xml:space="preserve">
+    <value>所有的贡献者们 &lt;3</value>
+  </data>
+  <data name="Dependencies.Header" xml:space="preserve">
+    <value>依赖 &amp; 参考</value>
+  </data>
+  <data name="Description.Text" xml:space="preserve">
+    <value>描述</value>
+  </data>
+  <data name="Disclaimer.Header" xml:space="preserve">
+    <value>本代码和信息按“原样”提供，不提供任何明示或暗示的保证，包括但不限于对适销性和/或特定用途适用性的暗示保证。</value>
+  </data>
+  <data name="Downloads.Text" xml:space="preserve">
+    <value>下载量</value>
+  </data>
+  <data name="EyeTrackingActive.Text" xml:space="preserve">
+    <value>眼追已激活</value>
+  </data>
+  <data name="FaceTrackingActive.Text" xml:space="preserve">
+    <value>面捕已激活</value>
+  </data>
+  <data name="BugRequestCard.Header" xml:space="preserve">
+    <value>提交BUG或请求新功能</value>
+  </data>
+  <data name="PrivacyPolicyCard.Header" xml:space="preserve">
+    <value>隐私政策</value>
+  </data>
+  <data name="LastUpdated.Text" xml:space="preserve">
+    <value>最近更新时间</value>
+  </data>
+  <data name="LegacyParameters.Text" xml:space="preserve">
+    <value>旧参数</value>
+  </data>
+  <data name="Listening_on_Port.Text" xml:space="preserve">
+    <value>监听端口：</value>
+  </data>
+  <data name="ModulePage.Text" xml:space="preserve">
+    <value>模块页</value>
+  </data>
+  <data name="msIncoming.Text" xml:space="preserve">
+    <value>m/s 传入</value>
+  </data>
+  <data name="msOutgoing.Text" xml:space="preserve">
+    <value>m/s 传出</value>
+  </data>
+  <data name="no_modules_installed_warning.Title" xml:space="preserve">
+    <value>没有安装模块</value>
+  </data>
+  <data name="no_modules_installed_warning.ButtonText" xml:space="preserve">
+    <value>从这下载一些模块！</value>
+  </data>
+  <data name="osc_was_disabled_warning.Title" xml:space="preserve">
+    <value>OSC已自动开启</value>
+  </data>
+  <data name="osc_was_disabled_warning.Description" xml:space="preserve">
+    <value>我们注意到您在 VRChat 中的 OSC 已关闭，我们刚刚为您启用了它。如果出现此条提示时游戏处于运行状态，您可能还需要在R键菜单中手动选择开启。</value>
+  </data>
+  <data name="OSCStatus.Text" xml:space="preserve">
+    <value>OSC状态</value>
+  </data>
+  <data name="Parameters.Text" xml:space="preserve">
+    <value>参数</value>
+  </data>
+  <data name="Rating.Text" xml:space="preserve">
+    <value>评分</value>
+  </data>
+  <data name="ThemeSettings.Header" xml:space="preserve">
+    <value>应用主题</value>
+  </data>
+  <data name="ThemeSettings.Description" xml:space="preserve">
+    <value>选择要显示的应用主题</value>
+  </data>
+  <data name="Sending_on_Port.Text" xml:space="preserve">
+    <value>发送端口：</value>
+  </data>
+  <data name="ToggleTracking.Content" xml:space="preserve">
+    <value>追踪开关</value>
+  </data>
+  <data name="CloneRepoCard.Header" xml:space="preserve">
+    <value>克隆此存储库</value>
+  </data>
+  <data name="OpenLocalStorageCard.Header" xml:space="preserve">
+    <value>打开本地文件</value>
+  </data>
+  <data name="UsageInstructions.Text" xml:space="preserve">
+    <value>使用说明</value>
+  </data>
+  <data name="Version.Text" xml:space="preserve">
+    <value>版本号</value>
+  </data>
+  <data name="OscSettings.Header" xml:space="preserve">
+    <value>OSC 设置</value>
+  </data>
+  <data name="OscSettings.Description" xml:space="preserve">
+    <value>OSC 数据应该发送到哪里？</value>
+  </data>
+  <data name="no_modules_installed_warning.Description" xml:space="preserve">
+    <value>您似乎没有安装任何模块。</value>
+  </data>
+  <data name="CalibrationSettings.Header" xml:space="preserve">
+    <value>校准选项</value>
+  </data>
+  <data name="CalibrationSettings.Description" xml:space="preserve">
+    <value>根据您的喜好调整追踪数据</value>
+  </data>
+  <data name="RiskySettings.Header" xml:space="preserve">
+    <value>危险设置</value>
+  </data>
+  <data name="RiskySettings.Description" xml:space="preserve">
+    <value>除非您知道您在做什么，否则请不要更改这些设置</value>
+  </data>
+  <data name="AutoStartSettings.Header" xml:space="preserve">
+    <value>自动启动</value>
+  </data>
+  <data name="AutoStartSettings.Description" xml:space="preserve">
+    <value>跟随 steamVR 启动</value>
+  </data>
+  <data name="CalibrationEnabledToggle.Header" xml:space="preserve">
+    <value>启用校准</value>
+  </data>
+  <data name="CalibrationEnabledToggle.Description" xml:space="preserve">
+    <value>切换是否启用校准</value>
+  </data>
+  <data name="ContCalibrationToggle.Header" xml:space="preserve">
+    <value>持续校准</value>
+  </data>
+  <data name="ContCalibrationToggle.Description" xml:space="preserve">
+    <value>持续不断地慢慢校准您的面部表情</value>
+  </data>
+  <data name="TrackingCalibrateButton.Header" xml:space="preserve">
+    <value>校准</value>
+  </data>
+  <data name="TrackingCalibrateButton.Description" xml:space="preserve">
+    <value>暂时提高您的动作对校准的影响</value>
+  </data>
+  <data name="CalibrationInfluenceSlider.Header" xml:space="preserve">
+    <value>校准影响</value>
+  </data>
+  <data name="CalibrationInfluenceSlider.Description" xml:space="preserve">
+    <value>调整您的面部表情短时内对整体校准的影响度</value>
+  </data>
+  <data name="CalibrateButton.Content" xml:space="preserve">
+    <value>校准</value>
+  </data>
+  <data name="ForceReInitButton.Description" xml:space="preserve">
+    <value>强制重新初始化所有模块</value>
+  </data>
+  <data name="ForceReInitButton.Header" xml:space="preserve">
+    <value>强制重置</value>
+  </data>
+  <data name="ForceRelevancyToggle.Description" xml:space="preserve">
+    <value>通过强制相关性，强制发送所有参数</value>
+  </data>
+  <data name="ForceRelevancyToggle.Header" xml:space="preserve">
+    <value>强制相关性</value>
+  </data>
+  <data name="ReInitButton.Content" xml:space="preserve">
+    <value>重新初始化</value>
+  </data>
+  <data name="ResetAvatarConfButton.Description" xml:space="preserve">
+    <value>重置所有 VRChat OSC 配置数据（数据将在重新加载 avatar 时重新生成）</value>
+  </data>
+  <data name="ResetAvatarConfButton.Header" xml:space="preserve">
+    <value>重置 VRChat 配置</value>
+  </data>
+  <data name="ResetButton.Content" xml:space="preserve">
+    <value>重置</value>
+  </data>
+  <data name="ResetVRCFTButton.Description" xml:space="preserve">
+    <value>重置 VRCFT 存储在 AppData 文件夹中的所有数据</value>
+  </data>
+  <data name="ResetVRCFTButton.Header" xml:space="preserve">
+    <value>重置 VRCFT</value>
+  </data>
+  <data name="HardwareDebug.Header" xml:space="preserve">
+    <value>硬件调试</value>
+  </data>
+  <data name="HardwareDebug.Description" xml:space="preserve">
+    <value>你能看见自己的舌头吗？</value>
+  </data>
+  <data name="Shell_TrackingSettings.Content" xml:space="preserve">
+    <value>Tracking Settings</value>
+  </data>
+  <data name="YourRating.Text" xml:space="preserve">
+    <value />
+  </data>
 </root>
