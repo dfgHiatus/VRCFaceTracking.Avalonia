@@ -138,7 +138,6 @@
                                                 Classes="draggable"
                                                 ItemsSource="{Binding InstalledModules}"
                                                 MaxHeight="400"
-                                                SelectionMode="AlwaysSelected"
                                                 SelectionChanged="OnModuleSelected"
                                                 Width="350"
                                                 x:Name="LocalModuleList">

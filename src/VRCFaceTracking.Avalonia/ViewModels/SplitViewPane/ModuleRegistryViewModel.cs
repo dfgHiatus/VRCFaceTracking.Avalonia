@@ -137,6 +137,14 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         Dispatcher.UIThread.Post(async () =>
         {
             Module = module;
+
+            // Local modules don't have ratings 
+            if (Module.Local)
+            {
+                ModuleRating = 0;
+                return;
+            }
+
             var myRating = await _moduleDataService.GetMyRatingAsync(module);
 
             // We use a lock here because without it a race condition occurres
