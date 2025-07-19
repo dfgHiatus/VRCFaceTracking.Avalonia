@@ -9,17 +9,27 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using VRCFaceTracking.Avalonia.Assets;
 using VRCFaceTracking.Avalonia.Models;
+using VRCFaceTracking.Avalonia.Services;
 using VRCFaceTracking.Avalonia.ViewModels.SplitViewPane;
 
 namespace VRCFaceTracking.Avalonia.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
+    private readonly DropOverlayService _dropOverlayService;
     public MainViewModel(IMessenger messenger)
     {
         Items = new ObservableCollection<ListItemTemplate>(_templates);
-
         SelectedListItem = Items.First(vm => vm.ModelType == typeof(HomePageViewModel));
+        _dropOverlayService = Ioc.Default.GetService<DropOverlayService>();
+
+        _dropOverlayService.ShowOverlayChanged += SetOverlay;
+
+    }
+
+    private void SetOverlay(bool show)
+    {
+        IsDropOverlayVisible = show;
     }
 
     private readonly List<ListItemTemplate> _templates =
@@ -35,6 +45,8 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty]
     private bool _isPaneOpen;
+    [ObservableProperty]
+    private bool _isDropOverlayVisible;
 
     [ObservableProperty]
     private ViewModelBase _currentPage = new HomePageViewModel();
@@ -61,5 +73,11 @@ public partial class MainViewModel : ViewModelBase
     private void TriggerPane()
     {
         IsPaneOpen = !IsPaneOpen;
+    }
+
+    public void DetachedFromVisualTree()
+    {
+        _dropOverlayService.Hide();
+        _dropOverlayService.ShowOverlayChanged -= SetOverlay;
     }
 }

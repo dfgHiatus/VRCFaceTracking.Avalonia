@@ -9,11 +9,13 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using VRCFaceTracking.Avalonia.ViewModels;
 using VRCFaceTracking.Avalonia.ViewModels.SplitViewPane;
 using VRCFaceTracking.Core.Contracts.Services;
 using VRCFaceTracking.Core.Library;
@@ -30,6 +32,7 @@ public partial class ModuleRegistryView : UserControl
     private ModuleInstaller ModuleInstaller { get; }
     private IModuleDataService ModuleDataService { get; }
     private ILibManager LibManager { get; set; }
+
 
     private static FilePickerFileType ZIP { get; } = new("Zip Files")
     {
@@ -77,6 +80,11 @@ public partial class ModuleRegistryView : UserControl
                 }
             }
         };
+
+        AddHandler(DragDrop.DragEnterEvent, OnDragEnter);
+        AddHandler(DragDrop.DragLeaveEvent, OnDragLeave);
+        AddHandler(DragDrop.DropEvent, OnDrop);
+
     }
 
     private void ReinitButton_Click(object? sender, RoutedEventArgs e)
@@ -249,6 +257,57 @@ public partial class ModuleRegistryView : UserControl
         ModuleSelected?.Invoke(first);
 
         return modules;
+    }
+
+    private void OnDragEnter(object? sender, DragEventArgs e)
+    {
+        var viewModel = DataContext as ModuleRegistryViewModel;
+        viewModel.SetDropOverlay(true);
+    }
+
+    private void OnDragLeave(object? sender, DragEventArgs e)
+    {
+        var viewModel = DataContext as ModuleRegistryViewModel;
+        viewModel.SetDropOverlay(false);
+    }
+
+    private async void OnDrop(object? sender, DragEventArgs e)
+    {
+        var viewModel = DataContext as ModuleRegistryViewModel;
+        viewModel.SetDropOverlay(false);
+
+        var items = e.Data.GetFiles();
+        if (items == null) return;
+
+        foreach (var file in items)
+        {
+            if (!file.Name.EndsWith(".zip"))
+                continue;
+
+            await InstallModule(file);
+        }
+    }
+
+    private async Task InstallModule(IStorageItem file)
+    {
+        string path = string.Empty;
+        try
+        {
+            path = await ModuleInstaller.InstallLocalModule(file.Path.AbsolutePath);
+        }
+        finally
+        {
+            if (!string.IsNullOrEmpty(path))
+            {
+                BrowseLocalText.Text = "Successfully installed module(s).";
+                LocalModuleInstalled?.Invoke();
+                LibManager.Initialize();
+            }
+            else
+            {
+                BrowseLocalText.Text = "Failed to install module(s). Check logs for more information.";
+            }
+        }
     }
 }
 

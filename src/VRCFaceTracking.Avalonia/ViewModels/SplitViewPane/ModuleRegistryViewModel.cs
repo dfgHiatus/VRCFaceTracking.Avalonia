@@ -8,6 +8,7 @@ using System.Threading;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using VRCFaceTracking.Avalonia.Services;
 using VRCFaceTracking.Avalonia.Views;
 using VRCFaceTracking.Core.Contracts.Services;
 using VRCFaceTracking.Core.Models;
@@ -52,6 +53,8 @@ public partial class ModuleRegistryViewModel : ViewModelBase
 
     public int CorrectedModuleCount => Math.Max(0, InstalledModules.Count - 1);
 
+    private readonly DropOverlayService _dropOverlayService;
+
     private void RequestReinitialize()
     {
         RequestReinit = true;
@@ -75,6 +78,8 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         _moduleDataService = Ioc.Default.GetService<IModuleDataService>()!;
         _moduleInstaller = Ioc.Default.GetService<ModuleInstaller>()!;
         _libManager = Ioc.Default.GetService<ILibManager>()!;
+        _dropOverlayService = Ioc.Default.GetService<DropOverlayService>()!;
+
         ModuleRegistryView.ModuleSelected += ModuleSelected;
         ModuleRegistryView.LocalModuleInstalled += LocalModuleInstalled;
         ModuleRegistryView.RemoteModuleInstalled += RemoteModuleInstalled;
@@ -94,6 +99,7 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         {
             FilteredModuleInfos.Add(module);
         }
+
     }
 
     private void ModuleRatingChanged(object? sender, PropertyChangedEventArgs args)
@@ -295,6 +301,12 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         }
     }
 
+    public void SetDropOverlay(bool show)
+    {
+        if(show) _dropOverlayService.Show();
+        else _dropOverlayService.Hide();
+        
+    }
     public void DetachedFromVisualTree()
     {
         ModuleRegistryView.ModuleSelected -= ModuleSelected;

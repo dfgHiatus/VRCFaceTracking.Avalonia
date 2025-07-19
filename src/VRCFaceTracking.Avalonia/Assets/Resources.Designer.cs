@@ -309,6 +309,24 @@ namespace VRCFaceTracking.Avalonia.Assets {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drop Files Here to Install.
+        /// </summary>
+        public static string DragNDrop_DropFilesHere {
+            get {
+                return ResourceManager.GetString("DragNDrop.DropFilesHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Release to add modules to VRCFaceTracking.
+        /// </summary>
+        public static string DragNDrop_ReleaseFiles {
+            get {
+                return ResourceManager.GetString("DragNDrop.ReleaseFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Eye Tracking Active.
         /// </summary>
         public static string EyeTrackingActive_Text {
