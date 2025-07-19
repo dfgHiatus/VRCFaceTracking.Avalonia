@@ -1,6 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using System;
+using VRCFaceTracking.Avalonia.Controls;
+using VRCFaceTracking.Avalonia.ViewModels;
 
 
 namespace VRCFaceTracking.Avalonia.Views;
@@ -11,6 +13,8 @@ public partial class MainView : UserControl
     {
         InitializeComponent();
         SetupViewContainer();
+
+        this.DetachedFromVisualTree += OnDetachedFromVisualTree;
     }
 
     private void SetupViewContainer()
@@ -27,5 +31,11 @@ public partial class MainView : UserControl
             // We will just default to the existing xaml to make it more straight-forward to adjust later.
             //ViewContainer.CornerRadius = new CornerRadius(16, 0, 0, 0);
         }
+    }
+
+    private void OnDetachedFromVisualTree(object sender, VisualTreeAttachmentEventArgs e)
+    {
+        var viewModel = DataContext as MainViewModel;
+        viewModel.DetachedFromVisualTree();
     }
 }

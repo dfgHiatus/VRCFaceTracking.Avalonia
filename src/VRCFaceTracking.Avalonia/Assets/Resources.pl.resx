@@ -386,4 +386,10 @@
   <data name="YourRating.Text" xml:space="preserve">
     <value>Twoja ocena</value>
   </data>
+  <data name="DragNDrop.DropFilesHere" xml:space="preserve">
+    <value />
+  </data>
+  <data name="DragNDrop.ReleaseFiles" xml:space="preserve">
+    <value />
+  </data>
 </root>
