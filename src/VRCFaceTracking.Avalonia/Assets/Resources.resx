@@ -397,4 +397,10 @@
   <data name="YourRating.Text" xml:space="preserve">
     <value>Your rating</value>
   </data>
+  <data name="DragNDrop.DropFilesHere" xml:space="preserve">
+    <value>Drop Files Here to Install</value>
+  </data>
+  <data name="DragNDrop.ReleaseFiles" xml:space="preserve">
+    <value>Release to add modules to VRCFaceTracking</value>
+  </data>
 </root>
