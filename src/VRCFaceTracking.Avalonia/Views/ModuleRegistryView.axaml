@@ -95,12 +95,16 @@
                         Header="Registry"
                         x:Name="Registry">
                       <StackPanel IsVisible="{Binding ModulesDetected}" Margin="0,0,6,0">
-                        <TextBox
-                            Margin="0,12"
+                        <StackPanel Orientation="Horizontal" Margin="0,12" Width="350" Spacing="4">
+                          <TextBox
                             Text="{Binding SearchText}"
                             Watermark="Search modules..."
-                            Width="350"
+                            Width="315"
                             x:Name="SearchBox" />
+                          <Button Width="32" Height="32" ToolTip.Tip="Clear" Click="ClearSearchBox_Click">
+                            <TextBlock Text="✕" FontSize="16" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                          </Button>
+                        </StackPanel>
 
                         <ListBox
                             ItemsSource="{Binding FilteredModuleInfos}"
