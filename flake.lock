@@ -1,0 +1,80 @@
+{
+  "nodes": {
+    "desktopNotifications": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1739938590,
+        "narHash": "sha256-ChAvgsigShVsVdW07BBCObODHQGLoHBkyCCPXFnpZCk=",
+        "owner": "dfgHiatus",
+        "repo": "DesktopNotifications",
+        "rev": "e69ae5bdc3144d47bfdbf47c962954406aeb0c92",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dfgHiatus",
+        "repo": "DesktopNotifications",
+        "rev": "e69ae5bdc3144d47bfdbf47c962954406aeb0c92",
+        "type": "github"
+      }
+    },
+    "hyperText": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1739808982,
+        "narHash": "sha256-qBo6B00x+bzfMWKb8pyX8/HlOxqgOvrnrWvE8JSj2QY=",
+        "owner": "dfgHiatus",
+        "repo": "HyperText.Avalonia",
+        "rev": "8c511c818c8936eb575e6fad224279746cd102da",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dfgHiatus",
+        "repo": "HyperText.Avalonia",
+        "rev": "8c511c818c8936eb575e6fad224279746cd102da",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1752480373,
+        "narHash": "sha256-JHQbm+OcGp32wAsXTE/FLYGNpb+4GLi5oTvCxwSoBOA=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "62e0f05ede1da0d54515d4ea8ce9c733f12d9f08",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-unstable",
+        "type": "indirect"
+      }
+    },
+    "root": {
+      "inputs": {
+        "desktopNotifications": "desktopNotifications",
+        "hyperText": "hyperText",
+        "nixpkgs": "nixpkgs",
+        "vrcft": "vrcft"
+      }
+    },
+    "vrcft": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1741130719,
+        "narHash": "sha256-TG+yRVjEEGvHaPzDXbPIhvXzgEfwfo+5TfW8/fa75uw=",
+        "owner": "dfgHiatus",
+        "repo": "VRCFaceTracking",
+        "rev": "13d051a24743717c5eb9b14b39f149fe82bc1073",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dfgHiatus",
+        "repo": "VRCFaceTracking",
+        "rev": "13d051a24743717c5eb9b14b39f149fe82bc1073",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

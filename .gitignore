@@ -3,6 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
+# Nix Stuff
+result
+/.direnv
+/.results
+vrchatfacetracking.AppImage
+
 # User-specific files
 .idea/
 *.rsuser
