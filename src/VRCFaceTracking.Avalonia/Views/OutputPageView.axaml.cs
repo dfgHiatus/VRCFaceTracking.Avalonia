@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using VRCFaceTracking.Avalonia.Helpers;
 using VRCFaceTracking.Services;
 
 namespace VRCFaceTracking.Avalonia.Views;
@@ -15,15 +16,11 @@ public partial class OutputPageView : UserControl
     private static readonly string[] _fileOptions = ["*.txt"];
 
     private readonly ScrollViewer _scrollViewer;
-    // private readonly Button _copyButton;
-    // private readonly Button _saveButton;
 
     public OutputPageView()
     {
         InitializeComponent();
 
-        // _copyButton = this.FindControl<Button>("CopyButton")!;
-        // _saveButton = this.FindControl<Button>("SaveButton")!;
         _scrollViewer = this.FindControl<ScrollViewer>("LogScroller")!;
 
         Loaded += OnLoaded;
@@ -31,6 +28,14 @@ public partial class OutputPageView : UserControl
 
     public ObservableCollection<string> FilteredLog => OutputPageLogger.FilteredLogs;
     public ObservableCollection<string> AllLog => OutputPageLogger.AllLogs;
+
+    private void OpenLogDirectory(object? sender, RoutedEventArgs e)
+    {
+        Dispatcher.UIThread.InvokeAsync(async () =>
+        {
+            URLHelpers.OpenUrl(Core.Utils.UserAccessibleDataDirectory);
+        });
+    }
 
     private void CopyRequested(object? sender, RoutedEventArgs e)
     {

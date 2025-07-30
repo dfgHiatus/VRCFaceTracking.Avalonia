@@ -43,6 +43,16 @@
               </StackPanel>
             </Button.Content>
           </Button>
+          <Button
+             Click="OpenLogDirectory"
+             ToolTip.Tip="Open the loging directory"
+             x:Name="OpenLoggingDirectoryButton">
+            <Button.Content>
+              <StackPanel Orientation="Vertical">
+                <PathIcon Data="{StaticResource FolderOpenVerticalRegular}" Height="24" />
+              </StackPanel>
+            </Button.Content>
+          </Button>
         </StackPanel>
       </controls:ContentExample>
     </StackPanel>
