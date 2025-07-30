@@ -5,6 +5,7 @@ using Avalonia;
 using DesktopNotifications;
 using DesktopNotifications.Avalonia;
 using VRCFaceTracking.Models;
+using Velopack;
 
 namespace VRCFaceTracking.Avalonia.Desktop;
 
@@ -18,6 +19,7 @@ sealed class Program
     [STAThread]
     public static int Main(string[] args)
     {
+        VelopackApp.Build().Run();
         var builder = BuildAvaloniaApp();
 
         App.SendNotification += NotificationRequested;
