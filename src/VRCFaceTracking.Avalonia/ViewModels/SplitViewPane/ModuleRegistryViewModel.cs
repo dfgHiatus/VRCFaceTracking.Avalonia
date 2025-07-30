@@ -8,6 +8,7 @@ using System.Threading;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using VRCFaceTracking.Avalonia.Helpers;
 using VRCFaceTracking.Avalonia.Services;
 using VRCFaceTracking.Avalonia.Views;
 using VRCFaceTracking.Core.Contracts.Services;
@@ -284,21 +285,7 @@ public partial class ModuleRegistryViewModel : ViewModelBase
 
     public void OpenModuleUrl()
     {
-        OpenUrl(_module.ModulePageUrl);
-    }
-
-    private void OpenUrl(string URL)
-    {
-        try
-        {
-            Process.Start(URL);
-        }
-        catch
-        {
-
-            var url = URL.Replace("&", "^&");
-            Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
-        }
+        URLHelpers.OpenUrl(_module.ModulePageUrl);
     }
 
     public void SetDropOverlay(bool show)
