@@ -1,6 +1,6 @@
 <UserControl
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="1024"
+    d:DesignWidth="1024"
     mc:Ignorable="d"
     x:Class="VRCFaceTracking.Avalonia.Views.MutatorPageView"
     x:DataType="vm:MutatorPageViewModel"
@@ -26,17 +26,16 @@
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="Auto" />
-            <!-- Automatically fills available space -->
           </Grid.ColumnDefinitions>
           <TextBlock Text="{Binding Name}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,10,0"/>
           <CheckBox IsChecked="{Binding Value, Mode=TwoWay}"
-                    Margin="10,0,-98,0"
+                    Margin="0,0,0,0"
                     Grid.Column="2"
                     Padding="0,0,0,0"
                     HorizontalContentAlignment="Center"
-                    HorizontalAlignment="Center"/>
+                    HorizontalAlignment="Right"/>
         </Grid>
       </Border>
     </DataTemplate>
