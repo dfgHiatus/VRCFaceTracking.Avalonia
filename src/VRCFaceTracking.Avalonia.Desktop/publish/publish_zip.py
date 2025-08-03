@@ -1,7 +1,6 @@
 import os
 import shutil
 import subprocess
-import glob
 
 def run_dotnet_publish(runtime, config, self_contained, framework):
     """Run the dotnet publish command with the specified parameters."""
@@ -100,9 +99,12 @@ def main():
         if output_dir and os.listdir(output_dir):
             # Create zip filename
             clean_framework = framework.split('-')[0]  # Get base framework name like 'net8.0'
-            zip_filename = f"{runtime}_{clean_framework}.zip"
+            # Place zip in installers/<runtime>/
+            arch_folder = os.path.join(current_dir, 'installers', runtime)
+            os.makedirs(arch_folder, exist_ok=True)
+            zip_filename = os.path.join(arch_folder, f"VRCFaceTracking_Avalonia_{runtime}_{clean_framework}.zip")
             if create_zip(output_dir, zip_filename):
-                print(f"Successfully created zip for {runtime} with framework {framework}")
+                print(f"Successfully created zip for {runtime} with framework {framework} at {zip_filename}")
         else:
             print(f"Could not find non-empty output directory for {runtime} with framework {framework} in {bin_dir}")
             # Print the directory structure to help debugging

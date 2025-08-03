@@ -183,9 +183,6 @@ DocProject/Help/*.hhp
 DocProject/Help/Html2
 DocProject/Help/html
 
-# Click-Once directory
-publish/
-
 # Publish Web Output
 *.[Pp]ublish.xml
 *.azurePubxml
@@ -404,3 +401,4 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 *DS_Store
+/src/VRCFaceTracking.Avalonia.Desktop/installers
