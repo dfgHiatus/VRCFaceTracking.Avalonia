@@ -31,10 +31,7 @@ public partial class OutputPageView : UserControl
 
     private void OpenLogDirectory(object? sender, RoutedEventArgs e)
     {
-        Dispatcher.UIThread.InvokeAsync(async () =>
-        {
-            URLHelpers.OpenUrl(Core.Utils.UserAccessibleDataDirectory);
-        });
+        Dispatcher.UIThread.Invoke(() => { URLHelpers.OpenUrl(Core.Utils.UserAccessibleDataDirectory); });
     }
 
     private void CopyRequested(object? sender, RoutedEventArgs e)

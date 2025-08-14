@@ -45,7 +45,7 @@
           </Button>
           <Button
              Click="OpenLogDirectory"
-             ToolTip.Tip="Open the loging directory"
+             ToolTip.Tip="Open the logging directory"
              x:Name="OpenLoggingDirectoryButton">
             <Button.Content>
               <StackPanel Orientation="Vertical">
