@@ -2,7 +2,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Avalonia.Threading;
@@ -19,26 +18,55 @@ namespace VRCFaceTracking.Avalonia.ViewModels.SplitViewPane;
 
 public partial class ModuleRegistryViewModel : ViewModelBase
 {
+    private readonly DropOverlayService _dropOverlayService;
     [ObservableProperty] private InstallableTrackingModule _module;
+    [ObservableProperty] private int _moduleRating;
 
-    [ObservableProperty] private string _searchText;
+    private readonly SemaphoreSlim _moduleRatingLock = new(1);
+
+    [ObservableProperty] private bool _modulesDetected;
 
     [ObservableProperty] private bool _noRemoteModulesDetected;
 
-    [ObservableProperty] private bool _modulesDetected;
-    [ObservableProperty] private int _moduleRating;
+    private InstallableTrackingModule[] _registryInfos;
+
+    private bool _requestReinit;
+
+    [ObservableProperty] private string _searchText;
+
+    public ModuleRegistryViewModel()
+    {
+        _moduleRegistryView = Ioc.Default.GetService<ModuleRegistryView>()!;
+        _moduleDataService = Ioc.Default.GetService<IModuleDataService>()!;
+        _moduleInstaller = Ioc.Default.GetService<ModuleInstaller>()!;
+        _libManager = Ioc.Default.GetService<ILibManager>()!;
+        _dropOverlayService = Ioc.Default.GetService<DropOverlayService>()!;
+
+        ModuleRegistryView.ModuleSelected += ModuleSelected;
+        ModuleRegistryView.LocalModuleInstalled += LocalModuleInstalled;
+        ModuleRegistryView.RemoteModuleInstalled += RemoteModuleInstalled;
+
+        _registryInfos = _moduleRegistryView.GetRemoteModules();
+
+        ResetInstalledModulesList(true);
+
+        InstalledModules.CollectionChanged += OnLocalModuleCollectionChanged;
+
+        _noRemoteModulesDetected = _registryInfos == null;
+
+        // Hide UI if the user has no remote modules (IE not internet connection) and no local modules
+        _modulesDetected = !_noRemoteModulesDetected || InstalledModules.Count > 0;
+
+        foreach (var module in _registryInfos) FilteredModuleInfos.Add(module);
+    }
+
     public ObservableCollection<InstallableTrackingModule> FilteredModuleInfos { get; } = [];
     public ObservableCollection<InstallableTrackingModule> InstalledModules { get; set; } = [];
-
-    private InstallableTrackingModule[] _registryInfos;
     private ModuleRegistryView _moduleRegistryView { get; }
     private IModuleDataService _moduleDataService { get; }
     private ModuleInstaller _moduleInstaller { get; }
     private ILibManager _libManager { get; }
 
-    private SemaphoreSlim _moduleRatingLock = new(1);
-
-    private bool _requestReinit;
     public bool RequestReinit
     {
         get => _requestReinit;
@@ -53,8 +81,6 @@ public partial class ModuleRegistryViewModel : ViewModelBase
     }
 
     public int CorrectedModuleCount => Math.Max(0, InstalledModules.Count - 1);
-
-    private readonly DropOverlayService _dropOverlayService;
 
     private void RequestReinitialize()
     {
@@ -73,39 +99,8 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         }
     }
 
-    public ModuleRegistryViewModel()
-    {
-        _moduleRegistryView = Ioc.Default.GetService<ModuleRegistryView>()!;
-        _moduleDataService = Ioc.Default.GetService<IModuleDataService>()!;
-        _moduleInstaller = Ioc.Default.GetService<ModuleInstaller>()!;
-        _libManager = Ioc.Default.GetService<ILibManager>()!;
-        _dropOverlayService = Ioc.Default.GetService<DropOverlayService>()!;
-
-        ModuleRegistryView.ModuleSelected += ModuleSelected;
-        ModuleRegistryView.LocalModuleInstalled += LocalModuleInstalled;
-        ModuleRegistryView.RemoteModuleInstalled += RemoteModuleInstalled;
-
-        _registryInfos = _moduleRegistryView.GetRemoteModules();
-
-        ResetInstalledModulesList(suppressReinit: true);
-
-        InstalledModules.CollectionChanged += OnLocalModuleCollectionChanged;
-
-        _noRemoteModulesDetected = _registryInfos == null;
-
-        // Hide UI if the user has no remote modules (IE not internet connection) and no local modules
-        _modulesDetected = !_noRemoteModulesDetected || InstalledModules.Count > 0;
-
-        foreach (var module in _registryInfos)
-        {
-            FilteredModuleInfos.Add(module);
-        }
-
-    }
-
     private void ModuleRatingChanged(object? sender, PropertyChangedEventArgs args)
     {
-
         if (args.PropertyName != "ModuleRating")
             return;
 
@@ -132,20 +127,16 @@ public partial class ModuleRegistryViewModel : ViewModelBase
                 m.ModuleDescription.Contains(SearchText, StringComparison.CurrentCultureIgnoreCase));
 
         FilteredModuleInfos.Clear();
-        foreach (var module in filtered)
-        {
-            FilteredModuleInfos.Add(module);
-        }
+        foreach (var module in filtered) FilteredModuleInfos.Add(module);
     }
 
     private void ModuleSelected(InstallableTrackingModule module)
     {
-
         Dispatcher.UIThread.Post(async () =>
         {
             Module = module;
 
-            // Local modules don't have ratings 
+            // Local modules don't have ratings
             if (Module.Local)
             {
                 ModuleRating = 0;
@@ -190,10 +181,7 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         ResetInstalledModulesList();
 
         FilteredModuleInfos.Clear();
-        foreach (var module in _registryInfos)
-        {
-            FilteredModuleInfos.Add(module);
-        }
+        foreach (var module in _registryInfos) FilteredModuleInfos.Add(module);
 
         ModulesDetected = true;
     }
@@ -230,6 +218,7 @@ public partial class ModuleRegistryViewModel : ViewModelBase
                     await _moduleDataService.IncrementDownloadsAsync(module);
                     module!.Downloads++;
                 }
+
                 break;
             }
             case InstallState.Installed:
@@ -238,21 +227,23 @@ public partial class ModuleRegistryViewModel : ViewModelBase
                 break;
             }
         }
+
         ResetInstalledModulesList();
     }
 
     private void ResetInstalledModulesList(bool suppressReinit = false)
     {
         var installedModules = _moduleDataService.GetInstalledModules()
-                                                 .Where(m => m.InstallationState != InstallState.AwaitingRestart);
+            .Where(m => m.InstallationState != InstallState.AwaitingRestart);
 
         InstalledModules.Clear();
-        int i = 0;
+        var i = 0;
         foreach (var installedModule in installedModules)
         {
             installedModule.PropertyChanged += OnLocalModulePropertyChanged;
             InstalledModules.Add(installedModule);
         }
+
         RenumberModules();
         if (!suppressReinit)
             RequestReinitialize();
@@ -277,10 +268,7 @@ public partial class ModuleRegistryViewModel : ViewModelBase
 
     private void RenumberModules()
     {
-        for (int i = 0; i < InstalledModules.Count; i++)
-        {
-            InstalledModules[i].Order = i;
-        }
+        for (var i = 0; i < InstalledModules.Count; i++) InstalledModules[i].Order = i;
     }
 
     public void OpenModuleUrl()
@@ -290,10 +278,10 @@ public partial class ModuleRegistryViewModel : ViewModelBase
 
     public void SetDropOverlay(bool show)
     {
-        if(show) _dropOverlayService.Show();
+        if (show) _dropOverlayService.Show();
         else _dropOverlayService.Hide();
-        
     }
+
     public void DetachedFromVisualTree()
     {
         ModuleRegistryView.ModuleSelected -= ModuleSelected;

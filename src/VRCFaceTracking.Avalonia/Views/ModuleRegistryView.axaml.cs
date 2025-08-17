@@ -1,24 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
 using Avalonia.Interactivity;
-using Avalonia.LogicalTree;
-using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 using CommunityToolkit.Mvvm.DependencyInjection;
-using VRCFaceTracking.Avalonia.ViewModels;
+using VRCFaceTracking.Avalonia.Helpers;
 using VRCFaceTracking.Avalonia.ViewModels.SplitViewPane;
 using VRCFaceTracking.Core.Contracts.Services;
-using VRCFaceTracking.Core.Library;
 using VRCFaceTracking.Core.Models;
 using VRCFaceTracking.Core.Services;
 
@@ -26,19 +21,6 @@ namespace VRCFaceTracking.Avalonia.Views;
 
 public partial class ModuleRegistryView : UserControl
 {
-    public static event Action<InstallableTrackingModule>? ModuleSelected;
-    public static event Action? LocalModuleInstalled;
-    public static event Action<InstallableTrackingModule>? RemoteModuleInstalled;
-    private ModuleInstaller ModuleInstaller { get; }
-    private IModuleDataService ModuleDataService { get; }
-    private ILibManager LibManager { get; set; }
-
-
-    private static FilePickerFileType ZIP { get; } = new("Zip Files")
-    {
-        Patterns = [ "*.zip" ]
-    };
-
     public ModuleRegistryView()
     {
         InitializeComponent();
@@ -46,7 +28,7 @@ public partial class ModuleRegistryView : UserControl
         ModuleDataService = Ioc.Default.GetService<IModuleDataService>()!;
         ModuleInstaller = Ioc.Default.GetService<ModuleInstaller>()!;
         LibManager = Ioc.Default.GetService<ILibManager>()!;
-        this.DetachedFromVisualTree += OnDetachedFromVisualTree;
+        DetachedFromVisualTree += OnDetachedFromVisualTree;
 
         this.Get<Button>("BrowseLocal")!.Click += async delegate
         {
@@ -70,13 +52,8 @@ public partial class ModuleRegistryView : UserControl
             {
                 if (path != null)
                 {
-                    BrowseLocalText.Text = "Successfully installed module.";
                     LocalModuleInstalled?.Invoke();
                     LibManager.Initialize();
-                }
-                else
-                {
-                    BrowseLocalText.Text = "Failed to install module. Check logs for more information.";
                 }
             }
         };
@@ -84,13 +61,26 @@ public partial class ModuleRegistryView : UserControl
         AddHandler(DragDrop.DragEnterEvent, OnDragEnter);
         AddHandler(DragDrop.DragLeaveEvent, OnDragLeave);
         AddHandler(DragDrop.DropEvent, OnDrop);
-
     }
+
+    private ModuleInstaller ModuleInstaller { get; }
+    private IModuleDataService ModuleDataService { get; }
+    private ILibManager LibManager { get; }
+
+
+    private static FilePickerFileType ZIP { get; } = new("Zip Files")
+    {
+        Patterns = ["*.zip"]
+    };
+
+    public static event Action<InstallableTrackingModule>? ModuleSelected;
+    public static event Action? LocalModuleInstalled;
+    public static event Action<InstallableTrackingModule>? RemoteModuleInstalled;
 
     private void ReinitButton_Click(object? sender, RoutedEventArgs e)
     {
         var viewModel = DataContext as ModuleRegistryViewModel;
-        bool init = viewModel.RequestReinit;
+        var init = viewModel.RequestReinit;
         viewModel.ModuleTryReinitialize();
     }
 
@@ -99,10 +89,7 @@ public partial class ModuleRegistryView : UserControl
         var button = sender as Button;
         var module = button.DataContext as InstallableTrackingModule;
 
-        if (module != null)
-        {
-            module.Order--;
-        }
+        if (module != null) module.Order--;
     }
 
     private void IncrementOrder(object sender, RoutedEventArgs e)
@@ -110,10 +97,7 @@ public partial class ModuleRegistryView : UserControl
         var button = sender as Button;
         var module = button.DataContext as InstallableTrackingModule;
 
-        if (module != null)
-        {
-            module.Order++;
-        }
+        if (module != null) module.Order++;
     }
 
     private void OnDetachedFromVisualTree(object sender, VisualTreeAttachmentEventArgs e)
@@ -158,17 +142,11 @@ public partial class ModuleRegistryView : UserControl
     {
         foreach (var child in parent.GetVisualChildren())
         {
-            if (child is T result)
-            {
-                return result;
-            }
+            if (child is T result) return result;
 
             // Recursively search in child elements
             var foundChild = FindChild<T>(child);
-            if (foundChild != null)
-            {
-                return foundChild;
-            }
+            if (foundChild != null) return foundChild;
         }
 
         return null;
@@ -176,8 +154,7 @@ public partial class ModuleRegistryView : UserControl
 
     private void OnModuleSelected(object? sender, SelectionChangedEventArgs e)
     {
-
-        if(sender is not ListBox moduleListBox) return;
+        if (sender is not ListBox moduleListBox) return;
         if (moduleListBox.ItemCount == 0) return;
 
         var index = moduleListBox.SelectedIndex;
@@ -201,9 +178,7 @@ public partial class ModuleRegistryView : UserControl
         }
 
         if (sender is ListBox listBox && listBox.SelectedItem is InstallableTrackingModule selectedModule)
-        {
             ModuleSelected?.Invoke(selectedModule);
-        }
     }
 
     public InstallableTrackingModule[] GetRemoteModules()
@@ -228,28 +203,27 @@ public partial class ModuleRegistryView : UserControl
         // then we need to set the local module install state to outdated. If everything matches then we need to set the install state to installed.
         var installedModules = ModuleDataService.GetInstalledModules();
 
-        var localModules = new List<InstallableTrackingModule>();    // dw about it
+        var localModules = new List<InstallableTrackingModule>(); // dw about it
         foreach (var installedModule in installedModules)
         {
             installedModule.InstallationState = InstallState.Installed;
             var remoteModule = remoteModules.FirstOrDefault(x => x.ModuleId == installedModule.ModuleId);
-            if (remoteModule == null)   // If this module is completely missing from the remote list, then we need to add it to the list.
-            {
+            if (remoteModule ==
+                null) // If this module is completely missing from the remote list, then we need to add it to the list.
                 // This module is installed but not in the remote list, so we need to add it to the list.
                 localModules.Add(installedModule);
-            }
             else
-            {
                 // This module is installed and in the remote list, so we need to update the remote module's install state.
-                remoteModule.InstallationState = remoteModule.Version != installedModule.Version ? InstallState.Outdated : InstallState.Installed;
-            }
+                remoteModule.InstallationState = remoteModule.Version != installedModule.Version
+                    ? InstallState.Outdated
+                    : InstallState.Installed;
         }
 
         var remoteCount = remoteModules.Count();
 
         // Sort our data by name, then place dfg at the top of the list :3
         remoteModules = remoteModules.OrderByDescending(x => x.AuthorName == "dfgHiatus")
-                                     .ThenBy(x => x.ModuleName);
+            .ThenBy(x => x.ModuleName);
 
         var modules = remoteModules.ToArray();
         var first = modules.First();
@@ -290,7 +264,7 @@ public partial class ModuleRegistryView : UserControl
 
     private async Task InstallModule(IStorageItem file)
     {
-        string path = string.Empty;
+        var path = string.Empty;
         try
         {
             path = await ModuleInstaller.InstallLocalModule(file.Path.AbsolutePath);
@@ -312,8 +286,12 @@ public partial class ModuleRegistryView : UserControl
 
     private void ClearSearchBox_Click(object? sender, RoutedEventArgs e)
     {
-        if (DataContext is ViewModels.SplitViewPane.ModuleRegistryViewModel vm)
+        if (DataContext is ModuleRegistryViewModel vm)
             vm.SearchText = string.Empty;
     }
-}
 
+    private void OpenLogDirectory(object sender, RoutedEventArgs e)
+    {
+        Dispatcher.UIThread.Invoke(() => { URLHelpers.OpenUrl(Core.Utils.CustomLibsDirectory); });
+    }
+}
