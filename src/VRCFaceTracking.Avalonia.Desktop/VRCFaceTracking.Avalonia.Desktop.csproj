@@ -32,19 +32,9 @@
     </ItemGroup>
 
     <!-- Platform Specific -->
-    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.17763.0'">
-        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.Windows\DesktopNotifications.Windows.csproj"/>
-    </ItemGroup>
-
-    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.Apple\DesktopNotifications.Apple.csproj"/>
-        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.FreeDesktop\DesktopNotifications.FreeDesktop.csproj"/>
-    </ItemGroup>
 
     <!-- Shared -->
     <ItemGroup>
-        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.Avalonia\DesktopNotifications.Avalonia.csproj"/>
-        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications\DesktopNotifications.csproj"/>
         <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj"/>
     </ItemGroup>
 
