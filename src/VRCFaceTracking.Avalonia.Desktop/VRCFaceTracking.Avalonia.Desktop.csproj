@@ -1,76 +1,61 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
+        <TargetFrameworks>net8.0;net8.0-windows10.0.17763.0</TargetFrameworks>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
-        <TargetFrameworks>net8.0</TargetFrameworks>
-		<TargetFrameworks Condition=" '$(Configuration)' == 'Windows Debug' ">net8.0-windows10.0.17763.0</TargetFrameworks>
-		<TargetFrameworks Condition=" '$(Configuration)' == 'Windows Release' ">net8.0-windows10.0.17763.0</TargetFrameworks>
-		<WindowsSdkPackageVersion>10.0.17763.38</WindowsSdkPackageVersion> 
-        <Configurations>Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release</Configurations>
-        <Platforms>AnyCPU</Platforms>
+        <WindowsSdkPackageVersion>10.0.17763.38</WindowsSdkPackageVersion>
         <ApplicationIcon>WindowIcon.ico</ApplicationIcon>
         <PackageIcon>logo_128.png</PackageIcon>
     </PropertyGroup>
 
-    <!-- Windows-Specific Settings -->
-    <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.17763.0'">
-        <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
-        <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Per-Configuration Defines -->
+    <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)' == 'Debug|net8.0' ">
+        <DefineConstants>TRACE;LINUX;MACOS;DEBUG;</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Linux Debug' ">
-      <DefineConstants>TRACE; LINUX; DEBUG;</DefineConstants>
+    <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)' == 'Release|net8.0' ">
+        <DefineConstants>TRACE;LINUX;MACOS;</DefineConstants>
+        <Optimize>true</Optimize>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Linux Release' ">
-      <DefineConstants>TRACE; LINUX;</DefineConstants>
-      <Optimize>true</Optimize>
+    <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)' == 'Debug|net8.0-windows10.0.17763.0' ">
+        <DefineConstants>TRACE;WINDOWS;DEBUG;</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'MacOS Debug' ">
-      <DefineConstants>TRACE; MACOS; DEBUG;</DefineConstants>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'MacOS Release' ">
-      <DefineConstants>TRACE; MACOS;</DefineConstants>
-      <Optimize>true</Optimize>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Windows Debug' ">
-      <DefineConstants>TRACE; WINDOWS; DEBUG;</DefineConstants>
-      <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)' == 'Windows Release' ">
-      <DefineConstants>TRACE; WINDOWS;</DefineConstants>
-      <TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
-      <Optimize>true</Optimize>
+    <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)' == 'Release|net8.0-windows10.0.17763.0' ">
+        <DefineConstants>TRACE;WINDOWS;</DefineConstants>
+        <Optimize>true</Optimize>
     </PropertyGroup>
 
+    <!-- Packages -->
     <ItemGroup>
-        <PackageReference Include="Avalonia.Desktop" Version="11.2.3" />
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3" />
-        <PackageReference Include="Velopack" Version="0.0.1298" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.2.3"/>
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3"/>
+        <PackageReference Include="Velopack" Version="0.0.1298"/>
     </ItemGroup>
 
-    <!-- Platform-Specific Dependencies -->
+    <!-- Platform Specific -->
     <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows10.0.17763.0'">
-        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.Windows\DesktopNotifications.Windows.csproj" />
+        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.Windows\DesktopNotifications.Windows.csproj"/>
     </ItemGroup>
 
-    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-macos'">
-        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.Apple\DesktopNotifications.Apple.csproj" />
-        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.FreeDesktop\DesktopNotifications.FreeDesktop.csproj" />
+    <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.Apple\DesktopNotifications.Apple.csproj"/>
+        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.FreeDesktop\DesktopNotifications.FreeDesktop.csproj"/>
+    </ItemGroup>
+
+    <!-- Shared -->
+    <ItemGroup>
+        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.Avalonia\DesktopNotifications.Avalonia.csproj"/>
+        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications\DesktopNotifications.csproj"/>
+        <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications.Avalonia\DesktopNotifications.Avalonia.csproj" />
-        <ProjectReference Include="..\DesktopNotifications\DesktopNotifications\DesktopNotifications.csproj" />
-        <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj" />
+        <None Update="VRCFT-logo_128.png">
+            <Pack>True</Pack>
+            <PackagePath>\</PackagePath>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="VRCFT-logo_128.png">
-        <Pack>True</Pack>
-        <PackagePath>\</PackagePath>
-      </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Content Include="WindowIcon.ico" />
+        <Content Include="WindowIcon.ico"/>
     </ItemGroup>
 </Project>

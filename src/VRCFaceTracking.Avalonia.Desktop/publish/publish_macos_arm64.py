@@ -32,7 +32,8 @@ def make_installer(output_dir, installer_dir, version):
         "--packVersion", version,
         "--packDir", output_dir,
         "--mainExe", "VRCFaceTracking.Avalonia.Desktop",
-        "--outputDir", installer_dir
+        "--outputDir", installer_dir,
+        "--icon", "VRCFT-logo_128.png"
     ]
     print(f"Running: {' '.join(cmd)}")
     subprocess.run(cmd, check=True)
