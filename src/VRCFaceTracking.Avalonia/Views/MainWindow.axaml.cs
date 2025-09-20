@@ -1,9 +1,8 @@
-using Avalonia;
-using Avalonia.Layout;
-using Avalonia.Controls;
-using System.Runtime.InteropServices;
-using VRCFaceTracking.Avalonia.ViewModels;
 using System;
+using System.Reflection;
+using Avalonia.Controls;
+using Avalonia.Layout;
+using VRCFaceTracking.Avalonia.ViewModels;
 
 namespace VRCFaceTracking.Avalonia.Views;
 
@@ -17,6 +16,12 @@ public partial class MainWindow : Window
         DataContext = vm;
         InitializeComponent();
         AdjustTitleBarForPlatform();
+        AppNameAndVersion.Text = $"VRCFaceTracking v{Assembly.GetExecutingAssembly().GetName().Version}";
+        Window.Title = AppNameAndVersion.Text;
+    }
+
+    public MainWindow() : this(new MainViewModel())
+    {
     }
 
     private void AdjustTitleBarForPlatform()
@@ -47,6 +52,4 @@ public partial class MainWindow : Window
             ExtendClientAreaToDecorationsHint = false;
         }
     }
-
-    public MainWindow() : this(new MainViewModel()) { }
 }

@@ -6,6 +6,8 @@
         <ApplicationIcon>Assets\WindowIcon.ico</ApplicationIcon>
         <Configurations>Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release</Configurations>
         <Platforms>AnyCPU</Platforms>
+        <AssemblyVersion>1.1.1.0</AssemblyVersion>
+        <FileVersion>1.1.1.0</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
