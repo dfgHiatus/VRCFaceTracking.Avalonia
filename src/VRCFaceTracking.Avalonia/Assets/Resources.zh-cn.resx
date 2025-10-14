@@ -384,10 +384,10 @@
     <value>硬件调试</value>
   </data>
   <data name="HardwareDebug.Description" xml:space="preserve">
-    <value>你能看见自己的舌头吗？</value>
+    <value>暂未完成喵～</value>
   </data>
   <data name="Shell_TrackingSettings.Content" xml:space="preserve">
-    <value>Tracking Settings</value>
+    <value>捕捉设定</value>
   </data>
   <data name="YourRating.Text" xml:space="preserve">
     <value />

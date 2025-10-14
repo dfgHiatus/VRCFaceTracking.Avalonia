@@ -1,3 +1,4 @@
+using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using VRCFaceTracking.Avalonia.Assets;
@@ -30,9 +31,15 @@ public class LanguageSelectorService(ILocalSettingsService localSettingsService)
 
     public Task SetRequestedLanguageAsync()
     {
-        Resources.Culture = new CultureInfo(Language == DefaultLanguage ?
-            CultureInfo.CurrentCulture.TwoLetterISOLanguageName :
-            Language);
+        // Map language keys from UI to proper CultureInfo names used by resource files.
+        // The UI uses "zh" as the ComboBox item name, but resource file is named "Resources.zh-cn.resx",
+        // so request the specific culture "zh-CN". For default, use the system two-letter ISO name.
+        var cultureName = Language == DefaultLanguage ? CultureInfo.CurrentCulture.TwoLetterISOLanguageName : Language;
+        if (string.Equals(cultureName, "zh", StringComparison.OrdinalIgnoreCase))
+        {
+            cultureName = "zh-CN";
+        }
+        Resources.Culture = new CultureInfo(cultureName);
         return Task.CompletedTask;
     }
 

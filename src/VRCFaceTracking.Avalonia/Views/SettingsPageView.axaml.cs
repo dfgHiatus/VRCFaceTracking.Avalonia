@@ -97,7 +97,57 @@ public partial class SettingsPageView : UserControl
         {
             await _languageSelectorService.SetLanguageAsync(item!.Name);
             UpdateThemes();
+                RefreshLocalizedText();
         });
+    }
+    // 刷新界面所有本地化文本
+    private void RefreshLocalizedText()
+    {
+        // 直接查找主 StackPanel 并遍历其 Children
+        var stackPanel = this.Content as StackPanel;
+        if (stackPanel == null)
+        {
+            if (this.Content is ScrollViewer sv && sv.Content is StackPanel sp)
+                stackPanel = sp;
+        }
+        if (stackPanel == null) return;
+
+        foreach (var child in stackPanel.Children)
+        {
+            if (child is Controls.SettingsBlock settingsBlock)
+            {
+                if (settingsBlock.IconPath == "DarkLightTheme")
+                {
+                    settingsBlock.Title = Assets.Resources.ThemeSettings_Header;
+                    settingsBlock.Description = Assets.Resources.ThemeSettings_Description;
+                }
+                else if (settingsBlock.IconPath == "LanguageRegular")
+                {
+                    settingsBlock.Title = "Language";
+                    settingsBlock.Description = "Set the app's language. Requires a restart for some elements.";
+                }
+                else if (settingsBlock.IconPath == "WirelessRegular")
+                {
+                    settingsBlock.Title = Assets.Resources.OscSettings_Header;
+                    settingsBlock.Description = Assets.Resources.OscSettings_Description;
+                }
+            }
+            else if (child is Controls.SettingsToggle settingsToggle)
+            {
+                settingsToggle.Title = Assets.Resources.AutoStartSettings_Header;
+                settingsToggle.Description = Assets.Resources.AutoStartSettings_Description;
+            }
+            else if (child is Controls.SettingsExpanderToggle expanderToggle)
+            {
+                expanderToggle.Title = Assets.Resources.RiskySettings_Header;
+                expanderToggle.Description = Assets.Resources.RiskySettings_Description;
+            }
+            else if (child is Controls.SettingsExpander expander)
+            {
+                expander.Title = Assets.Resources.HardwareDebug_Header;
+                expander.Description = Assets.Resources.HardwareDebug_Description;
+            }
+        }
     }
 
     // Workaround for https://github.com/AvaloniaUI/Avalonia/issues/4460
