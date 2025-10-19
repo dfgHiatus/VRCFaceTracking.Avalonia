@@ -35,9 +35,12 @@
 
         buildInputs = with pkgs; [
           pkg-config fontconfig
+          openssl icu krb5
           xorg.libX11 xorg.libSM xorg.libICE
           (pkgs.callPackage ./nix/simpleosc.nix {})
         ];
+        runtimeDependencies = with pkgs; [ vulkan-loader ];
+        nativeBuildInputs = with pkgs; [ autoPatchelfHook ];
 
         src = ./.;
 
@@ -53,6 +56,7 @@
 
         postFixup = ''
           mv $out/bin/VRCFaceTracking.Avalonia.Desktop $out/bin/vrchatfacetracking
+          wrapProgram $out/bin/vrchatfacetracking --set LD_LIBRARY_PATH ${nixpkgs.lib.makeLibraryPath runtimeDependencies}
         '';
 
         dotnetSdk = dotnet.sdk;
