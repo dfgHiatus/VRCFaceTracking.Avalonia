@@ -39,7 +39,10 @@
           xorg.libX11 xorg.libSM xorg.libICE
           (pkgs.callPackage ./nix/simpleosc.nix {})
         ];
-        runtimeDependencies = with pkgs; [ vulkan-loader ];
+        runtimeDependencies = with pkgs; [
+          vulkan-loader
+          (pkgs.callPackage ./nix/simpleosc.nix {})
+        ];
         nativeBuildInputs = with pkgs; [ autoPatchelfHook ];
 
         src = ./.;
