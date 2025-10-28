@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net8.0-android</TargetFramework>
+        <SupportedOSPlatformVersion>33</SupportedOSPlatformVersion>
+        <Nullable>enable</Nullable>
+        <ApplicationId>com.VRCFaceTracking.Avalonia</ApplicationId>
+        <ApplicationVersion>1</ApplicationVersion>
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <AndroidPackageFormat>apk</AndroidPackageFormat>
+        <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+        <Configurations>Debug;Release;Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release;Android Debug;Android Release</Configurations>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia.Android" Version="11.3.8" />
+        <PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" />
+		<AndroidNativeLibrary Include="jniLibs\arm64-v8a\fti_osc.so" Abi="armeabi-v7a" />
+	    <AndroidNativeLibrary Include="jniLibs\armeabi-v7a\fti_osc.so" Abi="arm64-v8a" />
+	    <AndroidNativeLibrary Include="jniLibs\x86\fti_osc.so" Abi="x86" />
+        <AndroidNativeLibrary Include="jniLibs\x86_64\fti_osc.so" Abi="x86_64" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AndroidResource Update="Icon.png">
+		<Link>Resources\drawable\Icon.png</Link>
+      </AndroidResource>
+    </ItemGroup>
+    
+</Project>

@@ -4,7 +4,7 @@
         <LangVersion>latest</LangVersion>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <ApplicationIcon>Assets\WindowIcon.ico</ApplicationIcon>
-        <Configurations>Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release</Configurations>
+        <Configurations>Debug;Release;Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release;Android Debug;Android Release;Android Release</Configurations>
         <Platforms>AnyCPU</Platforms>
         <AssemblyVersion>1.1.1.0</AssemblyVersion>
         <FileVersion>1.1.1.0</FileVersion>
@@ -13,6 +13,16 @@
     <ItemGroup>
         <AvaloniaResource Include="Assets\**" />
         <AvaloniaResource Remove="Assets\*.resx" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AvaloniaResource Include="LocalSettings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="LocalSettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
     </ItemGroup>
 
 
@@ -98,12 +108,6 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Resources.zh-cn.resx</DependentUpon>
         </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="LocalSettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 
 
