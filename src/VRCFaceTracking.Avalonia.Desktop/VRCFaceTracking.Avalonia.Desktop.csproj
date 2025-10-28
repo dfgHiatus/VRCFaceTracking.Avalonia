@@ -38,7 +38,7 @@
 
     <!-- Shared -->
     <ItemGroup>
-        <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj"/>
+        <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -49,6 +49,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="WindowIcon.ico"/>
+        <Content Include="WindowIcon.ico" />
     </ItemGroup>
 </Project>
