@@ -18,6 +18,11 @@
   };
   inputs.nixpkgs.url = "nixpkgs/nixos-unstable";
 
+  # Dependency downloads are currently broken, if anyone can get it working, feel free to make a PR
+  nixConfig = {
+    sandbox = false;
+  };
+
   outputs = { self, nixpkgs, vrcft, desktopNotifications, hyperText, ... }: let
     systems = ["x86_64-linux" "aarch64-linux" "aarch64-darwin"];
     forAllSystems = nixpkgs.lib.genAttrs systems;
