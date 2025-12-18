@@ -26,9 +26,12 @@
 
     <!-- Packages -->
     <ItemGroup>
-        <PackageReference Include="Avalonia.Desktop" Version="11.2.3"/>
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.9" />
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3"/>
         <PackageReference Include="Velopack" Version="0.0.1298"/>
+        <PackageReference Update="Packaging.Targets">
+          <Version>0.1.232</Version>
+        </PackageReference>
     </ItemGroup>
 
     <!-- Platform Specific -->
