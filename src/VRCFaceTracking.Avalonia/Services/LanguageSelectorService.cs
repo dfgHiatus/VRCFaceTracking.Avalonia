@@ -15,6 +15,7 @@ public class LanguageSelectorService(ILocalSettingsService localSettingsService)
 
     public string Language { get; set; } = DefaultLanguage;
 
+    public event EventHandler? LanguageChanged;
     public async Task InitializeAsync()
     {
         Language = await LoadLanguageFromSettingsAsync();
@@ -27,6 +28,7 @@ public class LanguageSelectorService(ILocalSettingsService localSettingsService)
         Language = language;
         await SetRequestedLanguageAsync();
         await SaveLanguageInSettingsAsync(Language);
+        LanguageChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public Task SetRequestedLanguageAsync()
