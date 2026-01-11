@@ -315,6 +315,24 @@
   <data name="CalibrationSettings.Description" xml:space="preserve">
     <value>Tweak tracking data to your heart's content</value>
   </data>
+  <data name="CorrectorsSettings.Header" xml:space="preserve">
+    <value>Unified Correctors</value>
+  </data>
+  <data name="CorrectorsSettings.Description" xml:space="preserve">
+    <value>Processes data to conform to Unified Expressions.</value>
+  </data>
+  <data name="FilterSettings.Header" xml:space="preserve">
+    <value>Data Filter</value>
+  </data>
+  <data name="FilterSettings.Description" xml:space="preserve">
+    <value>Default data filtering for VRCFaceTracking expressions.</value>
+  </data>
+  <data name="ParameterAdjustmentSettings.Header" xml:space="preserve">
+    <value>Parameter Adjustment</value>
+  </data>
+  <data name="ParameterAdjustmentSettings.Description" xml:space="preserve">
+    <value>Adjust VRCFaceTracking Parameters.</value>
+  </data>
   <data name="RiskySettings.Header" xml:space="preserve">
     <value>Risky Settings</value>
   </data>
@@ -403,4 +421,139 @@
   <data name="DragNDrop.ReleaseFiles" xml:space="preserve">
     <value>Release to add modules to VRCFaceTracking</value>
   </data>
+    <data name="MouthClosed/JawOpen Clamp" xml:space="preserve">
+      <value>MouthClosed/JawOpen Clamp</value>
+    </data>
+    <data name="LipSuck Limiter" xml:space="preserve">
+      <value>LipSuck Limiter</value>
+    </data>
+    <data name="[DEBUG] Data Points" xml:space="preserve">
+      <value>[DEBUG] Data Points</value>
+    </data>
+    <data name="[DEBUG] Step Delta" xml:space="preserve">
+      <value>[DEBUG] Step Delta</value>
+    </data>
+    <data name="[DEBUG] Calibration Delta" xml:space="preserve">
+      <value>[DEBUG] Calibration Delta</value>
+    </data>
+    <data name="Calibration Deviation" xml:space="preserve">
+      <value>Calibration Deviation</value>
+    </data>
+    <data name="Minimum Cutoff" xml:space="preserve">
+      <value>Minimum Cutoff</value>
+    </data>
+    <data name="Beta" xml:space="preserve">
+      <value>Beta</value>
+    </data>
+    <data name="Derivative Cutoff" xml:space="preserve">
+      <value>Derivative Cutoff</value>
+    </data>
+    <data name="Reset Values" xml:space="preserve">
+      <value>Reset Values</value>
+    </data>
+    <data name="Eyebrow Raiser" xml:space="preserve">
+      <value>Eyebrow Raiser</value>
+    </data>
+    <data name="Eyebrow Lowerer" xml:space="preserve">
+      <value>Eyebrow Lowerer</value>
+    </data>
+    <data name="Eye Squint" xml:space="preserve">
+      <value>Eye Squint</value>
+    </data>
+    <data name="Eye Wide" xml:space="preserve">
+      <value>Eye Wide</value>
+    </data>
+    <data name="Cheek" xml:space="preserve">
+      <value>Cheek</value>
+    </data>
+    <data name="Cheek Squint" xml:space="preserve">
+      <value>Cheek Squint</value>
+    </data>
+    <data name="Jaw" xml:space="preserve">
+      <value>Jaw</value>
+    </data>
+    <data name="MouthClosed" xml:space="preserve">
+      <value>MouthClosed</value>
+    </data>
+    <data name="Jaw Sideways" xml:space="preserve">
+      <value>Jaw Sideways</value>
+    </data>
+    <data name="Jaw Forward / Backward" xml:space="preserve">
+      <value>Jaw Forward / Backward</value>
+    </data>
+    <data name="Lip Funnel" xml:space="preserve">
+      <value>Lip Funnel</value>
+    </data>
+    <data name="Lip Suck" xml:space="preserve">
+      <value>Lip Suck</value>
+    </data>
+    <data name="Lip Pucker" xml:space="preserve">
+      <value>Lip Pucker</value>
+    </data>
+    <data name="Mouth Open" xml:space="preserve">
+      <value>Mouth Open</value>
+    </data>
+    <data name="Mouth Smile" xml:space="preserve">
+      <value>Mouth Smile</value>
+    </data>
+    <data name="Mouth Frown" xml:space="preserve">
+      <value>Mouth Frown</value>
+    </data>
+    <data name="Mouth Stretch" xml:space="preserve">
+      <value>Mouth Stretch</value>
+    </data>
+    <data name="Mouth Tightener" xml:space="preserve">
+      <value>Mouth Tightener</value>
+    </data>
+    <data name="Mouth Press" xml:space="preserve">
+      <value>Mouth Press</value>
+    </data>
+    <data name="Mouth Sideways" xml:space="preserve">
+      <value>Mouth Sideways</value>
+    </data>
+    <data name="Mouth Raiser" xml:space="preserve">
+      <value>Mouth Raiser</value>
+    </data>
+    <data name="Nose" xml:space="preserve">
+      <value>Nose</value>
+    </data>
+    <data name="Nose Sneer" xml:space="preserve">
+      <value>Nose Sneer</value>
+    </data>
+    <data name="Neck" xml:space="preserve">
+      <value>Neck</value>
+    </data>
+    <data name="Tongue Out" xml:space="preserve">
+      <value>Tongue Out</value>
+    </data>
+    <data name="Tongue Directions" xml:space="preserve">
+      <value>Tongue Directions</value>
+    </data>
+    <data name="Tongue Miscellaneous" xml:space="preserve">
+      <value>Tongue Miscellaneous</value>
+    </data>
+    <data name="Head Rotation (Side-to-Side)" xml:space="preserve">
+      <value>Head Rotation (Side-to-Side)</value>
+    </data>
+    <data name="Head Rotation (Up-Down Tilt)" xml:space="preserve">
+      <value>Head Rotation (Up-Down Tilt)</value>
+    </data>
+    <data name="Head Rotation (Side Tilt)" xml:space="preserve">
+      <value>Head Rotation (Side Tilt)</value>
+    </data>
+    <data name="Head Position (Side-to-Side)" xml:space="preserve">
+      <value>Head Position (Side-to-Side)</value>
+    </data>
+    <data name="Head Position (Up-Down)" xml:space="preserve">
+      <value>Head Position (Up-Down)</value>
+    </data>
+    <data name="Head Position (Forward-Back)" xml:space="preserve">
+      <value>Head Position (Forward-Back)</value>
+    </data>
+    <data name="[DEBUG] Log Data" xml:space="preserve">
+      <value>[DEBUG] Log Data</value>
+    </data>
+    <data name="Clear Calibration" xml:space="preserve">
+      <value>Clear Calibration</value>
+    </data>
 </root>

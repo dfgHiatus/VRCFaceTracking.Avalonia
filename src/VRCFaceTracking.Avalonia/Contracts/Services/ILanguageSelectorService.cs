@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using System;
 using Avalonia.Styling;
 
 namespace VRCFaceTracking.Contracts.Services;
@@ -9,6 +10,8 @@ public interface ILanguageSelectorService
     {
         get;
     }
+
+    event EventHandler? LanguageChanged;
 
     Task InitializeAsync();
 

@@ -12,9 +12,14 @@
     xmlns:vm="clr-namespace:VRCFaceTracking.Avalonia.ViewModels.SplitViewPane"
     xmlns:helpers="using:VRCFaceTracking.Helpers"
     xmlns:mutator="using:VRCFaceTracking.Core.Params.Data.Mutation"
+    xmlns:local="clr-namespace:VRCFaceTracking.Avalonia.Views"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
   <UserControl.Resources>
+
+    <local:MutationHeaderConverter x:Key="MutationHeaderConverter" />
+    <local:MutationDescriptionConverter x:Key="MutationDescriptionConverter" />
+    <local:ComponentTextConverter x:Key="ComponentTextConverter" />
 
     <!-- Data Templates -->
     <DataTemplate x:Key="CheckboxTemplate" DataType="{x:Type mutator:MutationProperty}">
@@ -29,7 +34,7 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="Auto" />
           </Grid.ColumnDefinitions>
-          <TextBlock Text="{Binding Name}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,10,0"/>
+          <TextBlock Text="{Binding Name, Converter={StaticResource ComponentTextConverter}}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,10,0"/>
           <CheckBox IsChecked="{Binding Value, Mode=TwoWay}"
                     Margin="0,0,0,0"
                     Grid.Column="2"
@@ -52,7 +57,7 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="6*" />
           </Grid.ColumnDefinitions>
-          <TextBlock Text="{Binding Name}" TextWrapping="Wrap"  VerticalAlignment="Center" Margin="0,0,10,0"/>
+          <TextBlock Text="{Binding Name, Converter={StaticResource ComponentTextConverter}}" TextWrapping="Wrap"  VerticalAlignment="Center" Margin="0,0,10,0"/>
           <TextBox Text="{Binding Value, Mode=TwoWay}"
                    Grid.Column="2"
                    HorizontalAlignment="Right"
@@ -73,7 +78,7 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="6*" />
           </Grid.ColumnDefinitions>
-          <TextBlock Text="{Binding Name}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,10,0"/>
+          <TextBlock Text="{Binding Name, Converter={StaticResource ComponentTextConverter}}" TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,10,0"/>
           <Grid Grid.Column="2">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="1*" MinWidth="90"/>
@@ -104,8 +109,8 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="6*" />
           </Grid.ColumnDefinitions>
-          <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Margin="0,0,10,0"/>
-          <Button Content="{Binding Name}" MinWidth="0" Command="{Binding}" Margin="0" HorizontalAlignment="Right" Grid.Column="2"/>
+          <TextBlock Text="{Binding Name, Converter={StaticResource ComponentTextConverter}}" VerticalAlignment="Center" Margin="0,0,10,0"/>
+          <Button Content="{Binding Name, Converter={StaticResource ComponentTextConverter}}" MinWidth="0" Command="{Binding}" Margin="0" HorizontalAlignment="Right" Grid.Column="2"/>
         </Grid>
       </Border>
     </DataTemplate>
@@ -121,7 +126,7 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="6*" />
           </Grid.ColumnDefinitions>
-          <TextBlock Text="{Binding Name}" TextWrapping="Wrap"  VerticalAlignment="Center" Margin="0,0,10,0"/>
+          <TextBlock Text="{Binding Name, Converter={StaticResource ComponentTextConverter}}" TextWrapping="Wrap"  VerticalAlignment="Center" Margin="0,0,10,0"/>
           <Grid Grid.Column="2">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="2*" MinWidth="40"/>
@@ -142,19 +147,20 @@
     </DataTemplate>
 
     <helpers:ComponentTemplateSelector x:Key="MutationPropertyTemplateSelector"
-                                      CheckboxTemplate="{StaticResource CheckboxTemplate}"
-                                      TextInputTemplate="{StaticResource TextInputTemplate}"
-                                      ButtonTemplate="{StaticResource ButtonTemplate}"
-                                      RangeTemplate="{StaticResource RangeTemplate}"
-                                      SliderTemplate="{StaticResource SliderTemplate}"/>
+                      CheckboxTemplate="{StaticResource CheckboxTemplate}"
+                      TextInputTemplate="{StaticResource TextInputTemplate}"
+                      ButtonTemplate="{StaticResource ButtonTemplate}"
+                      RangeTemplate="{StaticResource RangeTemplate}"
+                      SliderTemplate="{StaticResource SliderTemplate}"/>
+    
   </UserControl.Resources>
 
   <!-- Main Content -->
   <Grid>
     <ScrollViewer>
       <StackPanel Classes="Page">
-        <TextBlock Classes="Header"
-                   Text="{x:Static assets:Resources.Shell_TrackingSettings_Content}" />
+           <TextBlock Name="HeaderTextBlock" Classes="Header"
+             Text="{x:Static assets:Resources.Shell_TrackingSettings_Content}" />
 
         <ItemsRepeater x:Name="MutationsListView" ItemsSource="{Binding Mutations}" Margin="0">
           <ItemsRepeater.ItemTemplate>
@@ -183,12 +189,12 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                       </Grid.RowDefinitions>
-                      <TextBlock Text="{Binding Name}"
+                      <TextBlock Text="{Binding ., Converter={StaticResource MutationHeaderConverter}}"
                                  FontSize="16"
                                  FontWeight="SemiBold"
                                  VerticalAlignment="Center"
                                  Margin="0"/>
-                      <TextBlock Text="{Binding Description}"
+                      <TextBlock Text="{Binding ., Converter={StaticResource MutationDescriptionConverter}}"
                                  FontSize="14"
                                  Foreground="{DynamicResource SystemChromeGrayColor}"
                                  Margin="0,5"
