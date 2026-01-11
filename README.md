@@ -16,6 +16,8 @@ Head to the releases section and [download the latest appimage](https://github.c
 
 You may also be prompted to download the .NET runtime for desktop apps here too.
 
+*Some Linux users have reported that toggling OSC on and off can soft-crash the application. If this affects you, use [this version](https://github.com/dfgHiatus/VRCFaceTracking.Avalonia/releases/tag/v1.0.0.0).*
+
 ### macOS (and alt. Linux method)
 Install `git` and a version of the `dotnet-sdk` (.NET 8, 8.0.404 or higher).
 
