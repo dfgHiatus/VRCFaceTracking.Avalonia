@@ -23,6 +23,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HyperText.Avalonia", "src\H
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VRCFaceTracking.Avalonia.Tests", "src\VRCFaceTracking.Avalonia.Tests\VRCFaceTracking.Avalonia.Tests.csproj", "{12AF29DB-DFE8-4336-A52A-3941E97F6287}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRCFaceTracking.ModuleProcess", "src\VRCFaceTracking\VRCFaceTracking.ModuleProcess\VRCFaceTracking.ModuleProcess.csproj", "{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VRCFaceTracking", "src\VRCFaceTracking\VRCFaceTracking\VRCFaceTracking.csproj", "{8B52F943-34FA-459B-A58A-6D2733C5D737}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +127,38 @@ Global
 		{12AF29DB-DFE8-4336-A52A-3941E97F6287}.Windows Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12AF29DB-DFE8-4336-A52A-3941E97F6287}.Windows Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12AF29DB-DFE8-4336-A52A-3941E97F6287}.Windows Release|Any CPU.Build.0 = Release|Any CPU
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.Linux Debug|Any CPU.ActiveCfg = Debug|x86
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.Linux Debug|Any CPU.Build.0 = Debug|x86
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.Linux Release|Any CPU.ActiveCfg = Debug|x86
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.Linux Release|Any CPU.Build.0 = Debug|x86
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.MacOS Debug|Any CPU.ActiveCfg = Debug|x86
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.MacOS Debug|Any CPU.Build.0 = Debug|x86
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.MacOS Release|Any CPU.ActiveCfg = Debug|x86
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.MacOS Release|Any CPU.Build.0 = Debug|x86
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.Windows Debug|Any CPU.ActiveCfg = Debug|x86
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.Windows Debug|Any CPU.Build.0 = Debug|x86
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.Windows Release|Any CPU.ActiveCfg = Debug|x86
+		{E8DE74C3-D311-4BD9-BAFA-5DCED949EBF3}.Windows Release|Any CPU.Build.0 = Debug|x86
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.Linux Debug|Any CPU.ActiveCfg = Debug|x86
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.Linux Debug|Any CPU.Build.0 = Debug|x86
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.Linux Release|Any CPU.ActiveCfg = Debug|x86
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.Linux Release|Any CPU.Build.0 = Debug|x86
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.MacOS Debug|Any CPU.ActiveCfg = Debug|x86
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.MacOS Debug|Any CPU.Build.0 = Debug|x86
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.MacOS Release|Any CPU.ActiveCfg = Debug|x86
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.MacOS Release|Any CPU.Build.0 = Debug|x86
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.Windows Debug|Any CPU.ActiveCfg = Debug|x86
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.Windows Debug|Any CPU.Build.0 = Debug|x86
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.Windows Release|Any CPU.ActiveCfg = Debug|x86
+		{8B52F943-34FA-459B-A58A-6D2733C5D737}.Windows Release|Any CPU.Build.0 = Debug|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

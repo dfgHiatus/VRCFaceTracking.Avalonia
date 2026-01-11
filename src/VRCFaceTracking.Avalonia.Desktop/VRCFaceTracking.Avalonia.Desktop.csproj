@@ -1,25 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFrameworks>net8.0;net8.0-windows10.0.17763.0</TargetFrameworks>
+        <TargetFrameworks>net10.0;net10.0-windows10.0.17763.0</TargetFrameworks>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
         <WindowsSdkPackageVersion>10.0.17763.38</WindowsSdkPackageVersion>
         <ApplicationIcon>WindowIcon.ico</ApplicationIcon>
         <PackageIcon>logo_128.png</PackageIcon>
+        <AssemblyVersion>1.2.0.0</AssemblyVersion>
+        <FileVersion>1.2.0.0</FileVersion>
     </PropertyGroup>
 
     <!-- Per-Configuration Defines -->
-    <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)' == 'Debug|net8.0' ">
+    <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)' == 'Debug|net10.0' ">
         <DefineConstants>TRACE;LINUX;MACOS;DEBUG;</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)' == 'Release|net8.0' ">
+    <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)' == 'Release|net10.0' ">
         <DefineConstants>TRACE;LINUX;MACOS;</DefineConstants>
         <Optimize>true</Optimize>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)' == 'Debug|net8.0-windows10.0.17763.0' ">
+    <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)' == 'Debug|net10.0-windows10.0.17763.0' ">
         <DefineConstants>TRACE;WINDOWS;DEBUG;</DefineConstants>
     </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)' == 'Release|net8.0-windows10.0.17763.0' ">
+    <PropertyGroup Condition=" '$(Configuration)|$(TargetFramework)' == 'Release|net10.0-windows10.0.17763.0' ">
         <DefineConstants>TRACE;WINDOWS;</DefineConstants>
         <Optimize>true</Optimize>
     </PropertyGroup>
@@ -34,12 +36,18 @@
         </PackageReference>
     </ItemGroup>
 
-    <!-- Platform Specific -->
-
     <!-- Shared -->
     <ItemGroup>
         <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj"/>
     </ItemGroup>
+    <Target Name="CopyExecutable" AfterTargets="Build" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+        <Copy SourceFiles="..\VRCFaceTracking\VRCFaceTracking.ModuleProcess\bin\x86\Debug\net10.0\win-x86\VRCFaceTracking.ModuleProcess.exe" DestinationFolder="..\VRCFaceTracking.Avalonia.Desktop\bin\Windows Debug\net10.0" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="..\VRCFaceTracking\VRCFaceTracking.ModuleProcess\bin\x86\Debug\net10.0\win-x86\VRCFaceTracking.ModuleProcess.dll" DestinationFolder="..\VRCFaceTracking.Avalonia.Desktop\bin\Windows Debug\net10.0" SkipUnchangedFiles="true" />
+    </Target>
+    <Target Name="CopyExecutableLinux" AfterTargets="Build" Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+        <Copy SourceFiles="..\VRCFaceTracking\VRCFaceTracking.ModuleProcess\bin\Debug\net10.0\linux-x64\VRCFaceTracking.ModuleProcess" DestinationFolder="..\VRCFaceTracking.Avalonia.Desktop\bin\Linux Debug\net10.0" SkipUnchangedFiles="true" />
+        <Copy SourceFiles="..\VRCFaceTracking\VRCFaceTracking.ModuleProcess\bin\Debug\net10.0\linux-x64\VRCFaceTracking.ModuleProcess.dll" DestinationFolder="..\VRCFaceTracking.Avalonia.Desktop\bin\Linux Debug\net10.0" SkipUnchangedFiles="true" />
+    </Target>
 
     <ItemGroup>
         <None Update="VRCFT-logo_128.png">

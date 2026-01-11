@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -29,7 +30,7 @@ public class ModuleDataService : IModuleDataService
     {
         _identityService = identityService;
         _logger = logger;
-        _httpClient = new HttpClient();
+        _httpClient = HappyEyeballsHttp.CreateHttpClient();
         _httpClient.BaseAddress = new Uri(BaseUrl);
     }
 
@@ -77,7 +78,7 @@ public class ModuleDataService : IModuleDataService
         _logger.LogError("Failed to increment downloads for {ModuleId}. Status code: {StatusCode}", moduleMetadata.ModuleId, response.StatusCode);
     }
 
-    private void CheckForLegacyModules()
+    public IEnumerable<InstallableTrackingModule> GetLegacyModules()
     {
         if (!Directory.Exists(Utils.CustomLibsDirectory))
         {
@@ -86,82 +87,88 @@ public class ModuleDataService : IModuleDataService
 
         var moduleDlls = Directory.GetFiles(Utils.CustomLibsDirectory, "*.dll");
 
-        foreach (var moduleDll in moduleDlls)
+        return moduleDlls.Select(moduleDll => new InstallableTrackingModule
         {
-            var moduleFolder = Path.Combine(Utils.CustomLibsDirectory, Path.GetFileNameWithoutExtension(moduleDll));
-            if (!Directory.Exists(moduleFolder))
-            {
-                Directory.CreateDirectory(moduleFolder);
-            }
-
-            var moduleJsonPath = Path.Combine(moduleFolder, "module.json");
-            if (!File.Exists(moduleJsonPath))
-            {
-                var newMeta = new InstallableTrackingModule
-                {
-                    DllFileName = Path.GetFileName(moduleDll),
-                    InstallationState = InstallState.Installed,
-                    ModuleId = Guid.Empty,
-                    ModuleName = Path.GetFileNameWithoutExtension(moduleDll),
-                    ModuleDescription = "Legacy module",
-                    AuthorName = "Local",
-                    ModulePageUrl = "file:///" + Path.GetDirectoryName(moduleDll),
-                    Local = true,
-                };
-                var moduleJson = JsonConvert.SerializeObject(newMeta);
-                File.WriteAllText(moduleJsonPath, moduleJson);
-                continue;
-            }
-        }
+            AssemblyLoadPath = moduleDll,
+            DllFileName = Path.GetFileName(moduleDll),
+            InstallationState = InstallState.Installed,
+            ModuleId = Guid.Empty,
+            ModuleName = Path.GetFileNameWithoutExtension(moduleDll),
+            ModuleDescription = "Legacy module",
+            AuthorName = "Local",
+            ModulePageUrl = "file:///" + Path.GetDirectoryName(moduleDll)
+        });
     }
 
     public async Task<int?> GetMyRatingAsync(TrackingModuleMetadata moduleMetadata)
     {
-        if (_ratingCache.TryGetValue(moduleMetadata.ModuleId, out var async))
+        try
         {
-            _logger.LogDebug("Rating for {ModuleId} was cached as {Rating}", moduleMetadata.ModuleId, async);
-            return async;
+            if (_ratingCache.TryGetValue(moduleMetadata.ModuleId, out var async))
+            {
+                _logger.LogDebug("Rating for {ModuleId} was cached as {Rating}", moduleMetadata.ModuleId, async);
+                return async;
+            }
+
+            var rating = new RatingObject
+                { UserId = _identityService.GetUniqueUserId(), ModuleId = moduleMetadata.ModuleId.ToString() };
+
+            var response = await _httpClient.SendAsync(new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("rating", UriKind.Relative),
+                Content = new StringContent(JsonConvert.SerializeObject(rating), Encoding.UTF8, "application/json"),
+            });
+
+            // Deserialize the input content but extract the Rating property. Be careful though, we might 404 if the user hasn't rated the module yet.
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                _logger.LogDebug("Failed to get user rating for module {ModuleId}", moduleMetadata.ModuleId);
+                return null;
+            }
+
+            var ratingResponse = await Json.ToObjectAsync<RatingObject>(await response.Content.ReadAsStringAsync());
+
+            _logger.LogDebug("Rating for {ModuleId} was {Rating}. Caching...", moduleMetadata.ModuleId, ratingResponse.Rating);
+            _ratingCache[moduleMetadata.ModuleId] = ratingResponse.Rating;
+            return ratingResponse.Rating;
         }
-
-        var rating = new RatingObject
-            { UserId = _identityService.GetUniqueUserId(), ModuleId = moduleMetadata.ModuleId.ToString() };
-        var response = await _httpClient.SendAsync(new HttpRequestMessage
+        catch (Exception e)
         {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri("rating", UriKind.Relative),
-            Content = new StringContent(JsonConvert.SerializeObject(rating), Encoding.UTF8, "application/json"),
-        });
-
-
-        // Deserialize the input content but extract the Rating property. Be careful though, we might 404 if the user hasn't rated the module yet.
-        if (response.StatusCode != HttpStatusCode.OK)
-        {
-            _logger.LogDebug("Failed to get user rating for module {ModuleId}", moduleMetadata.ModuleId);
+            _logger.LogWarning("Failed to get user rating for module {ModuleId}. Exception: {Exception}", moduleMetadata.ModuleId, e.Message);
             return null;
         }
-
-        var ratingResponse = await Json.ToObjectAsync<RatingObject>(await response.Content.ReadAsStringAsync());
-
-        _logger.LogDebug("Rating for {ModuleId} was {Rating}. Caching...", moduleMetadata.ModuleId, ratingResponse.Rating);
-        _ratingCache[moduleMetadata.ModuleId] = ratingResponse.Rating;
-        return ratingResponse.Rating;
     }
 
     public async Task SetMyRatingAsync(TrackingModuleMetadata moduleMetadata, int rating)
     {
-        // Same format as get but we PUT this time
-        var ratingObject = new RatingObject{UserId = _identityService.GetUniqueUserId(), ModuleId = moduleMetadata.ModuleId.ToString(), Rating = rating};
-
-        var content = new StringContent(JsonConvert.SerializeObject(ratingObject), Encoding.UTF8, "application/json");
-        var response = await _httpClient.PutAsync("rating", content);
-
-        if (response.StatusCode != HttpStatusCode.OK)
+        try
         {
-            _logger.LogError("Failed to set rating for {ModuleId} to {Rating}. Status code: {StatusCode}", moduleMetadata.ModuleId, rating, response.StatusCode);
-            return;
+            // Same format as get but we PUT this time
+            var ratingObject = new RatingObject
+            {
+                UserId = _identityService.GetUniqueUserId(), ModuleId = moduleMetadata.ModuleId.ToString(),
+                Rating = rating
+            };
+
+            var content = new StringContent(JsonConvert.SerializeObject(ratingObject), Encoding.UTF8,
+                "application/json");
+            var response = await _httpClient.PutAsync("rating", content);
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                _logger.LogError("Failed to set rating for {ModuleId} to {Rating}. Status code: {StatusCode}",
+                    moduleMetadata.ModuleId, rating, response.StatusCode);
+                return;
+            }
+
+            _logger.LogDebug("Rating for {ModuleId} was set to {Rating}. Caching...", moduleMetadata.ModuleId, rating);
+            _ratingCache[moduleMetadata.ModuleId] = rating;
         }
-        _logger.LogDebug("Rating for {ModuleId} was set to {Rating}. Caching...", moduleMetadata.ModuleId, rating);
-        _ratingCache[moduleMetadata.ModuleId] = rating;
+        catch (Exception e)
+        {
+            _logger.LogWarning("Failed to set rating for module {ModuleId}. Exception: {Exception}", moduleMetadata.ModuleId, e.Message);
+        }
     }
 
     public IEnumerable<InstallableTrackingModule> GetInstalledModules()
@@ -170,8 +177,6 @@ public class ModuleDataService : IModuleDataService
         {
             Directory.CreateDirectory(Utils.CustomLibsDirectory);
         }
-
-        CheckForLegacyModules();
 
         // Check each folder in our CustomModulesDir folder and see if it has a module.json file.
         // If it does, deserialize it and add it to the list of installed modules.
@@ -189,10 +194,7 @@ public class ModuleDataService : IModuleDataService
             try
             {
                 var module = JsonConvert.DeserializeObject<InstallableTrackingModule>(moduleJson);
-                var guidFolderFound = Directory.GetDirectories(Utils.CustomLibsDirectory, module.ModuleId.ToString(), SearchOption.TopDirectoryOnly).Length > 0;
-                module.AssemblyLoadPath = guidFolderFound ? Path.Combine(moduleFolder, module.DllFileName) : Path.Combine(Utils.CustomLibsDirectory, module.DllFileName);
-                if (module.InstallationState == InstallState.NotInstalled)
-                    module.InstallationState = InstallState.Installed;
+                module.AssemblyLoadPath = Path.Combine(moduleFolder, module.DllFileName);
                 installedModules.Add(module);
             }
             catch (Exception e)
@@ -201,7 +203,7 @@ public class ModuleDataService : IModuleDataService
             }
         }
 
-        return installedModules.OrderBy(m => m.Order);
+        return installedModules;
     }
 
     public async Task SaveInstalledModulesDataAsync(IEnumerable<InstallableTrackingModule> modulesToSave)
@@ -217,8 +219,8 @@ public class ModuleDataService : IModuleDataService
         try
         {
             string path = moduleToSave.Local
-                          ? Path.Combine(Utils.CustomLibsDirectory, Path.GetFileNameWithoutExtension(moduleToSave.DllFileName), "module.json")
-                          : Path.Combine(Utils.CustomLibsDirectory, moduleToSave.ModuleId.ToString(), "module.json");
+                ? Path.Combine(Utils.CustomLibsDirectory, Path.GetFileNameWithoutExtension(moduleToSave.DllFileName), "module.json")
+                : Path.Combine(Utils.CustomLibsDirectory, moduleToSave.ModuleId.ToString(), "module.json");
 
             var moduleJson = JsonConvert.SerializeObject(moduleToSave, Formatting.Indented);
             File.WriteAllText(path, moduleJson);

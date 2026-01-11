@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <ApplicationIcon>Assets\WindowIcon.ico</ApplicationIcon>
         <Configurations>Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release</Configurations>
         <Platforms>AnyCPU</Platforms>
-        <AssemblyVersion>1.1.1.0</AssemblyVersion>
-        <FileVersion>1.1.1.0</FileVersion>
+        <AssemblyVersion>1.2.0.0</AssemblyVersion>
+        <FileVersion>1.2.0.0</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
