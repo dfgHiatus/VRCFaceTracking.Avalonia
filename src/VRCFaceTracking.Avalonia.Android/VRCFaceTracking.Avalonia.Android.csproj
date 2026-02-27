@@ -13,12 +13,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia.Android" Version="11.3.8" />
+        <PackageReference Include="Avalonia.Android" Version="11.3.12" />
         <PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.2.0.1"  />
 		<AndroidNativeLibrary Include="jniLibs\arm64-v8a\fti_osc.so" Abi="armeabi-v7a" />
 	    <AndroidNativeLibrary Include="jniLibs\armeabi-v7a\fti_osc.so" Abi="arm64-v8a" />
 	    <AndroidNativeLibrary Include="jniLibs\x86\fti_osc.so" Abi="x86" />
         <AndroidNativeLibrary Include="jniLibs\x86_64\fti_osc.so" Abi="x86_64" />
+        <PackageReference Update="Packaging.Targets">
+          <Version>0.1.232</Version>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
