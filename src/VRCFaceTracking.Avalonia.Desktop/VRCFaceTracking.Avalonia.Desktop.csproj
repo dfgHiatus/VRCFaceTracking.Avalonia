@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFrameworks>net8.0;net8.0-windows10.0.17763.0</TargetFrameworks>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
         <WindowsSdkPackageVersion>10.0.17763.38</WindowsSdkPackageVersion>
         <ApplicationIcon>WindowIcon.ico</ApplicationIcon>
         <PackageIcon>logo_128.png</PackageIcon>
+        <TargetFramework>net10.0</TargetFramework>
     </PropertyGroup>
 
     <!-- Per-Configuration Defines -->
@@ -26,11 +26,11 @@
 
     <!-- Packages -->
     <ItemGroup>
-        <PackageReference Include="Avalonia.Desktop" Version="11.3.12" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.12"/>
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3"/>
         <PackageReference Include="Velopack" Version="0.0.1298"/>
         <PackageReference Update="Packaging.Targets">
-          <Version>0.1.232</Version>
+            <Version>0.1.232</Version>
         </PackageReference>
     </ItemGroup>
 
@@ -38,7 +38,7 @@
 
     <!-- Shared -->
     <ItemGroup>
-        <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj" />
+        <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -49,6 +49,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="WindowIcon.ico" />
+        <Content Include="WindowIcon.ico"/>
     </ItemGroup>
 </Project>

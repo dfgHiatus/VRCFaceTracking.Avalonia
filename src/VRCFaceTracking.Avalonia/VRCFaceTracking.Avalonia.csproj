@@ -1,57 +1,57 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <LangVersion>latest</LangVersion>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <ApplicationIcon>Assets\WindowIcon.ico</ApplicationIcon>
-        <Configurations>Debug;Release;Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release;Android Debug;Android Release;Android Release</Configurations>
+        <Configurations>Debug;Release</Configurations>
         <Platforms>AnyCPU</Platforms>
         <AssemblyVersion>1.1.1.0</AssemblyVersion>
         <FileVersion>1.1.1.0</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
-        <AvaloniaResource Include="Assets\**" />
-        <AvaloniaResource Remove="Assets\*.resx" />
+        <AvaloniaResource Include="Assets\**"/>
+        <AvaloniaResource Remove="Assets\*.resx"/>
     </ItemGroup>
 
     <ItemGroup>
-      <AvaloniaResource Include="LocalSettings.json" />
+        <AvaloniaResource Include="LocalSettings.json"/>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Include="LocalSettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </EmbeddedResource>
+        <EmbeddedResource Include="LocalSettings.json">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
     </ItemGroup>
 
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.3.12" />
-        <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.12" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.12" />
+        <PackageReference Include="Avalonia" Version="11.3.12"/>
+        <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5"/>
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.12"/>
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.12"/>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3" />
-        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.3.0.6" />
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.3" />
-        <PackageReference Include="RangeSlider.Avalonia" Version="2.1.0" />
+        <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3"/>
+        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.3.0.6"/>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0"/>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3"/>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.3"/>
+        <PackageReference Include="RangeSlider.Avalonia" Version="2.1.0"/>
         <PackageReference Update="Packaging.Targets">
-          <Version>0.1.232</Version>
+            <Version>0.1.232</Version>
         </PackageReference>
     </ItemGroup>
 
 
     <ItemGroup>
-      <ProjectReference Include="..\HyperText.Avalonia\HyperText.Avalonia\HyperText.Avalonia.csproj" />
-      <ProjectReference Include="..\VRCFaceTracking\VRCFaceTracking.Core\VRCFaceTracking.Core.csproj" />
+        <ProjectReference Include="..\HyperText.Avalonia\HyperText.Avalonia\HyperText.Avalonia.csproj"/>
+        <ProjectReference Include="..\VRCFaceTracking\VRCFaceTracking.Core\VRCFaceTracking.Core.csproj"/>
     </ItemGroup>
 
 
     <ItemGroup>
-      <Folder Include="Activation\" />
+        <Folder Include="Activation\"/>
     </ItemGroup>
 
 
@@ -115,9 +115,9 @@
 
 
     <ItemGroup>
-      <AvaloniaResource Update="logo_256.ico">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </AvaloniaResource>
+        <AvaloniaResource Update="logo_256.ico">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </AvaloniaResource>
     </ItemGroup>
 
 </Project>
