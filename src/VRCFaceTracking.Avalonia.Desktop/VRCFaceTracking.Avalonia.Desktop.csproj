@@ -26,7 +26,7 @@
 
     <!-- Packages -->
     <ItemGroup>
-        <PackageReference Include="Avalonia.Desktop" Version="11.3.9" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.3.12" />
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3"/>
         <PackageReference Include="Velopack" Version="0.0.1298"/>
         <PackageReference Update="Packaging.Targets">
@@ -38,7 +38,7 @@
 
     <!-- Shared -->
     <ItemGroup>
-        <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj"/>
+        <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -49,6 +49,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="WindowIcon.ico"/>
+        <Content Include="WindowIcon.ico" />
     </ItemGroup>
 </Project>

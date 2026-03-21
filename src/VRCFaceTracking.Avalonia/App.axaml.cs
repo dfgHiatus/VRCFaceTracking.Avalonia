@@ -61,6 +61,11 @@ public partial class App : Application
         var locator = new ViewLocator();
         DataTemplates.Add(locator);
 
+        if (!File.Exists(LocalSettingsService.DefaultLocalSettingsFile))
+        {
+            File.WriteAllText(LocalSettingsService.DefaultLocalSettingsFile, "{}");
+        }
+
         var hostBuilder = Host.CreateDefaultBuilder().
             ConfigureServices((context, services) =>
             {
@@ -130,12 +135,6 @@ public partial class App : Application
                 services.Configure<LocalSettingsOptions>(config);
             });
 
-        if (!File.Exists(LocalSettingsService.DefaultLocalSettingsFile))
-        {
-            // Create the file if it doesn't exist
-            File.Create(LocalSettingsService.DefaultLocalSettingsFile).Dispose();
-        }
-
         _host = hostBuilder.Build();
         Ioc.Default.ConfigureServices(_host.Services);
 
@@ -155,11 +154,6 @@ public partial class App : Application
                 singleViewPlatform.MainView = new MainView { DataContext = vm };
                 break;
         }
-
-        // var notif = new NotificationModel();
-        // notif.Title = "Hello, World!";
-        // notif.Body = "This is a test notification.";
-        // SendNotification?.Invoke(notif);
 
         base.OnFrameworkInitializationCompleted();
     }

@@ -4,7 +4,7 @@
         <LangVersion>latest</LangVersion>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
         <ApplicationIcon>Assets\WindowIcon.ico</ApplicationIcon>
-        <Configurations>Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release</Configurations>
+        <Configurations>Debug;Release;Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release;Android Debug;Android Release;Android Release</Configurations>
         <Platforms>AnyCPU</Platforms>
         <AssemblyVersion>1.1.1.0</AssemblyVersion>
         <FileVersion>1.1.1.0</FileVersion>
@@ -15,18 +15,28 @@
         <AvaloniaResource Remove="Assets\*.resx" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AvaloniaResource Include="LocalSettings.json" />
+    </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="11.3.9" />
+      <EmbeddedResource Include="LocalSettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </EmbeddedResource>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="11.3.12" />
         <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="11.1.5" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.9" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.9" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.12" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.12" />
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.2.3" />
         <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.3.0.6" />
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.3" />
+        <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.3" />
         <PackageReference Include="RangeSlider.Avalonia" Version="2.1.0" />
         <PackageReference Update="Packaging.Targets">
           <Version>0.1.232</Version>
@@ -101,12 +111,6 @@
             <AutoGen>True</AutoGen>
             <DependentUpon>Resources.zh-cn.resx</DependentUpon>
         </Compile>
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="LocalSettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 
 
