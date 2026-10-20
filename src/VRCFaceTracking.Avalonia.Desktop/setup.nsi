@@ -64,7 +64,7 @@
   Section "-hidden app"
     SectionIn RO
     SetOutPath "$INSTDIR"
-    File /r "bin\Windows Release\net8.0-windows10.0.17763.0\*.*"
+    File /r "bin\Release\net10.0\win-x64\publish\*.*"
 
     ;Get size to show in Control Panel
     ${GetSize} "$INSTDIR" "/S=0K" $0 $1 $2

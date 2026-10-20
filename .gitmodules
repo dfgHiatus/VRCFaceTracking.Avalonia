@@ -1,6 +1,7 @@
 [submodule "src/VRCFaceTracking"]
 	path = src/VRCFaceTracking
-	url = https://github.com/dfgHiatus/VRCFaceTracking.git
+	url = https://github.com/benaclejames/VRCFaceTracking.git
+	branch = master
 [submodule "src/DesktopNotifications"]
 	path = src/DesktopNotifications
 	url = https://github.com/dfgHiatus/DesktopNotifications.git

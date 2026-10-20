@@ -53,7 +53,7 @@ def find_output_directory(bin_dir, framework, runtime):
         if os.path.exists(alt_path) and os.listdir(alt_path):
             return alt_path
 
-        # Then try with just the base framework (net8.0)
+        # Then try with just the base framework (net10.0)
         base_framework = framework.split('-')[0]
         alt_path = os.path.join(bin_dir, base_framework, runtime, 'publish')
         if os.path.exists(alt_path) and os.listdir(alt_path):
@@ -75,12 +75,12 @@ def main():
     # Define the publish configurations
     configs = [
         # runtime, config_name, self_contained, framework
-        ('win-x64', 'Windows Release', True, 'net8.0-windows10.0.17763.0'),
-        ('win-arm64', 'Windows Release', True, 'net8.0-windows10.0.17763.0'),
-        ('osx-x64', 'MacOS Release', True, 'net8.0'),
-        ('osx-arm64', 'MacOS Release', True, 'net8.0'),
-        ('linux-x64', 'Linux Release', True, 'net8.0'),
-        ('linux-arm64', 'Linux Release', True, 'net8.0')
+        ('win-x64', 'Release', True, 'net10.0'),
+        ('win-arm64', 'Release', True, 'net10.0'),
+        ('osx-x64', 'Release', True, 'net10.0'),
+        ('osx-arm64', 'Release', True, 'net10.0'),
+        ('linux-x64', 'Release', True, 'net10.0'),
+        ('linux-arm64', 'Release', True, 'net10.0')
     ]
 
     # Current directory where the script is run
@@ -98,7 +98,7 @@ def main():
 
         if output_dir and os.listdir(output_dir):
             # Create zip filename
-            clean_framework = framework.split('-')[0]  # Get base framework name like 'net8.0'
+            clean_framework = framework.split('-')[0]  # Get base framework name like 'net10.0'
             # Place zip in installers/<runtime>/
             arch_folder = os.path.join(current_dir, 'installers', runtime)
             os.makedirs(arch_folder, exist_ok=True)

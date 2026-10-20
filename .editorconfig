@@ -13,5 +13,45 @@ indent_style = space
 [*.{axaml,xaml}]
 indent_size = 2
 
-# dotnet specific
+[*.cs]
+indent_size = 4
 dotnet_sort_system_directives_first = true
+
+# Generated resx designers
+[*.Designer.cs]
+generated_code = true
+
+# C# style (matches existing code; surfaced in builds via EnforceCodeStyleInBuild)
+[*.cs]
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_style_var_for_built_in_types = true:suggestion
+csharp_style_var_when_type_is_apparent = true:suggestion
+csharp_new_line_before_open_brace = all
+dotnet_style_readonly_field = true:suggestion
+dotnet_diagnostic.IDE0005.severity = warning # unnecessary usings
+dotnet_diagnostic.IDE0161.severity = warning # file-scoped namespace
+
+# Private fields: _camelCase
+dotnet_naming_rule.private_fields_underscore.symbols = private_fields
+dotnet_naming_rule.private_fields_underscore.style = underscore_camel
+dotnet_naming_rule.private_fields_underscore.severity = warning
+dotnet_naming_symbols.private_fields.applicable_kinds = field
+dotnet_naming_symbols.private_fields.applicable_accessibilities = private
+dotnet_naming_symbols.private_fields.required_modifiers =
+dotnet_naming_style.underscore_camel.required_prefix = _
+dotnet_naming_style.underscore_camel.capitalization = camel_case
+
+# Private constants stay PascalCase (more specific, so it wins over the rule above)
+dotnet_naming_rule.private_consts_pascal.symbols = private_consts
+dotnet_naming_rule.private_consts_pascal.style = pascal
+dotnet_naming_rule.private_consts_pascal.severity = warning
+dotnet_naming_symbols.private_consts.applicable_kinds = field
+dotnet_naming_symbols.private_consts.applicable_accessibilities = private
+dotnet_naming_symbols.private_consts.required_modifiers = const
+dotnet_naming_style.pascal.capitalization = pascal_case
+
+# LoggerMessage delegates: not worth it for a UI app
+dotnet_diagnostic.CA1848.severity = suggestion
+dotnet_diagnostic.CA1873.severity = suggestion
+# Codebase (and upstream VRCFaceTracking) uses camelCase logging placeholders
+dotnet_diagnostic.CA1727.severity = suggestion

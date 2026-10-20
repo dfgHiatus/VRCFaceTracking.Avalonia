@@ -4,10 +4,12 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using VRCFaceTracking.Avalonia.Helpers;
+using VRCFaceTracking.Avalonia.Models;
 using VRCFaceTracking.Avalonia.Services;
 using VRCFaceTracking.Avalonia.Views;
 using VRCFaceTracking.Core.Contracts.Services;
@@ -19,7 +21,7 @@ namespace VRCFaceTracking.Avalonia.ViewModels.SplitViewPane;
 public partial class ModuleRegistryViewModel : ViewModelBase
 {
     private readonly DropOverlayService _dropOverlayService;
-    [ObservableProperty] private InstallableTrackingModule _module;
+    [ObservableProperty] private ModuleEntry _module;
     [ObservableProperty] private int _moduleRating;
 
     private readonly SemaphoreSlim _moduleRatingLock = new(1);
@@ -28,7 +30,7 @@ public partial class ModuleRegistryViewModel : ViewModelBase
 
     [ObservableProperty] private bool _noRemoteModulesDetected;
 
-    private InstallableTrackingModule[] _registryInfos;
+    private ModuleEntry[] _registryInfos;
 
     private bool _requestReinit;
 
@@ -37,7 +39,7 @@ public partial class ModuleRegistryViewModel : ViewModelBase
     public ModuleRegistryViewModel()
     {
         _moduleRegistryView = Ioc.Default.GetService<ModuleRegistryView>()!;
-        _moduleDataService = Ioc.Default.GetService<IModuleDataService>()!;
+        _moduleDataService = Ioc.Default.GetService<ModuleDataService>()!;
         _moduleInstaller = Ioc.Default.GetService<ModuleInstaller>()!;
         _libManager = Ioc.Default.GetService<ILibManager>()!;
         _dropOverlayService = Ioc.Default.GetService<DropOverlayService>()!;
@@ -60,10 +62,10 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         foreach (var module in _registryInfos) FilteredModuleInfos.Add(module);
     }
 
-    public ObservableCollection<InstallableTrackingModule> FilteredModuleInfos { get; } = [];
-    public ObservableCollection<InstallableTrackingModule> InstalledModules { get; set; } = [];
+    public ObservableCollection<ModuleEntry> FilteredModuleInfos { get; } = [];
+    public ObservableCollection<ModuleEntry> InstalledModules { get; set; } = [];
     private ModuleRegistryView _moduleRegistryView { get; }
-    private IModuleDataService _moduleDataService { get; }
+    private ModuleDataService _moduleDataService { get; }
     private ModuleInstaller _moduleInstaller { get; }
     private ILibManager _libManager { get; }
 
@@ -87,15 +89,15 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         RequestReinit = true;
     }
 
-    public void ModuleTryReinitialize()
+    public async void ModuleTryReinitialize()
     {
         if (RequestReinit)
         {
             RequestReinit = false;
             var installedModules = InstalledModules.ToList();
-            _moduleDataService.SaveInstalledModulesDataAsync(installedModules);
-            _libManager.TeardownAllAndResetAsync();
-            _libManager.Initialize();
+            await _moduleDataService.SaveInstalledModulesDataAsync(installedModules);
+            // Initialize tears down running modules first, then reloads them in the saved order.
+            await _libManager.Initialize();
         }
     }
 
@@ -105,7 +107,7 @@ public partial class ModuleRegistryViewModel : ViewModelBase
             return;
 
         // Can't rate local modules
-        if (Module.Local)
+        if (Module.IsLocal)
             return;
 
         _moduleDataService.SetMyRatingAsync(Module, ModuleRating);
@@ -130,14 +132,14 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         foreach (var module in filtered) FilteredModuleInfos.Add(module);
     }
 
-    private void ModuleSelected(InstallableTrackingModule module)
+    private void ModuleSelected(ModuleEntry module)
     {
         Dispatcher.UIThread.Post(async () =>
         {
             Module = module;
 
             // Local modules don't have ratings
-            if (Module.Local)
+            if (Module.IsLocal)
             {
                 ModuleRating = 0;
                 return;
@@ -205,36 +207,37 @@ public partial class ModuleRegistryViewModel : ViewModelBase
         }
     }
 
-    public async void RemoteModuleInstalled(InstallableTrackingModule module)
+    public async Task RemoteModuleInstalled(ModuleEntry module)
     {
+        // Upstream's installer tears down and reinitializes modules itself, so no restart or reinit request is needed.
         switch (module.InstallationState)
         {
             case InstallState.NotInstalled or InstallState.Outdated:
-            {
-                var path = await _moduleInstaller.InstallRemoteModule(module);
-                if (!string.IsNullOrEmpty(path))
                 {
-                    module!.InstallationState = InstallState.Installed;
-                    await _moduleDataService.IncrementDownloadsAsync(module);
-                    module!.Downloads++;
-                }
+                    var path = await _moduleInstaller.InstallRemoteModule(module);
+                    if (!string.IsNullOrEmpty(path))
+                    {
+                        module.InstallationState = InstallState.Installed;
+                        await _moduleDataService.IncrementDownloadsAsync(module);
+                        module.Downloads++;
+                    }
 
-                break;
-            }
+                    break;
+                }
             case InstallState.Installed:
-            {
-                _moduleInstaller.MarkModuleForDeletion(module);
-                break;
-            }
+                {
+                    await _moduleInstaller.UninstallModule(module);
+                    module.InstallationState = InstallState.NotInstalled;
+                    break;
+                }
         }
 
-        ResetInstalledModulesList();
+        ResetInstalledModulesList(suppressReinit: true);
     }
 
     private void ResetInstalledModulesList(bool suppressReinit = false)
     {
-        var installedModules = _moduleDataService.GetInstalledModules()
-            .Where(m => m.InstallationState != InstallState.AwaitingRestart);
+        var installedModules = _moduleDataService.GetInstalledModuleEntries();
 
         InstalledModules.Clear();
         var i = 0;
@@ -251,7 +254,7 @@ public partial class ModuleRegistryViewModel : ViewModelBase
 
     private async void OnLocalModulePropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (sender is not InstallableTrackingModule module)
+        if (sender is not ModuleEntry module)
             return;
 
         var desiredIndex = module.Order;

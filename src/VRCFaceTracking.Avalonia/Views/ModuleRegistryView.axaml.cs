@@ -12,6 +12,7 @@ using Avalonia.Threading;
 using Avalonia.VisualTree;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using VRCFaceTracking.Avalonia.Helpers;
+using VRCFaceTracking.Avalonia.Models;
 using VRCFaceTracking.Avalonia.ViewModels.SplitViewPane;
 using VRCFaceTracking.Core.Contracts.Services;
 using VRCFaceTracking.Core.Models;
@@ -25,7 +26,7 @@ public partial class ModuleRegistryView : UserControl
     {
         InitializeComponent();
 
-        ModuleDataService = Ioc.Default.GetService<IModuleDataService>()!;
+        ModuleDataService = Ioc.Default.GetService<ModuleDataService>()!;
         ModuleInstaller = Ioc.Default.GetService<ModuleInstaller>()!;
         LibManager = Ioc.Default.GetService<ILibManager>()!;
         DetachedFromVisualTree += OnDetachedFromVisualTree;
@@ -53,7 +54,7 @@ public partial class ModuleRegistryView : UserControl
                 if (path != null)
                 {
                     LocalModuleInstalled?.Invoke();
-                    LibManager.Initialize();
+                    _ = LibManager.Initialize();
                 }
             }
         };
@@ -64,7 +65,7 @@ public partial class ModuleRegistryView : UserControl
     }
 
     private ModuleInstaller ModuleInstaller { get; }
-    private IModuleDataService ModuleDataService { get; }
+    private ModuleDataService ModuleDataService { get; }
     private ILibManager LibManager { get; }
 
 
@@ -73,9 +74,9 @@ public partial class ModuleRegistryView : UserControl
         Patterns = ["*.zip"]
     };
 
-    public static event Action<InstallableTrackingModule>? ModuleSelected;
+    public static event Action<ModuleEntry>? ModuleSelected;
     public static event Action? LocalModuleInstalled;
-    public static event Action<InstallableTrackingModule>? RemoteModuleInstalled;
+    public static event Func<ModuleEntry, Task>? RemoteModuleInstalled;
 
     private void ReinitButton_Click(object? sender, RoutedEventArgs e)
     {
@@ -87,7 +88,7 @@ public partial class ModuleRegistryView : UserControl
     private void DecrementOrder(object sender, RoutedEventArgs e)
     {
         var button = sender as Button;
-        var module = button.DataContext as InstallableTrackingModule;
+        var module = button.DataContext as ModuleEntry;
 
         if (module != null) module.Order--;
     }
@@ -95,7 +96,7 @@ public partial class ModuleRegistryView : UserControl
     private void IncrementOrder(object sender, RoutedEventArgs e)
     {
         var button = sender as Button;
-        var module = button.DataContext as InstallableTrackingModule;
+        var module = button.DataContext as ModuleEntry;
 
         if (module != null) module.Order++;
     }
@@ -106,16 +107,16 @@ public partial class ModuleRegistryView : UserControl
         viewModel.DetachedFromVisualTree();
     }
 
-    private void InstallButton_Click(object? sender, RoutedEventArgs e)
+    private async void InstallButton_Click(object? sender, RoutedEventArgs e)
     {
         if (ModuleList.ItemCount == 0) return;
         var index = ModuleList.SelectedIndex;
         if (index == -1) index = 0;
-        if (ModuleList.Items[index] is not InstallableTrackingModule module) return;
+        if (ModuleList.Items[index] is not ModuleEntry module) return;
 
-        InstallButton.Content = "Please Restart VRCFT";
+        InstallButton.Content = module.IsInstalled ? "Uninstalling..." : "Installing...";
         InstallButton.IsEnabled = false;
-        RemoteModuleInstalled?.Invoke(module);
+        if (RemoteModuleInstalled != null) await RemoteModuleInstalled(module);
         OnModuleSelected(ModuleList, null);
     }
 
@@ -159,37 +160,37 @@ public partial class ModuleRegistryView : UserControl
 
         var index = moduleListBox.SelectedIndex;
         if (index == -1) index = 0;
-        if (moduleListBox.Items[index] is not InstallableTrackingModule module) return;
+        if (moduleListBox.Items[index] is not ModuleEntry module) return;
 
         switch (module.InstallationState)
         {
             case InstallState.NotInstalled or InstallState.Outdated:
-            {
-                InstallButton.Content = "Install";
-                InstallButton.IsEnabled = true;
-                break;
-            }
+                {
+                    InstallButton.Content = "Install";
+                    InstallButton.IsEnabled = true;
+                    break;
+                }
             case InstallState.Installed:
-            {
-                InstallButton.Content = "Uninstall";
-                InstallButton.IsEnabled = true;
-                break;
-            }
+                {
+                    InstallButton.Content = "Uninstall";
+                    InstallButton.IsEnabled = true;
+                    break;
+                }
         }
 
-        if (sender is ListBox listBox && listBox.SelectedItem is InstallableTrackingModule selectedModule)
+        if (sender is ListBox listBox && listBox.SelectedItem is ModuleEntry selectedModule)
             ModuleSelected?.Invoke(selectedModule);
     }
 
-    public InstallableTrackingModule[] GetRemoteModules()
+    public ModuleEntry[] GetRemoteModules()
     {
-        IEnumerable<InstallableTrackingModule> remoteModules = [];
+        IEnumerable<ModuleEntry> remoteModules = [];
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(2));
         try
         {
             Task.Run(async () =>
             {
-                remoteModules = await ModuleDataService.GetRemoteModules()
+                remoteModules = await ModuleDataService.GetRemoteModuleEntries()
                     .ConfigureAwait(false);
             }, cts.Token).Wait(cts.Token);
         }
@@ -201,9 +202,9 @@ public partial class ModuleRegistryView : UserControl
         // Now comes the tricky bit, we get all locally installed modules and add them to the list.
         // If any of the IDs match a remote module and the other data contained within does not match,
         // then we need to set the local module install state to outdated. If everything matches then we need to set the install state to installed.
-        var installedModules = ModuleDataService.GetInstalledModules();
+        var installedModules = ModuleDataService.GetInstalledModuleEntries();
 
-        var localModules = new List<InstallableTrackingModule>(); // dw about it
+        var localModules = new List<ModuleEntry>(); // dw about it
         foreach (var installedModule in installedModules)
         {
             installedModule.InstallationState = InstallState.Installed;
@@ -275,7 +276,7 @@ public partial class ModuleRegistryView : UserControl
             {
                 BrowseLocalText.Text = "Successfully installed module(s).";
                 LocalModuleInstalled?.Invoke();
-                LibManager.Initialize();
+                _ = LibManager.Initialize();
             }
             else
             {

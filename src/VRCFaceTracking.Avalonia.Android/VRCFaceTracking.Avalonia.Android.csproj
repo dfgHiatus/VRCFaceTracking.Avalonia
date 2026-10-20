@@ -9,15 +9,17 @@
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
         <AndroidPackageFormat>apk</AndroidPackageFormat>
         <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
-        <Configurations>Debug;Release;Linux Debug;Windows Release;MacOS Debug;Windows Debug;MacOS Release;Linux Release;Android Debug;Android Release</Configurations>
+        <!-- Upstream Core is IsRidAgnostic=false, so as a transitive reference it would be built per Android RID,
+             which it is never restored for. Reach it through the RID-agnostic shared project instead. -->
+        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Avalonia.Android" Version="11.3.12" />
         <PackageReference Include="Xamarin.AndroidX.Core.SplashScreen" Version="1.2.0.1"  />
-		<AndroidNativeLibrary Include="jniLibs\arm64-v8a\fti_osc.so" Abi="armeabi-v7a" />
-	    <AndroidNativeLibrary Include="jniLibs\armeabi-v7a\fti_osc.so" Abi="arm64-v8a" />
-	    <AndroidNativeLibrary Include="jniLibs\x86\fti_osc.so" Abi="x86" />
+        <AndroidNativeLibrary Include="jniLibs\arm64-v8a\fti_osc.so" Abi="arm64-v8a" />
+        <AndroidNativeLibrary Include="jniLibs\armeabi-v7a\fti_osc.so" Abi="armeabi-v7a" />
+        <AndroidNativeLibrary Include="jniLibs\x86\fti_osc.so" Abi="x86" />
         <AndroidNativeLibrary Include="jniLibs\x86_64\fti_osc.so" Abi="x86_64" />
         <PackageReference Update="Packaging.Targets">
           <Version>0.1.232</Version>

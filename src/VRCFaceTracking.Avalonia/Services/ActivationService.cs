@@ -1,16 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Avalonia;
-using Avalonia.Threading;
 using Microsoft.Extensions.Logging;
-
-using VRCFaceTracking.Avalonia;
 using VRCFaceTracking.Contracts.Services;
 using VRCFaceTracking.Core.Contracts.Services;
-using VRCFaceTracking.Core.Models;
 using VRCFaceTracking.Core.Services;
 
 namespace VRCFaceTracking.Services;
@@ -56,15 +50,6 @@ public class ActivationService(
         logger.LogInformation("Initializing main service...");
         await mainService.InitializeAsync().ConfigureAwait(false);
 
-        // Before we initialize, we need to delete pending restart modules and check for updates for all our installed modules
-        logger.LogDebug("Checking for deletion requests for installed modules...");
-        var needsDeleting = moduleDataService.GetInstalledModules()
-            .Where(m => m.InstallationState == InstallState.AwaitingRestart);
-        foreach (var deleteModule in needsDeleting)
-        {
-            moduleInstaller.UninstallModule(deleteModule);
-        }
-
         logger.LogInformation("Checking for updates for installed modules...");
         var localModules = moduleDataService.GetInstalledModules().Where(m => m.ModuleId != Guid.Empty);
         var remoteModules = await moduleDataService.GetRemoteModules();
@@ -85,7 +70,7 @@ public class ActivationService(
         }
 
         logger.LogInformation("Initializing modules...");
-        Dispatcher.UIThread.Invoke(() => libManager.Initialize());
+        await libManager.Initialize();
 
         await Task.CompletedTask;
     }

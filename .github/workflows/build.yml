@@ -37,20 +37,25 @@ jobs:
         with:
           submodules: 'recursive'
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
       - name: Install dependencies
         run: |
           dotnet tool install -g vpk
 
       - name: Run publish script
         run: |
-          cd src/VRCFaceTracking.Desktop/Publish
+          cd src/VRCFaceTracking.Avalonia.Desktop/publish
           python publish_linux.py
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: VRCFaceTracking.AppImage
-          path: src/VRCFaceTracking.Desktop/installers/linux-x64/VRCFaceTracking.AppImage
+          path: src/VRCFaceTracking.Avalonia.Desktop/installers/linux-x64/VRCFaceTracking.AppImage
 
   build-windows-x64:
     defaults:
@@ -66,21 +71,26 @@ jobs:
           submodules: 'recursive'
           lfs: true
 
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
       - name: Build project
         run: |
-          cd src/VRCFaceTracking.Desktop
-          dotnet publish -r win-x64 -c Release --self-contained -f net8.0
+          cd src/VRCFaceTracking.Avalonia.Desktop
+          dotnet publish -r win-x64 -c Release --self-contained -f net10.0
 
       - name: Run makensis
         run: |
-          cd src/VRCFaceTracking.Desktop
-          "C:\Program Files (x86)\NSIS\makensis.exe" main.nsi
+          cd src/VRCFaceTracking.Avalonia.Desktop
+          "C:\Program Files (x86)\NSIS\makensis.exe" setup.nsi
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: "VRCFaceTracking Setup.exe"
-          path: "src/VRCFaceTracking.Desktop/VRCFaceTracking Setup.exe"
+          path: "src/VRCFaceTracking.Avalonia.Desktop/VRCFaceTracking Setup.exe"
 
   publish-release:
     #needs: [build-linux-x64, build-windows-x64]

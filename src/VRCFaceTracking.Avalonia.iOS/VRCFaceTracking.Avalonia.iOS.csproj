@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net10.0-ios</TargetFramework>
+        <SupportedOSPlatformVersion>15.0</SupportedOSPlatformVersion>
+        <Nullable>enable</Nullable>
+        <ApplicationId>com.VRCFaceTracking.Avalonia</ApplicationId>
+        <ApplicationTitle>VRCFaceTracking</ApplicationTitle>
+        <ApplicationVersion>1</ApplicationVersion>
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <!-- Tracking modules are IL assemblies loaded at runtime. iOS forbids JIT, so they have to run on the interpreter. -->
+        <UseInterpreter>true</UseInterpreter>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia.iOS" Version="11.3.12" />
+        <PackageReference Update="Packaging.Targets">
+            <Version>0.1.232</Version>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\VRCFaceTracking.Avalonia\VRCFaceTracking.Avalonia.csproj" />
+    </ItemGroup>
+
+    <!--
+      fti_osc (src/SimpleRustOSC) must be statically linked on iOS: apps can't load a loose dylib the way the
+      Desktop and Android builds load fti_osc.dll/.so. Build it as a staticlib for aarch64-apple-ios and
+      aarch64-apple-ios-sim, bundle both into NativeLibs/fti_osc.xcframework, and see FtiOscResolver.cs for how
+      Core's [DllImport("fti_osc")] is pointed at the main executable.
+    -->
+    <PropertyGroup>
+        <FtiOscXcframework>$(MSBuildThisFileDirectory)NativeLibs\fti_osc.xcframework</FtiOscXcframework>
+    </PropertyGroup>
+    <ItemGroup Condition="Exists('$(FtiOscXcframework)')">
+        <NativeReference Include="$(FtiOscXcframework)" Kind="Static" ForceLoad="true" />
+        <!-- Nothing calls these from native code, so keep them from being dead-stripped; they're resolved via dlsym. -->
+        <ReferenceNativeSymbol Include="parse_osc" SymbolType="Function" />
+        <ReferenceNativeSymbol Include="free_osc_message" SymbolType="Function" />
+        <ReferenceNativeSymbol Include="create_osc_message" SymbolType="Function" />
+        <ReferenceNativeSymbol Include="create_osc_bundle" SymbolType="Function" />
+    </ItemGroup>
+    <Target Name="WarnMissingFtiOsc" BeforeTargets="Build" Condition="!Exists('$(FtiOscXcframework)')">
+        <Warning Text="NativeLibs/fti_osc.xcframework is missing. The app will build, but OSC will fail at runtime until the iOS fti_osc static library is added." />
+    </Target>
+</Project>

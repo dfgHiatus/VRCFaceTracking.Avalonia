@@ -13,7 +13,10 @@ namespace VRCFaceTracking.Services;
 public class LocalSettingsService : ILocalSettingsService
 {
     public string DefaultApplicationDataFolder => Path.Combine("VRCFaceTracking", "ApplicationData");
-    public static string DefaultLocalSettingsFile => Path.Combine(AppContext.BaseDirectory, "LocalSettings.json");
+    // The app bundle is read-only on iOS, so settings live in the app's data directory there.
+    public static string DefaultLocalSettingsFile => Path.Combine(
+        OperatingSystem.IsIOS() ? Core.Utils.PersistentDataDirectory : AppContext.BaseDirectory,
+        "LocalSettings.json");
 
     private readonly IFileService _fileService;
     private readonly LocalSettingsOptions _options;

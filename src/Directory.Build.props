@@ -6,4 +6,13 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+  <!-- Analyzers for this repo's own projects only; submodules are left untouched. -->
+  <PropertyGroup Condition="$(MSBuildProjectName.StartsWith('VRCFaceTracking.Avalonia'))">
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- GenerateDocumentationFile is required for IDE0005 in builds; don't warn on missing XML docs. -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+  </PropertyGroup>
 </Project>

@@ -12,20 +12,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using VRCFaceTracking.Activation;
-using VRCFaceTracking.Avalonia.Controls;
 using VRCFaceTracking.Avalonia.Services;
+using VRCFaceTracking.Avalonia.Services.Modules;
 using VRCFaceTracking.Avalonia.ViewModels;
 using VRCFaceTracking.Avalonia.ViewModels.SplitViewPane;
 using VRCFaceTracking.Avalonia.Views;
 using VRCFaceTracking.Contracts.Services;
 using VRCFaceTracking.Core;
-using VRCFaceTracking.Core.Contracts;
 using VRCFaceTracking.Core.Contracts.Services;
-using VRCFaceTracking.Core.Library;
-using VRCFaceTracking.Core.mDNS;
-using VRCFaceTracking.Core.Models;
-using VRCFaceTracking.Core.OSC.Query.mDNS;
-using VRCFaceTracking.Core.Params.Data;
 using VRCFaceTracking.Core.Services;
 using VRCFaceTracking.Models;
 using VRCFaceTracking.Services;
@@ -63,6 +57,7 @@ public partial class App : Application
 
         if (!File.Exists(LocalSettingsService.DefaultLocalSettingsFile))
         {
+            Directory.CreateDirectory(Path.GetDirectoryName(LocalSettingsService.DefaultLocalSettingsFile)!);
             File.WriteAllText(LocalSettingsService.DefaultLocalSettingsFile, "{}");
         }
 
@@ -90,24 +85,22 @@ public partial class App : Application
                 services.AddSingleton<IDispatcherService, DispatcherService>();
 
                 // Core Services
+                services.AddCommonServices();
                 services.AddTransient<IIdentityService, IdentityService>();
-                services.AddSingleton<ModuleInstaller>();
-                services.AddSingleton<IModuleDataService, ModuleDataService>();
-                services.AddTransient<IFileService, FileService>();
-                services.AddSingleton<OscQueryService>();
-                services.AddSingleton<MulticastDnsService>();
-                services.AddTransient<AvatarConfigParser>();
-                services.AddTransient<OscQueryConfigParser>();
-                services.AddSingleton<ILibManager, UnifiedLibManager>();
-                services.AddSingleton<IOscTarget, OscTarget>();
-                services.AddSingleton<HttpHandler>();
-                services.AddSingleton<OscRecvService>();
-                services.AddSingleton<OscSendService>();
-                services.AddSingleton<ParameterSenderService>();
-                services.AddSingleton<UnifiedTrackingMutator>();
-                services.AddSingleton<UnifiedTracking>();
+                services.AddSingleton<ModuleDataService>();
+                services.AddSingleton<IModuleDataService>(provider => provider.GetRequiredService<ModuleDataService>());
                 services.AddTransient<GithubService>();
-                services.AddSingleton<IMainService, MainStandalone>();
+
+                // Replaces upstream's UnifiedLibManager (registered by AddCommonServices) to honour the user's module load order.
+                // Mobile platforms can't spawn upstream's sandbox process, so they host modules in-process.
+                if (OperatingSystem.IsAndroid() || OperatingSystem.IsIOS())
+                {
+                    services.AddSingleton<ILibManager, InProcessLibManager>();
+                }
+                else
+                {
+                    services.AddSingleton<ILibManager, SandboxedLibManager>();
+                }
 
                 services.AddSingleton<DropOverlayService>();
 
@@ -124,9 +117,6 @@ public partial class App : Application
                 services.AddTransient<SettingsPageView>();
                 services.AddTransient<HomePageView>();
                 services.AddTransient<MutatorPageView>();
-
-                services.AddHostedService(provider => provider.GetService<OscRecvService>()!);
-                services.AddHostedService(provider => provider.GetService<ParameterSenderService>()!);
 
                 // Configuration
                 IConfiguration config = new ConfigurationBuilder()

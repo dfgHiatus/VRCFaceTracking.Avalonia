@@ -11,7 +11,7 @@
   xmlns:htControls="clr-namespace:HyperText.Avalonia.Controls;assembly=HyperText.Avalonia"
   xmlns:assets="clr-namespace:VRCFaceTracking.Avalonia.Assets"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-  xmlns:models="clr-namespace:VRCFaceTracking.Core.Models;assembly=VRCFaceTracking.Core"
+  xmlns:models="clr-namespace:VRCFaceTracking.Avalonia.Models"
   xmlns:vm="clr-namespace:VRCFaceTracking.Avalonia.ViewModels.SplitViewPane"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
@@ -131,7 +131,7 @@
                     Width="350"
                     x:Name="ModuleList">
                     <ListBox.ItemTemplate>
-                      <DataTemplate x:DataType="models:InstallableTrackingModule">
+                      <DataTemplate x:DataType="models:ModuleEntry">
                         <StackPanel Spacing="4">
                           <StackPanel Orientation="Horizontal">
                             <TextBlock FontWeight="SemiBold" Text="{Binding ModuleName}" />
@@ -163,7 +163,7 @@
                     Width="350"
                     x:Name="LocalModuleList">
                     <ListBox.ItemTemplate>
-                      <DataTemplate x:DataType="models:InstallableTrackingModule">
+                      <DataTemplate x:DataType="models:ModuleEntry">
                         <Grid ColumnDefinitions="Auto, Auto, *, Auto" VerticalAlignment="Center">
 
                           <!--  Instantiatable Checkbox  -->

@@ -12,9 +12,9 @@ def run_dotnet_publish():
     cmd = [
         'dotnet', 'publish',
         '-r', 'linux-x64',
-        '-c', 'Linux Release',
+        '-c', 'Release',
         '--self-contained',
-        '-f', 'net8.0'
+        '-f', 'net10.0'
     ]
     print(f"Running: {' '.join(cmd)}")
     subprocess.run(cmd, check=True)
@@ -46,8 +46,8 @@ def main():
     version = args.version
     check_vpk()
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    bin_dir = os.path.join(base_dir, 'bin', 'Linux Release')
-    framework = 'net8.0'
+    bin_dir = os.path.join(base_dir, 'bin', 'Release')
+    framework = 'net10.0'
     runtime = 'linux-x64'
     publish_dir = os.path.join(bin_dir, framework, runtime, 'publish')
     run_dotnet_publish()

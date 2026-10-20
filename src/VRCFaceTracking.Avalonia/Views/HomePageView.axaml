@@ -9,7 +9,7 @@
     xmlns:helpers="clr-namespace:VRCFaceTracking.Helpers"
     xmlns:assets="clr-namespace:VRCFaceTracking.Avalonia.Assets"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="clr-namespace:VRCFaceTracking;assembly=VRCFaceTracking.SDK"
+    xmlns:models="clr-namespace:VRCFaceTracking;assembly=VRCFaceTracking.Core"
     xmlns:controls="clr-namespace:VRCFaceTracking.Avalonia.Controls"
     xmlns:viewModels="clr-namespace:VRCFaceTracking.Avalonia.ViewModels.SplitViewPane"
     xmlns:views="clr-namespace:VRCFaceTracking.Avalonia.Views"
@@ -27,7 +27,7 @@
 
             <ItemsControl ItemsSource="{Binding LibManager.LoadedModulesMetadata}">
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="models:ModuleMetadata">
+                    <DataTemplate x:DataType="models:ModuleMetadataInternal">
                         <Border>
                             <Grid>
                                 <Grid.ColumnDefinitions>
