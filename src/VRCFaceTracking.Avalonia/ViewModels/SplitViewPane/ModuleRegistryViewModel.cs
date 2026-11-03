@@ -134,44 +134,56 @@ public partial class ModuleRegistryViewModel : ViewModelBase
 
     private void ModuleSelected(ModuleEntry module)
     {
+        // Dispatcher.Post takes an Action, so this lambda is effectively async void: anything
+        // that escapes it is rethrown on the dispatcher and terminates the whole process.
+        // Ratings come from a remote registry, so every failure path has to be contained here.
         Dispatcher.UIThread.Post(async () =>
         {
-            Module = module;
-
-            // Local modules don't have ratings
-            if (Module.IsLocal)
-            {
-                ModuleRating = 0;
-                return;
-            }
-
-            var myRating = await _moduleDataService.GetMyRatingAsync(module);
-
-            // We use a lock here because without it a race condition occurres
-            // when adding propertyChanged handlers.
-            // a handler might be added from another async call before this one
-            // finishes causing unwanted events firing.
-            await _moduleRatingLock.WaitAsync();
             try
             {
-                // Check if the selected module is still the same one that we called
-                // GetMyRatingAsync for.
-                if (Module.ModuleId != module.ModuleId)
-                    return;
+                Module = module;
 
-                // Prevent events from firing
-                PropertyChanged -= ModuleRatingChanged;
-                if (myRating != null)
-                    ModuleRating = (int)myRating;
-                else
+                // Local modules don't have ratings
+                if (Module.IsLocal)
+                {
                     ModuleRating = 0;
+                    return;
+                }
 
-                // return the events back
-                PropertyChanged += ModuleRatingChanged;
+                var myRating = await _moduleDataService.GetMyRatingAsync(module);
+
+                // We use a lock here because without it a race condition occurres
+                // when adding propertyChanged handlers.
+                // a handler might be added from another async call before this one
+                // finishes causing unwanted events firing.
+                await _moduleRatingLock.WaitAsync();
+                try
+                {
+                    // Check if the selected module is still the same one that we called
+                    // GetMyRatingAsync for.
+                    if (Module.ModuleId != module.ModuleId)
+                        return;
+
+                    // Prevent events from firing
+                    PropertyChanged -= ModuleRatingChanged;
+                    if (myRating != null)
+                        ModuleRating = (int)myRating;
+                    else
+                        ModuleRating = 0;
+
+                    // return the events back
+                    PropertyChanged += ModuleRatingChanged;
+                }
+                finally
+                {
+                    _moduleRatingLock.Release();
+                }
             }
-            finally
+            catch (Exception e)
             {
-                _moduleRatingLock.Release();
+                // Registry unreachable or slow: show "not rated" instead of dying.
+                Console.Error.WriteLine($"Failed to load rating for module '{module.ModuleId}': {e}");
+                ModuleRating = 0;
             }
         });
     }
