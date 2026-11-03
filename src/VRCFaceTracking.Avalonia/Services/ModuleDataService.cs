@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,7 +35,8 @@ public class ModuleDataService : IModuleDataService
     {
         _identityService = identityService;
         _logger = logger;
-        _httpClient = new HttpClient();
+        // The registry is a third-party host. Never let a single request stall the UI for 100s.
+        _httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
         _httpClient.BaseAddress = new Uri(BaseUrl);
     }
 
@@ -132,13 +133,23 @@ public class ModuleDataService : IModuleDataService
 
         var rating = new RatingObject
         { UserId = _identityService.GetUniqueUserId(), ModuleId = moduleMetadata.ModuleId.ToString() };
-        var response = await _httpClient.SendAsync(new HttpRequestMessage
-        {
-            Method = HttpMethod.Get,
-            RequestUri = new Uri("rating", UriKind.Relative),
-            Content = new StringContent(JsonConvert.SerializeObject(rating), Encoding.UTF8, "application/json"),
-        });
 
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.SendAsync(new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("rating", UriKind.Relative),
+                Content = new StringContent(JsonConvert.SerializeObject(rating), Encoding.UTF8, "application/json"),
+            });
+        }
+        catch (Exception e)
+        {
+            // Registry unreachable or slow: a missing rating is not fatal.
+            _logger.LogWarning("Could not fetch rating for module {ModuleId}: {Message}", moduleMetadata.ModuleId, e.Message);
+            return null;
+        }
 
         // Deserialize the input content but extract the Rating property. Be careful though, we might 404 if the user hasn't rated the module yet.
         if (response.StatusCode != HttpStatusCode.OK)
@@ -160,7 +171,18 @@ public class ModuleDataService : IModuleDataService
         var ratingObject = new RatingObject { UserId = _identityService.GetUniqueUserId(), ModuleId = moduleMetadata.ModuleId.ToString(), Rating = rating };
 
         var content = new StringContent(JsonConvert.SerializeObject(ratingObject), Encoding.UTF8, "application/json");
-        var response = await _httpClient.PutAsync("rating", content);
+
+        HttpResponseMessage response;
+        try
+        {
+            response = await _httpClient.PutAsync("rating", content);
+        }
+        catch (Exception e)
+        {
+            // Ratings are a nicety; never let a network hiccup take the app down.
+            _logger.LogWarning("Could not set rating for module {ModuleId}: {Message}", moduleMetadata.ModuleId, e.Message);
+            return;
+        }
 
         if (response.StatusCode != HttpStatusCode.OK)
         {
